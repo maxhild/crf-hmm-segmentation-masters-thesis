@@ -1,7 +1,10 @@
 %************************************************
 \chapter{Einleitung}\label{ch:introduction}
 %************************************************
-Die Durchführung von Endoskopien ist ein wesentlicher Bestandteil der modernen medizinischen Diagnostik. Mit dem Aufkommen von Künstlicher Intelligenz (KI) und maschinellem Lernen eröffnen sich neue Möglichkeiten zur Automatisierung und Verbesserung der Analyse von Endoskopie-Videos. Diese Arbeit konzentriert sich auf die Optimierung der framebasierten Segmentierung von Endoskopie-Videos durch den Vergleich von Markov Models und Conditional Random Fields.
+Eine Abschlussarbeit ist mit einem Projekt vergleichbar und in der Einleitung wird die Aufgabenstellung in ähnlicher Weise beschrieben wie in dem Strukturplan eines Projektes.
+Daher sollte die Einleitung mit Hilfe der \enquote{5-Stufen-Methode zur systematischen Strukturplanung}~\citep{ob}\footnotemark{} vorgenommen werden.
+\footnotetext{Das Buch ist für Studierende der Medizininformatik an der Universität Leipzig im Moodle verfügbar.
+Schauen Sie in den von ihren belegten Modulen nach.}
 
 \section{Gegenstand}
 
@@ -29,8 +32,7 @@ Dieser Ansatz wurde in mehreren Studien getestet, wie der von Vilmann et~al.\ du
 
 \subsection{Aktuelle Herausforderungen}
 
-Die derzeitige Segmentierungspipeline verwendet eine Glättungsfunktion zur Nachbearbeitung der Frame-basierten Vorhersagen. Der Hauptgrund für die Einführung einer Glättungsfunktion ist, dass die Segmente falsch unterbrochen werden können. Dies kann beispielsweise passieren, wenn Lichtreflexionen im Video sichtbar sind oder wenn der Wasserjet des Endoskops im Bild für Reflexionen sorgt.
-Diese Probleme treten insbesondere bei Ein- und Autritt des Endoskops in den Körper auf, da sich hier die Lichtverhältnisse rapide ändern.
+Die derzeitige Segmentierungspipeline verwendet eine Glättungsfunktion zur Nachbearbeitung der Frame-basierten Vorhersagen. Der Hauptgrund für die Einführung einer Glättungsfunktion ist, dass die Segmente falsch unterbrochen werden können. Dies kann passieren, wenn Lichtreflexionen im Video sichtbar sind oder wenn Wasser vom Endoskop stammt.
 
 In der aktuellen Theorie bringen diese Ereignisse im Video das Segmentierungsmodell aufgrund eines nicht erkannten visuellen Elements im Frame durcheinander. Aus diesem Grund sind die Farbinformationen aus dem Bild ein möglicher Kandidat als zusätzliche Eingabe für ein Bayessches statistisches Modell zur Glättung der Vorhersagen.
 
@@ -114,8 +116,7 @@ Die Hauptziele dieser Masterarbeit sind die Entwicklung und Evaluation verbesser
 
 \section{Aufgabenstellung}
 
-Die Forschungsfrage dieser Arbeit ist daher zu untersuchen, ob die Einführung von Nachbearbeitungsschritten die Qualität der \enquote{Outside}-Vorhersage verbessert. In diesem Fall wäre die Methode, die aktuelle Glättungsfunktion in der Nachbearbeitung durch einen dieser statistischen Ansätze zu ersetzen.
-Der Vollständigkeit halber sollen auch die anderen Labels (wie \enquote{Esophagus}, \enquote{Stomach}, \enquote{Duodenum}, \enquote{Ileum}, \enquote{Colon}, \enquote{Rectum}) in die Analyse einbezogen werden, um die allgemeine Leistungsfähigkeit der Segmentierungspipeline zu bewerten.
+Die vorgeschlagene Forschungsfrage dieser Arbeit ist daher zu untersuchen, ob die Einführung von Nachbearbeitungsschritten die Qualität der \enquote{Outside}-Vorhersage verbessert. In diesem Fall wäre die Methode, die aktuelle Glättungsfunktion in der Nachbearbeitung durch einen dieser statistischen Ansätze zu ersetzen.
 
 \textbf{Aufgaben zur Erreichung der Ziele:}
 

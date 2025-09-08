@@ -1,0 +1,71 @@
+% Minimal-Test für LuaLaTeX + IMISE ClassicThesis
+\RequirePackage{silence}
+    \WarningFilter{scrreprt}{Usage of package `titlesec'}
+    \WarningFilter{titlesec}{Non standard sectioning command detected}
+\documentclass[ngerman, twoside,openright,titlepage,numbers=noenddot,
+                headinclude,footinclude,cleardoublepage=empty,abstract=on,
+                BCOR=5mm,paper=a4,fontsize=11pt]{scrreprt}
+
+% LuaLaTeX-optimierte Konfiguration
+\input{classicthesis-config-lualatex}
+
+% Test-Bibliographie
+\addbibresource{thesis.bib}
+
+\begin{document}
+\frenchspacing
+\raggedbottom
+\selectlanguage{ngerman}
+
+\title{Test-Dokument für LuaLaTeX + ClassicThesis}
+\author{Test Author}
+\date{\today}
+\maketitle
+
+\chapter{Einleitung}
+
+Dies ist ein Test-Dokument für die LuaLaTeX-Konfiguration mit ClassicThesis.
+
+\section{Funktionstest}
+
+Hier testen wir verschiedene Features:
+
+\subsection{UTF-8-Test}
+Umlaute: äöüß ÄÖÜ
+Sonderzeichen: €„"‚'«»
+
+\subsection{Zitation-Test}
+% Diese Zeile wird erst funktionieren, wenn Einträge in thesis.bib vorhanden sind
+% Ein Beispiel-Zitat: \cite{beispielkey}
+
+\subsection{Tabellen-Test}
+\begin{table}[h]
+\centering
+\begin{tabular}{ll}
+\toprule
+Spalte 1 & Spalte 2 \\
+\midrule
+Test & Funktioniert \\
+UTF-8 & äöüß \\
+\bottomrule
+\end{tabular}
+\caption{Test-Tabelle}
+\end{table}
+
+\subsection{Definition-Test}
+\begin{definition}[Test-Definition]
+Dies ist eine Test-Definition, um zu prüfen, ob die Theorem-Umgebungen funktionieren.
+\end{definition}
+
+\subsection{Tabulary-Test}
+\begin{tabulary}{0.8\textwidth}{LL}
+Frage & Antwort \\
+\midrule
+Funktioniert LuaLaTeX? & Ja, perfekt! \\
+Funktioniert UTF-8? & Natürlich: äöüß \\
+\end{tabulary}
+
+\chapter{Fazit}
+Das LuaLaTeX-Setup funktioniert einwandfrei! 🎉
+
+\end{document}

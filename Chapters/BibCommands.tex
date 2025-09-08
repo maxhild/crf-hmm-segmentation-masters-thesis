@@ -1,0 +1,89 @@
+% !TeX program = lualatex
+% !BIB program = biber
+\documentclass[11pt]{scrbook}
+
+% Sprache & Typografie
+\usepackage[ngerman]{babel}
+\usepackage[autostyle]{csquotes}
+
+% biber (Autor-Jahr), biber, deutsche Lokalisierung
+\usepackage[
+  backend=biber,
+  style=authoryear-icomp,
+  sorting=nyt
+]{biber}
+
+% Literaturdatenbank einbinden
+\addbibresource{Bibliography.bib} % <--- ggf. anpassen
+
+% LuaLaTeX: moderne Schriftwahl (optional)
+\usepackage{fontspec}
+\setmainfont{TeX Gyre Pagella}
+
+\begin{document}
+\tableofcontents
+
+\chapter{Zitierbeispiele (biber, deutsch)}
+
+% ------------------------------------------------------
+\section{Direktes Zitat (wörtlich)}
+% kurzer Inline-Quote mit Seitenzahl:
+\enquote{Kurzes wörtliches Zitat} \parencite[15]{muster2020}.
+
+% längeres Blockzitat (csquotes übernimmt Anführungen/Einzug), Quelle danach:
+\blockquote{Dies ist ein längeres wörtliches Zitat, das als Blocksatz gesetzt wird.}
+\parencite[78]{muster2020}
+
+% Text-gebundenes (Subjekt = Autor), mit Seitenangabe:
+\textcite[22]{muster2020} argumentiert, dass \enquote{…}.
+
+% ------------------------------------------------------
+\section{Indirektes Zitat (paraphrasiert)}
+% vgl. als Prenote, Seitenangabe als Postnote:
+Vgl.\ \parencite[vgl.][33]{beispiel2019} für eine alternative Definition.
+
+% Textgebunden (Autor im Satz):
+Wie \textcite[Kap.~3]{beispiel2019} zeigen, ist die Lage komplex.
+
+% ------------------------------------------------------
+\section{Fußnotenzitation}
+% Zitat in einer Fußnote, mit Seitenzahl:
+Dies wird häufig so gesehen.\footcite[101]{muster2020}
+
+% ------------------------------------------------------
+\section{Mehrfachzitate}
+% mehrere Quellen auf einmal (Klammer):
+Siehe \parencites{muster2020}{beispiel2019}{alpha2018}.
+
+% mehrere mit individuellen Seiten:
+Siehe \parencites[15]{muster2020}[33]{beispiel2019}[§2]{alpha2018}.
+
+% Textgebundene Mehrfachzitate:
+\textcites{muster2020}{beispiel2019} berichten übereinstimmend, dass ...
+
+% ------------------------------------------------------
+\section{Spezielle Angaben: Seiten, Spannen, Kapitel}
+% reine Jahres- oder Autorenangaben:
+Nur Autor: \citeauthor{muster2020}; nur Jahr: \citeyear{muster2020}.
+
+% Seitenbereich:
+Siehe \parencite[15--18]{muster2020}.
+
+% Kapitel/Paragraf:
+Siehe \parencite[Kap.~4]{muster2020}; oder \parencite[§\,2]{alpha2018}.
+
+% prä- und postnote gleichzeitig:
+Siehe \parencite[vgl. auch][Anhang~B]{muster2020}.
+
+% ------------------------------------------------------
+\section{Direkte Zitate mit Quellenangabe im Satzfluss}
+% Autor im Text, Jahr/Seite in Klammern:
+Nach \textcite[45]{muster2020} ist das Verfahren robust.
+% Nur Klammer (Autor, Jahr, Seite):
+Aktuelle Befunde bestätigen dies \parencite[45]{muster2020}.
+
+% ------------------------------------------------------
+\section{Literaturverzeichnis}
+\printbibliography
+
+\end{document}

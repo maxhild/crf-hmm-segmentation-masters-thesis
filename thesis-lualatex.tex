@@ -1,7 +1,8 @@
 % **************************************************************************************************************
-% A Classic Thesis Style
+% A Classic Thesis Style - LuaLaTeX Version
 % An Homage to The Elements of Typographic Style
 % Copyright (C) 2025 André Miede and Ivo Pletikosić
+% Angepasst für LuaLaTeX + Biber + Deutsch von IMISE
 % **************************************************************************************************************
 \RequirePackage{silence} % :-\
     \WarningFilter{scrreprt}{Usage of package `titlesec'}
@@ -13,34 +14,37 @@
                 ]{scrreprt}
 
 %********************************************************************
-% Note: Make all your adjustments in here
+% LuaLaTeX-optimierte Konfiguration verwenden
 %*******************************************************
-\input{classicthesis-config}
+% Verwende die neue LuaLaTeX-Konfiguration:
+\input{classicthesis-config-lualatex}
+
+% Falls du die originale Konfiguration verwenden möchtest:
+% \input{classicthesis-config}
 
 %********************************************************************
-% Bibliographies
+% Bibliographies - mit Biber
 %*******************************************************
 \addbibresource{thesis.bib}
 \addbibresource[label=snikpubs]{snik.bib}
 
 %********************************************************************
-% Hyphenation
+% Hyphenation - Deutsche Silbentrennung
 %*******************************************************
 %\hyphenation{put special hyphenation here}
 
 % ********************************************************************
 % GO!GO!GO! MOVE IT!
 %*******************************************************
-\overfullrule=0pt
-
 \begin{document}
 \frenchspacing
 \raggedbottom
-\selectlanguage{ngerman} % american ngerman
+\selectlanguage{ngerman} % Deutsch als Hauptsprache
 %\renewcommand*{\bibname}{new name}
 %\setbibpreamble{}
 \pagenumbering{roman}
 \pagestyle{plain}
+
 %********************************************************************
 % Frontmatter
 %*******************************************************
@@ -60,34 +64,38 @@
 %\setcounter{page}{90}
 % use \cleardoublepage here to avoid problems with pdfbookmark
 \cleardoublepage
-\include{Chapters/1Introduction}
-\cleardoublepage
-\include{Chapters/2Preliminaries}
-%\addtocontents{toc}{\protect\clearpage} % <--- just debug stuff, ignore
-\include{Chapters/3RelatedWork}
-\include{Chapters/4Approach}
-\include{Chapters/5Solution}
-\include{Chapters/6Results}
-\include{Chapters/7Discussion}
-% ********************************************************************
+
+% Deutsche Kapitelüberschriften (anpassen nach Bedarf):
+\include{Chapters/1Introduction}       % Einleitung
+\include{Chapters/2Preliminaries}      % Grundlagen
+\include{Chapters/3RelatedWork}        % Verwandte Arbeiten / Stand der Technik
+\include{Chapters/4Approach}           % Ansatz / Methodik
+\include{Chapters/5Solution}           % Lösung / Implementierung
+\include{Chapters/6Results}            % Ergebnisse / Evaluation
+\include{Chapters/7Discussion}         % Diskussion / Fazit
+
+% Optionale Anhänge:
+%\cleardoublepage\include{Chapters/LaTeXTips}
+%\cleardoublepage\include{Chapters/GitTips}
+
+%********************************************************************
 % Backmatter
 %*******************************************************
-\cleardoublepage\include{FrontBackmatter/Bibliography}
 \appendix
 %\renewcommand{\thechapter}{\alph{chapter}}
 \cleardoublepage
-\part*{Appendix}
-\include{Chapters/BibTips}
-\include{Chapters/LatexTips}
-\include{Chapters/GitTips}
-\include{Chapters/PrintTips}
+\part{Anhang}
+% Weitere Anhänge hier einfügen...
+
 %********************************************************************
 % Other Stuff in the Back
 %*******************************************************
+\cleardoublepage\include{FrontBackmatter/Bibliography}
+\cleardoublepage\include{FrontBackmatter/Acronym}       % Abkürzungsverzeichnis
+\cleardoublepage\include{FrontBackmatter/Declaration}   % Eigenständigkeitserklärung
 
-\cleardoublepage\include{FrontBackmatter/Declaration}
 % ********************************************************************
 % Game Over: Restore, Restart, or Quit?
-%*******************************************************
+% ********************************************************************
 \end{document}
 % ********************************************************************

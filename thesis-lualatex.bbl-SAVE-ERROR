@@ -1,0 +1,422 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nyt/global//global/global/global}
+    \entry{ob}{book}{}{}
+      \name{author}{4}{}{%
+        {{hash=6e344ce9242fbc208b970d527da1dfb0}{%
+           family={Ammenwerth},
+           familyi={A\bibinitperiod},
+           given={Elske},
+           giveni={E\bibinitperiod}}}%
+        {{hash=98f91784039fe2165ecb3de88884cbe5}{%
+           family={Haux},
+           familyi={H\bibinitperiod},
+           given={Reinhold},
+           giveni={R\bibinitperiod}}}%
+        {{hash=085d4cbf78e3b8534419a043c2143ded}{%
+           family={Knaup-Gregori},
+           familyi={K\bibinithyphendelim G\bibinitperiod},
+           given={Petra},
+           giveni={P\bibinitperiod}}}%
+        {{hash=b3a3343197f65d6f951a5b781ab128a3}{%
+           family={Winter},
+           familyi={W\bibinitperiod},
+           given={Alfred},
+           giveni={A\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Stuttgart, Germany}%
+      }
+      \list{publisher}{1}{%
+        {Schattauer}%
+      }
+      \strng{namehash}{d60f7352df6e648d6d679a58b02ecb43}
+      \strng{fullhash}{f4700f689c7b4a5b0f03aa6d385df5f4}
+      \strng{fullhashraw}{f4700f689c7b4a5b0f03aa6d385df5f4}
+      \strng{bibnamehash}{f4700f689c7b4a5b0f03aa6d385df5f4}
+      \strng{authorbibnamehash}{f4700f689c7b4a5b0f03aa6d385df5f4}
+      \strng{authornamehash}{d60f7352df6e648d6d679a58b02ecb43}
+      \strng{authorfullhash}{f4700f689c7b4a5b0f03aa6d385df5f4}
+      \strng{authorfullhashraw}{f4700f689c7b4a5b0f03aa6d385df5f4}
+      \field{labelalpha}{Amm+14}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{2}
+      \field{isbn}{9783794530717}
+      \field{title}{{IT}-{P}rojektmanagement im {G}esundheitswesen}
+      \field{year}{2014}
+    \endentry
+    \entry{sniktec}{article}{}{}
+      \name{author}{8}{}{%
+        {{hash=702dfd17533f6270cc9e81134caa4230}{%
+           family={Höffner},
+           familyi={H\bibinitperiod},
+           given={Konrad},
+           giveni={K\bibinitperiod}}}%
+        {{hash=19c1577c6ba3c5035290ea4f9471d3ec}{%
+           family={Jahn},
+           familyi={J\bibinitperiod},
+           given={Franziska},
+           giveni={F\bibinitperiod}}}%
+        {{hash=1d79eec72f385d7d78d9df1943e184cd}{%
+           family={Kücherer},
+           familyi={K\bibinitperiod},
+           given={Christian},
+           giveni={C\bibinitperiod}}}%
+        {{hash=a7fe8baebbbb4703da4daaadd4dfb248}{%
+           family={Paech},
+           familyi={P\bibinitperiod},
+           given={Barbara},
+           giveni={B\bibinitperiod}}}%
+        {{hash=615487a0c1dbc5f5add3cf69b369c2fd}{%
+           family={Brigel},
+           familyi={B\bibinitperiod},
+           given={Schneider},
+           giveni={S\bibinitperiod}}}%
+        {{hash=b9e6716f52c2f9245a5c303205efac61}{%
+           family={Schöbel},
+           familyi={S\bibinitperiod},
+           given={Martin},
+           giveni={M\bibinitperiod}}}%
+        {{hash=71ee2e8e3e3e00129b65c47faccc6568}{%
+           family={Stäubert},
+           familyi={S\bibinitperiod},
+           given={Sebastian},
+           giveni={S\bibinitperiod}}}%
+        {{hash=b3a3343197f65d6f951a5b781ab128a3}{%
+           family={Winter},
+           familyi={W\bibinitperiod},
+           given={Alfred},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{2be6bb8e2ea8a94dfebac5bc1d212345}
+      \strng{fullhash}{e530842f73608c0726a0b50015218059}
+      \strng{fullhashraw}{e530842f73608c0726a0b50015218059}
+      \strng{bibnamehash}{e530842f73608c0726a0b50015218059}
+      \strng{authorbibnamehash}{e530842f73608c0726a0b50015218059}
+      \strng{authornamehash}{2be6bb8e2ea8a94dfebac5bc1d212345}
+      \strng{authorfullhash}{e530842f73608c0726a0b50015218059}
+      \strng{authorfullhashraw}{e530842f73608c0726a0b50015218059}
+      \field{labelalpha}{Höf+17}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Studies in Health Technology and Informatics}
+      \field{title}{{{T}echnical {E}nvironment for {D}eveloping the {S}{N}{I}{K} {O}ntology of {I}nformation {M}anagement in {H}ospitals}}
+      \field{volume}{243}
+      \field{year}{2017}
+      \field{pages}{122\bibrangedash 126}
+      \range{pages}{5}
+    \endentry
+    \entry{kaminski_performance_2017}{article}{}{}
+      \name{author}{29}{}{%
+        {{hash=e2bf75c723ae7c46556c6a849ebf6fc1}{%
+           family={Kaminski},
+           familyi={K\bibinitperiod},
+           given={Michal\bibnamedelima F.},
+           giveni={M\bibinitperiod\bibinitdelim F\bibinitperiod}}}%
+        {{hash=cc78780b7416b071a354cf5300c92f18}{%
+           family={Thomas-Gibson},
+           familyi={T\bibinithyphendelim G\bibinitperiod},
+           given={Siwan},
+           giveni={S\bibinitperiod}}}%
+        {{hash=544b16f4cb4a6f918c7f22135556b617}{%
+           family={Bugajski},
+           familyi={B\bibinitperiod},
+           given={Marek},
+           giveni={M\bibinitperiod}}}%
+        {{hash=37449a86563e3a58d21bbee77694c13c}{%
+           family={Bretthauer},
+           familyi={B\bibinitperiod},
+           given={Michael},
+           giveni={M\bibinitperiod}}}%
+        {{hash=b2bdc2db38cb3e07420f34a1ed87490c}{%
+           family={Rees},
+           familyi={R\bibinitperiod},
+           given={Colin\bibnamedelima J.},
+           giveni={C\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=f8f76342a7cfc1c525d3ecf29da318b2}{%
+           family={Dekker},
+           familyi={D\bibinitperiod},
+           given={Evelien},
+           giveni={E\bibinitperiod}}}%
+        {{hash=fb9ac417a4b0109e71f438e8711f3bcf}{%
+           family={Hoff},
+           familyi={H\bibinitperiod},
+           given={Geir},
+           giveni={G\bibinitperiod}}}%
+        {{hash=b80017fc31da1c217b1252001b187abc}{%
+           family={Jover},
+           familyi={J\bibinitperiod},
+           given={Rodrigo},
+           giveni={R\bibinitperiod}}}%
+        {{hash=3d37c2314ab7f57d3096806b19749a0a}{%
+           family={Suchanek},
+           familyi={S\bibinitperiod},
+           given={Stepan},
+           giveni={S\bibinitperiod}}}%
+        {{hash=c191dfac265c370f3b04f87f53f9eab2}{%
+           family={Ferlitsch},
+           familyi={F\bibinitperiod},
+           given={Monika},
+           giveni={M\bibinitperiod}}}%
+        {{hash=fec5ecb2986d46cd1d53ab2f051ec153}{%
+           family={Anderson},
+           familyi={A\bibinitperiod},
+           given={John},
+           giveni={J\bibinitperiod}}}%
+        {{hash=0c65c00899bd2930988c963d56f1687a}{%
+           family={Roesch},
+           familyi={R\bibinitperiod},
+           given={Thomas},
+           giveni={T\bibinitperiod}}}%
+        {{hash=deedf930faed70b0898027013a2bf0f9}{%
+           family={Hultcranz},
+           familyi={H\bibinitperiod},
+           given={Rolf},
+           giveni={R\bibinitperiod}}}%
+        {{hash=5f7c7bd8e8be53cba7c4a34f2e5ed644}{%
+           family={Racz},
+           familyi={R\bibinitperiod},
+           given={Istvan},
+           giveni={I\bibinitperiod}}}%
+        {{hash=9bd3f810cab3449c6bf60339a6e9c525}{%
+           family={Kuipers},
+           familyi={K\bibinitperiod},
+           given={Ernst\bibnamedelima J.},
+           giveni={E\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=90b027369d919c2ca31c77167e268f6c}{%
+           family={Garborg},
+           familyi={G\bibinitperiod},
+           given={Kjetil},
+           giveni={K\bibinitperiod}}}%
+        {{hash=bf75c1a15965b67b7ab3e33eb940d78c}{%
+           family={East},
+           familyi={E\bibinitperiod},
+           given={James\bibnamedelima E.},
+           giveni={J\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{hash=29f527856df9f1982a94366f6366518f}{%
+           family={Rupinski},
+           familyi={R\bibinitperiod},
+           given={Maciej},
+           giveni={M\bibinitperiod}}}%
+        {{hash=174e39bbca45fbe7cda4fb1fd3fd49af}{%
+           family={Seip},
+           familyi={S\bibinitperiod},
+           given={Birgitte},
+           giveni={B\bibinitperiod}}}%
+        {{hash=f6d6125e44e0fccaf612143a5cbcf5f7}{%
+           family={Bennett},
+           familyi={B\bibinitperiod},
+           given={Cathy},
+           giveni={C\bibinitperiod}}}%
+        {{hash=4c69c2ae878d085ffb8d5203ddbb219f}{%
+           family={Senore},
+           familyi={S\bibinitperiod},
+           given={Carlo},
+           giveni={C\bibinitperiod}}}%
+        {{hash=00b457815d5c155ec43050a89fdc2431}{%
+           family={Minozzi},
+           familyi={M\bibinitperiod},
+           given={Silvia},
+           giveni={S\bibinitperiod}}}%
+        {{hash=077d788203a75f98e649bfcd6306128c}{%
+           family={Bisschops},
+           familyi={B\bibinitperiod},
+           given={Raf},
+           giveni={R\bibinitperiod}}}%
+        {{hash=f42ace59d38e7ba73262726a4fdf1ef7}{%
+           family={Domagk},
+           familyi={D\bibinitperiod},
+           given={Dirk},
+           giveni={D\bibinitperiod}}}%
+        {{hash=c967994358246b1dda4300fbe9b7b297}{%
+           family={Valori},
+           familyi={V\bibinitperiod},
+           given={Roland},
+           giveni={R\bibinitperiod}}}%
+        {{hash=43843cd47163577cc65b9ed6532dec05}{%
+           family={Spada},
+           familyi={S\bibinitperiod},
+           given={Cristiano},
+           giveni={C\bibinitperiod}}}%
+        {{hash=10e27cbd669e786f2978f8572be0b568}{%
+           family={Hassan},
+           familyi={H\bibinitperiod},
+           given={Cesare},
+           giveni={C\bibinitperiod}}}%
+        {{hash=3fa56dfd84ad4b3d3165665dfca72133}{%
+           family={Dinis-Ribeiro},
+           familyi={D\bibinithyphendelim R\bibinitperiod},
+           given={Mario},
+           giveni={M\bibinitperiod}}}%
+        {{hash=93c539248f6ad889eb033a44857b250a}{%
+           family={Rutter},
+           familyi={R\bibinitperiod},
+           given={Matthew\bibnamedelima D.},
+           giveni={M\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+      }
+      \strng{namehash}{0e24b873fb7b80dadceb0a83b3d94d76}
+      \strng{fullhash}{d49f4d956a0ebeb422272f6aa7eae736}
+      \strng{fullhashraw}{d49f4d956a0ebeb422272f6aa7eae736}
+      \strng{bibnamehash}{0e24b873fb7b80dadceb0a83b3d94d76}
+      \strng{authorbibnamehash}{0e24b873fb7b80dadceb0a83b3d94d76}
+      \strng{authornamehash}{0e24b873fb7b80dadceb0a83b3d94d76}
+      \strng{authorfullhash}{d49f4d956a0ebeb422272f6aa7eae736}
+      \strng{authorfullhashraw}{d49f4d956a0ebeb422272f6aa7eae736}
+      \field{labelalpha}{Kam+17}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{The European Society of Gastrointestinal Endoscopy and United European Gastroenterology present a short list of key performance measures for lower gastrointestinal endoscopy. We recommend that endoscopy services across Europe adopt the following seven key performance measures for lower gastrointestinal endoscopy for measurement and evaluation in daily practice at a center and endoscopist level: 1 Rate of adequate bowel preparation (minimum standard 90 \%); 2 Cecal intubation rate (minimum standard 90 \%); 3 Adenoma detection rate (minimum standard 25 \%); 4 Appropriate polypectomy technique (minimum standard 80 \%); 5 Complication rate (minimum standard not set); 6 Patient experience (minimum standard not set); 7 Appropriate post-polypectomy surveillance recommendations (minimum standard not set). Other identified performance measures have been listed as less relevant based on an assessment of their importance, scientific acceptability, feasibility, usability, and comparison to competing measures.}
+      \field{issn}{0013-726X, 1438-8812}
+      \field{journaltitle}{Endoscopy}
+      \field{langid}{english}
+      \field{month}{4}
+      \field{note}{Publisher: © Georg Thieme Verlag {KG}}
+      \field{number}{4}
+      \field{shortjournal}{Endoscopy}
+      \field{shorttitle}{Performance measures for lower gastrointestinal endoscopy}
+      \field{title}{Performance measures for lower gastrointestinal endoscopy: a European Society of Gastrointestinal Endoscopy ({ESGE}) Quality Improvement Initiative}
+      \field{urlday}{7}
+      \field{urlmonth}{9}
+      \field{urlyear}{2025}
+      \field{volume}{49}
+      \field{year}{2017}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \field{pages}{378\bibrangedash 397}
+      \range{pages}{20}
+      \verb{doi}
+      \verb 10.1055/s-0043-103411
+      \endverb
+      \verb{file}
+      \verb Full Text PDF:/Users/Maxhi/Zotero/storage/JFBJDZAG/Kaminski et al. - 2017 - Performance measures for lower gastrointestinal endoscopy a European Society of Gastrointestinal En.pdf:application/pdf
+      \endverb
+      \verb{urlraw}
+      \verb http://www.thieme-connect.de/DOI/DOI?10.1055/s-0043-103411
+      \endverb
+      \verb{url}
+      \verb http://www.thieme-connect.de/DOI/DOI?10.1055/s-0043-103411
+      \endverb
+      \keyw{Guideline}
+    \endentry
+    \entry{labianca2010-colon-cancer}{article}{}{}
+      \name{author}{12}{}{%
+        {{hash=e48962ead4d53ec93ab0a0525c5f5866}{%
+           family={Labianca},
+           familyi={L\bibinitperiod},
+           given={Roberto},
+           giveni={R\bibinitperiod}}}%
+        {{hash=f6fb6faa7c3a9883d208a0b75b68f936}{%
+           family={Beretta},
+           familyi={B\bibinitperiod},
+           given={Giordano\bibnamedelima D.},
+           giveni={G\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+        {{hash=47b6ea87f5dc5c1d54aba182e509c94f}{%
+           family={Kildani},
+           familyi={K\bibinitperiod},
+           given={Basem},
+           giveni={B\bibinitperiod}}}%
+        {{hash=59423c6fbdd5ca18f380fc6992c49bfc}{%
+           family={Milesi},
+           familyi={M\bibinitperiod},
+           given={Laura},
+           giveni={L\bibinitperiod}}}%
+        {{hash=f2c759db1f1f748bf24e86f766433557}{%
+           family={Merlin},
+           familyi={M\bibinitperiod},
+           given={Federica},
+           giveni={F\bibinitperiod}}}%
+        {{hash=74811aa7a28df2fbfdd4591bf61348be}{%
+           family={Mosconi},
+           familyi={M\bibinitperiod},
+           given={Stefania},
+           giveni={S\bibinitperiod}}}%
+        {{hash=a7aae2b8f5041bfe38a2cb2bd235c22e}{%
+           family={Pessi},
+           familyi={P\bibinitperiod},
+           given={M.\bibnamedelimi Adelaide},
+           giveni={M\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+        {{hash=64bb8cada4d2ed6220e9981020620599}{%
+           family={Prochilo},
+           familyi={P\bibinitperiod},
+           given={Tiziana},
+           giveni={T\bibinitperiod}}}%
+        {{hash=a3892106afa36b9fec5109c1e5cd6c2b}{%
+           family={Quadri},
+           familyi={Q\bibinitperiod},
+           given={Antonello},
+           giveni={A\bibinitperiod}}}%
+        {{hash=4a2ca22f5a7b8152f9b36f35e86445b9}{%
+           family={Gatta},
+           familyi={G\bibinitperiod},
+           given={Gemma},
+           giveni={G\bibinitperiod}}}%
+        {{hash=083465069cf30cdf61d3fe7db41682c1}{%
+           family={De\bibnamedelima Braud},
+           familyi={D\bibinitperiod\bibinitdelim B\bibinitperiod},
+           given={Filippo},
+           giveni={F\bibinitperiod}}}%
+        {{hash=79788eb628df9f2794da14834f3667c4}{%
+           family={Wils},
+           familyi={W\bibinitperiod},
+           given={Jacques},
+           giveni={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{f1155b1f67f66bee6615e534c43850a6}
+      \strng{fullhash}{ac36400871b4e6d6b517d73c81c45515}
+      \strng{fullhashraw}{ac36400871b4e6d6b517d73c81c45515}
+      \strng{bibnamehash}{f1155b1f67f66bee6615e534c43850a6}
+      \strng{authorbibnamehash}{f1155b1f67f66bee6615e534c43850a6}
+      \strng{authornamehash}{f1155b1f67f66bee6615e534c43850a6}
+      \strng{authorfullhash}{ac36400871b4e6d6b517d73c81c45515}
+      \strng{authorfullhashraw}{ac36400871b4e6d6b517d73c81c45515}
+      \field{labelalpha}{Lab+10}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Annals of Oncology}
+      \field{number}{Suppl 5}
+      \field{title}{Colon Cancer}
+      \field{volume}{21}
+      \field{year}{2010}
+      \field{pages}{v70\bibrangedash v77}
+      \range{pages}{-1}
+      \verb{doi}
+      \verb 10.1093/annonc/mdq168
+      \endverb
+      \verb{urlraw}
+      \verb https://pubmed.ncbi.nlm.nih.gov/20138539/
+      \endverb
+      \verb{url}
+      \verb https://pubmed.ncbi.nlm.nih.gov/20138539/
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

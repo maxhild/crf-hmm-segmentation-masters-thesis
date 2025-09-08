@@ -1,0 +1,188 @@
+% ****************************************************************************************************
+% classicthesis-config-lualatex.tex
+% Optimierte Konfiguration für LuaLaTeX + Biber + Deutsch
+% ****************************************************************************************************
+
+% ****************************************************************************************************
+% 0. Encoding-Setup für LuaLaTeX - inputenc/fontenc NICHT benötigt!
+% LuaLaTeX hat native UTF-8 Unterstützung über fontspec
+% ****************************************************************************************************
+% Für LuaLaTeX werden inputenc und fontenc NICHT benötigt - auskommentiert:
+% \PassOptionsToPackage{utf8}{inputenc}
+% \usepackage{inputenc}
+% \PassOptionsToPackage{T1}{fontenc}
+% \usepackage{fontenc}
+
+% Stattdessen fontspec für moderne Font-Unterstützung
+\usepackage{fontspec}
+
+% ****************************************************************************************************
+% 1. Configure classicthesis for your needs here
+% ****************************************************************************************************
+\PassOptionsToPackage{
+  drafting=true,    % print version information on the bottom of the pages
+  tocaligned=false, % the left column of the toc will be aligned (no indentation)
+  dottedtoc=false,  % page numbers in ToC flushed right
+  eulerchapternumbers=false, % use AMS Euler for chapter font (nur für pdfLaTeX)
+  floatperchapter=true,     % numbering per chapter for all floats (i.e., Figure 1.1)
+  eulermath=false,  % use awesome Euler fonts for mathematical formulae (nur für pdfLaTeX)
+  beramono=true,    % toggle a nice monospaced font (w/ bold)
+  palatino=true,    % deactivate standard font for loading another one
+  style=classicthesis
+}{classicthesis}
+
+% ****************************************************************************************************
+% 2. Personal data and user ad-hoc commands (deine Daten hier eintragen)
+% ****************************************************************************************************
+\newcommand{\myTitle}{Optimierung von framebasierter Segmentierung von Endoskopievideos durch Multilabelklassifikation. Vergleich von Markov Models und Conditional Random Fields.\xspace}
+\newcommand{\mySubtitle}{Glättung einer Videosegmentation\xspace}
+\newcommand{\myDegree}{Bachelor of Science\xspace}
+\newcommand{\myName}{Max Hild\xspace}
+\newcommand{\mybirthday}{19.09.1999}
+\newcommand{\mybirthtown}{Stuttgart}
+\newcommand{\mybirthcountry}{Deutschland}
+\newcommand{\myProf}{Prof. Dr. Markus Scholz\xspace}
+\newcommand{\myOtherProf}{Dr. Thomas J. Lux\xspace}
+\newcommand{\mySupervisor}{Dr. Thomas J. Lux\xspace}
+
+\newcommand{\myFaculty}{Medizinische Fakultät\xspace}
+\newcommand{\myDepartment}{Institut für Medizinische Informatik, Statistik und Epidemiologie\xspace}
+\newcommand{\myUni}{Universität Leipzig\xspace}
+\newcommand{\mySubject}{Medizininformatik\xspace}
+% Alternative für neuen Master:
+% \newcommand{\mySubject}{Medizininformatik M. Sc.\xspace}
+
+\newcommand{\myLocation}{Leipzig\xspace}
+\newcommand{\myTime}{\today\xspace} % oder festes Datum
+\newcommand{\myVersion}{\classicthesis}
+
+% ********************************************************************
+% Setup, finetuning, and useful commands
+% ********************************************************************
+\providecommand{\mLyX}{L\kern-.1667em\lower.25em\hbox{Y}\kern-.125emX\@}
+\newcommand{\ie}{d.\,h.}  % deutsch: das heißt
+\newcommand{\Ie}{D.\,h.}
+\newcommand{\eg}{z.\,B.}  % deutsch: zum Beispiel  
+\newcommand{\Eg}{Z.\,B.}
+
+% ****************************************************************************************************
+% 3. Loading packages - angepasst für LuaLaTeX
+% ****************************************************************************************************
+
+% ********************************************************************
+% Language settings - Deutsch als Hauptsprache
+% ********************************************************************
+\PassOptionsToPackage{english,ngerman}{babel} % ngerman als letzte = Hauptsprache
+\usepackage{babel}
+
+% ********************************************************************
+% Font setup für LuaLaTeX mit fontspec
+% ********************************************************************
+% Moderne Fonts, die gut zu ClassicThesis passen:
+\setmainfont{TeX Gyre Pagella}      % Palatino-ähnlich, perfekt für ClassicThesis
+\setsansfont{TeX Gyre Heros}        % Helvetica-ähnlich
+\setmonofont{TeX Gyre Cursor}       % Courier-ähnlich
+
+% Alternative Fonts (auskommentiert, falls du andere möchtest):
+% \setmainfont{Libertinus Serif}    % sehr elegant
+% \setmainfont{Latin Modern Roman}  % LaTeX-Standard aber modern
+% \setmainfont{Crimson Pro}         % falls installiert
+
+% Math-Fonts für LuaLaTeX
+\usepackage{unicode-math}
+\setmathfont{TeX Gyre Pagella Math} % passend zu Pagella
+
+% ********************************************************************
+% Bibliography mit Biber (empfohlen)
+% ********************************************************************
+\PassOptionsToPackage{
+  backend=biber,        % Biber statt BibTeX
+  bibstyle=alphabetic,  % oder numeric, authoryear je nach Präferenz
+  citestyle=alphabetic, 
+  natbib=true,          % Kompatibilität mit natbib Befehlen (\citep, \citet)
+  giveninits=true,      % Vornamen abkürzen
+  bibencoding=utf8,     % UTF-8 für Bib-Dateien
+  sorting=nyt,          % Name-Jahr-Titel Sortierung
+  maxbibnames=10,       % mehr Autorennamen anzeigen
+  maxcitenames=2,       % in Zitaten max 2 Namen
+  hyperref=true,        % Links in PDF
+  backref=true,         % Rückverweise auf Seiten
+  isbn=false,           % ISBN ausblenden
+  url=false,            % URLs ausblenden (außer für @online)
+  doi=true,             % DOI anzeigen
+  eprint=false          % arXiv etc. ausblenden
+}{biblatex}
+\usepackage{biblatex}
+
+% ********************************************************************
+% Weitere wichtige Pakete
+% ********************************************************************
+\PassOptionsToPackage{fleqn}{amsmath}
+\usepackage{amsmath}
+
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{ltxtable}
+\usepackage{booktabs}
+
+% Für bessere Mikrotypografie (funktioniert sehr gut mit LuaLaTeX)
+\PassOptionsToPackage{
+  protrusion=true,
+  expansion=true,
+  final
+}{microtype}
+\usepackage{microtype}
+
+% Links und PDF-Features - KORRIGIERT für LuaLaTeX
+\PassOptionsToPackage{
+  luatex,               % KORRIGIERT: luatex statt pdftex für LuaLaTeX!
+  hyperfootnotes=false,
+  pdfpagelabels,
+  colorlinks=true,
+  linkcolor=CTlink,
+  citecolor=CTcitation, 
+  filecolor=CTlink,
+  urlcolor=CTurl
+}{hyperref}
+\usepackage{hyperref}
+
+% Laden des ClassicThesis-Styles (muss nach hyperref kommen)
+\usepackage{classicthesis}
+
+% ********************************************************************
+% Weitere nützliche Pakete für wissenschaftliche Arbeiten
+% ********************************************************************
+\usepackage{acronym}        % für Abkürzungsverzeichnis
+\usepackage{listings}       % für Code-Listings
+\usepackage{xspace}         % für bessere Leerzeichen in Kommandos
+\usepackage{subcaption}     % für Unter-Abbildungen
+
+% FEHLENDE PAKETE HINZUGEFÜGT:
+\usepackage{tabulary}       % für tabulary-Umgebung
+\usepackage{cleveref}       % für \cref-Kommandos
+\usepackage{amsthm}         % für theorem-Umgebungen
+
+% Theorem-Umgebungen definieren
+\newtheorem{definition}{Definition}[chapter]
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}{Lemma}[chapter]
+\newtheorem{example}{Beispiel}[chapter]
+
+% Listings-Setup für Code
+\lstset{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  numbers=left,
+  numberstyle=\tiny,
+  captionpos=b,
+  showstringspaces=false
+}
+
+% Deutsche Anführungszeichen
+\usepackage[autostyle=true,german=quotes]{csquotes}
+
+% ****************************************************************************************************
+% Ende der LuaLaTeX-optimierten Konfiguration
+% ****************************************************************************************************

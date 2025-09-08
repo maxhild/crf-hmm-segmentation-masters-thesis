@@ -102,8 +102,7 @@
 \usepackage{csquotes}
 \PassOptionsToPackage{%
   backend=biber,bibencoding=auto, %instead of bibtex
-  %backend=bibtex8,bibencoding=auto,% ascii
-  language=auto,%
+  language=auto,
   style=authoryear,dashed=false%
   %style=numeric-comp,%
   %style=authoryear-comp, % Author 1999, 2010
@@ -112,8 +111,8 @@
   maxbibnames=10, % default: 3, et al.
   %backref=true,%
   natbib=true % natbib compatibility mode (\citep and \citet still work)
-}{biblatex}
-    \usepackage{biblatex}
+}{biber}
+    \usepackage{biber}
 
 \PassOptionsToPackage{fleqn}{amsmath}       % math environments and more by the AMS
   \usepackage{amsmath}
