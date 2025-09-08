@@ -2,6 +2,70 @@
 \chapter{Grundlagen}\label{ch:preliminaries}
 %*****************************************
 
+Die Grundlagen bilden das Fundament für die gesamte Arbeit.
+In diesem Kapitel werden die medizinischen und technischen Grundlagen erläutert, die für das Verständnis der Arbeit notwendig sind.
+Dabei wird zuerst auf die medizinischen Hintergründe des behandelten Problems eingegangen.
+Anschließend werden das technische Fundament der aktuellen Segmentierung sowie gängige Bildgebungsverfahren erläutert, die zur Lösung des Problems eingesetzt werden können.
+Die verwendeten mathematischen Hintergründe und Theoreme werden ebenfalls in diesem Kapitel vorgestellt, um die theoretische Basis der Arbeit zu untermauern.
+
+\section{Medizinischer Hintergrund}
+Endoskopie ist eine der zentralen Behandlungs- und Diagnosemöglichkeiten in der Therapie von Darmkrebs, 
+einer der häufigsten und tödlichsten Krebsarten.\citep{labianca2010-colon-cancer}\footnotemark{} 
+Nicht von der Hand zu weisen ist hierbei die zeitaufwändige Durchführung und 
+Dokumentation der Überwachung des flächigen Gewebes im Darm im Rahmen von Endoskopien. Aus diesem Grund ist es 
+der Gastroenterologie konstant ein Anliegen, die Qualitätssicherung bei Darmspiegelungen zu verbessern. 
+Wie in der Einleitung erwähnt, ist die Zökum-Rückzugszeit ein Beispiel für ein zuverlässiges Qualitätsmerkmal.  Hierbei ist es wichtig, dass die Darmspiegelung eine vorgeschriebene Zeit dauert, um die Chance auf eine vollständige Detektion aller möglichen Adenome zu erhöhen. 
+Dadurch steigt die Wahrscheinlichkeit, dass die Darmspiegelung sorgfältig durchgeführt wurde, was nachweislich zu einer 
+erhöhten Anzahl frührer Diagnosen führt und somit Todesfälle verhindern kann. Das liegt daran, dass die Durchführung von Darmspiegelungen sorgfältiger wird, wenn 
+die Zeitvorgaben eingehalten werden.
+Dieses Beispiel zeigt, dass wenn Qualitätskriterien eingehalten werden die Behandlungsqualität steigen kann. 
+Die Gesellschaft für Gastroenterologie hat hierzu einige Forschungsfragen herausgegeben.\citep{kaminski_performance_2017}, die den Nutzen eines KI-gestützten Systems zur Unterstützung der Qualitätssicherung bei Darmspiegelungen unterstreichen:
+
+\begin{enumerate}
+  \item \textbf{Vorbereitung der Prozedur}
+    \begin{itemize}
+      \item Welche Art von Intervention verbessert die Rate einer adäquaten Darmvorbereitung?
+      \item Wie viel Zeit sollte für Screening- und diagnostische Koloskopien eingeplant werden?
+    \end{itemize}
+
+  \item \textbf{Vollständigkeit der Prozedur}
+    \begin{itemize}
+      \item Wie verhalten sich diagnostische Ausbeute (und Intervallkarzinomrate) in Abhängigkeit von einer steigenden Zökumintubationsrate?
+      \item Welchen Nutzen hat die Dokumentation der Zökumintubation nur im schriftlichen Bericht im Vergleich zu einem schriftlichen \emph{und} fotografischen Bericht?
+    \end{itemize}
+
+  \item \textbf{Identifikation von Pathologien}
+    \begin{itemize}
+      \item Welcher Zielwert gilt für die Adenomdetektionsrate?
+      \item Welches Leistungsmaß spiegelt die Identifikation von Pathologien außerhalb des CRC-Screening-/Überwachungssettings wider?
+    \end{itemize}
+
+  \item \textbf{Management von Pathologien}
+    \begin{itemize}
+      \item Was ist die verlässlichste und praktikabelste Methode, um die Vollständigkeit der Polypentfernung zu messen?
+      \item Wie wirksam sind Zusatztechniken/-skalen (Chromendoskopie, Paris-Klassifikation, Tätowierung von Resektionsstellen) im Management von Pathologien?
+    \end{itemize}
+
+  \item \textbf{Komplikationen}
+    \begin{itemize}
+      \item Was ist die verlässlichste und praktikabelste Methode, um Komplikationsraten zu überwachen?
+      \item Trägt die Überwachung dazu bei, Komplikationsraten zu senken?
+    \end{itemize}
+\end{enumerate}
+\citep{kaminski-performance-2017}
+Eine der Motivationen für ein zuverlässiges Segmentationsmodell für Endoskopievideos ist es, 
+dass die Zökum-Rückzugszeit automatisch berechnet werden könnte. Wenn anhand der outside prediction der letzte Frame, 
+der innerhalb des Körpers gefunden wird, festgestellt ist, ist die untere Schranke für den der Berechnung zugrundeliegenden Abschnitt des 
+Videos bereits gegeben. Für die Berechnung der Zäkum-Rückzugszeit würde sich das so errechnete Upper Bound bei den Frames in dem Moment eignen, 
+in dem auch das Zäkum vertrauenswürdig erkannt wird. Die zuverlässige Erkennung von Organteilen des Darms im Video ist 
+Teil der endoskopischen Forschung mit künstlicher Intelligenz. Im speziellen die Erkennung von Polypen ist von besonderem Interesse. 
+Diese Geschwulste sind Einwüchse der Darminnenwand. Sie können aus verschiedenen Gründen und in verschiedenen Körperteilen auftreten, 
+sind jedoch besonders als Frühmerkmal einer möglichen Diagnose von Darmkrebs interessant und unbedingt zu erkennen. \citep{doi:10.7326/0003-4819-157-4-201208210-00002}
+Auch bei der Zökum-Rückzugszeit ist das zentrale Kriterium, dass möglichst wenige Polypen übersehen werden sollen. 
+Da durch den Einsatz von automatischer Erkennung dieser Vorkommnisse innerhalb des Darms eine erhebliche Beschleunigung dieses 
+Prozesses möglich wäre, wird in diesem Bereich bereits seit Jahren geforscht. \citep{talukder-2022}
+
+
 Das Grundlagenkapitel soll den Stand der Forschung erläutern und mit Literatur belegen.
 Auf diesem Kapitel bauen die Erkenntnisse der Arbeit auf.
 Gerade in den Grundlagen wird man häufig Quellen benennen, aus denen die Aussagen letztlich stammen.
