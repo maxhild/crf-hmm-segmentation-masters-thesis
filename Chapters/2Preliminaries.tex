@@ -2,7 +2,6 @@
 \chapter{Grundlagen}\label{ch:preliminaries}
 %*****************************************
 
-Die Grundlagen bilden das Fundament für die gesamte Arbeit.
 In diesem Kapitel werden die medizinischen und technischen Grundlagen erläutert, die für das Verständnis der Arbeit notwendig sind.
 Dabei wird zuerst auf die medizinischen Hintergründe des behandelten Problems eingegangen.
 Anschließend werden das technische Fundament der aktuellen Segmentierung sowie gängige Bildgebungsverfahren erläutert, die zur Lösung des Problems eingesetzt werden können.
@@ -19,7 +18,7 @@ Dadurch steigt die Wahrscheinlichkeit, dass die Darmspiegelung sorgfältig durch
 erhöhten Anzahl frührer Diagnosen führt und somit Todesfälle verhindern kann. Das liegt daran, dass die Durchführung von Darmspiegelungen sorgfältiger wird, wenn 
 die Zeitvorgaben eingehalten werden.
 Dieses Beispiel zeigt, dass wenn Qualitätskriterien eingehalten werden die Behandlungsqualität steigen kann. 
-Die Gesellschaft für Gastroenterologie hat hierzu einige Forschungsfragen herausgegeben.\citep{kaminski_performance_2017}, die den Nutzen eines KI-gestützten Systems zur Unterstützung der Qualitätssicherung bei Darmspiegelungen unterstreichen:
+Die Europäische Gesellschaft für Gastroenterologie (ESGE) hat hierzu einige Forschungsfragen herausgegeben. Hierbei gibt es einige Punkte, speziell während der Endoskopie sowie in der Nachbereitung des Videomaterials, als auch weitergehend deren Umsetzung durch Nutzung eines KI-gestützten Systems zur Qualitätssicherung bei Darmspiegelungen profitieren könnten:
 
 \begin{enumerate}
   \item \textbf{Vorbereitung der Prozedur}
@@ -53,18 +52,60 @@ Die Gesellschaft für Gastroenterologie hat hierzu einige Forschungsfragen herau
     \end{itemize}
 \end{enumerate}
 \citep{kaminski-performance-2017}
+
 Eine der Motivationen für ein zuverlässiges Segmentationsmodell für Endoskopievideos ist es, 
 dass die Zökum-Rückzugszeit automatisch berechnet werden könnte. Wenn anhand der outside prediction der letzte Frame, 
 der innerhalb des Körpers gefunden wird, festgestellt ist, ist die untere Schranke für den der Berechnung zugrundeliegenden Abschnitt des 
 Videos bereits gegeben. Für die Berechnung der Zäkum-Rückzugszeit würde sich das so errechnete Upper Bound bei den Frames in dem Moment eignen, 
 in dem auch das Zäkum vertrauenswürdig erkannt wird. Die zuverlässige Erkennung von Organteilen des Darms im Video ist 
 Teil der endoskopischen Forschung mit künstlicher Intelligenz. Im speziellen die Erkennung von Polypen ist von besonderem Interesse. 
-Diese Geschwulste sind Einwüchse der Darminnenwand. Sie können aus verschiedenen Gründen und in verschiedenen Körperteilen auftreten, 
-sind jedoch besonders als Frühmerkmal einer möglichen Diagnose von Darmkrebs interessant und unbedingt zu erkennen. \citep{doi:10.7326/0003-4819-157-4-201208210-00002}
+Diese Geschwulste wachsen als Vorstufe von potenziell bösartigen Tumoren an der Darminnenwand. Sie können aus verschiedenen Gründen und in verschiedenen Darmteilen auftreten, 
+sind jedoch besonders als Frühmerkmal einer möglichen Diagnose von Darmkrebs interessant und deshalb wenn möglich vollständig zu erkennen. \citep{doi:10.7326/0003-4819-157-4-201208210-00002}
+Weiter kompliziert wird die Erkennung und Einschätzung von Polypen dadurch, dass es verschiedene Stufen gibt.
+Während bei einigen kolorektalen Polypen eine Darmblutung als Symptom auftritt, die zumeist eine schnelle Diagnose ermöglicht, sind andere Polypen asymptomatisch und werden nur zufällig bei einer routinemäßigen Darmspiegelung entdeckt.
+Besonders bei diesen Fällen kann das Risiko bestehen, dass Polypen übersehen werden.
+Unterschieden wird hierbei zwischen hochgradigen und niedergradigen Dysplasien. Diese Stufen bezeichnen den Grad der Zellveränderung in der Region des Polypen.
+Besonders bei höhergradigen Dysplasien besteht das Risiko, dass ein maligner Polyp vorliegt.
+Definitiv kann dies durch den Nachweis karzinogener Zellen innerhalb eines Polypen festgestellt werden. Hierbei handelt es sich um eine Aufgabe für die Pathologie,
+die nach vollständiger Entfernung des betroffenen Gewebes erfolgen kann. \citep{Colucci261}
 Auch bei der Zökum-Rückzugszeit ist das zentrale Kriterium, dass möglichst wenige Polypen übersehen werden sollen. 
 Da durch den Einsatz von automatischer Erkennung dieser Vorkommnisse innerhalb des Darms eine erhebliche Beschleunigung dieses 
-Prozesses möglich wäre, wird in diesem Bereich bereits seit Jahren geforscht. \citep{talukder-2022}
+Prozesses möglich wäre, wird in diesem Bereich bereits seit Jahren geforscht. \citep{talukder-2022} 
 
+Die Inferenz mit CNN basierten Modellen wie ResNet50 oder EfficientNetB0 hat sich in den letzten Jahren als sehr erfolgreich erwiesen.
+Diese Modelle sind in der Lage, Bilddaten zu klassifizieren und können auch für die Segmentierung von Videos als Frames genutzt werden.
+Die Ergebnisse dieser Klassifikation sind bei ausreichendem Training in einer kontinuierlichen Pipeline nutzbar.
+
+\section{Technische und mathematische Grundlagen}
+
+Dieses Kapitel wird die Herangehensweise an die mathematische Modellierung der Segmentierung von Endoskopievideos erläutern.
+In diesem Kontext soll später im Kapitel Methodik herausgearbeitet werden, welche Modelle sich für eine statistisch haltbare Bewertung von Frameregionen eignen.
+
+\subsection{Hidden Markov Models}
+
+Markov Modelle sind eine Klasse von statistischen Modellen, die verwendet werden, um Systeme zu modellieren, die sich über die Zeit verändern. Sie basieren auf der Annahme, dass der zukünftige Zustand eines Systems nur vom aktuellen Zustand abhängt und nicht von den vorherigen Zuständen. Dies wird als Markov-Eigenschaft bezeichnet.
+Die Modelle werden als \enquote{Hidden} bezeichnet, da die zugrunde liegenden Zustände nicht direkt beobachtet werden können, sondern nur durch beobachtbare Ausgaben oder Emissionen inferred werden.
+\newline
+HMM sind eine 
+Generell handelt es sich bei HMM um ein generatives Modell, es wird also eine Wahrscheinlichkeit basierend auf dem zugrundeliegenden gelernten System abgebildet.
+$P(X, Y)$
+
+\subsubsection{Markov-Prozesse}
+
+\enquote{Wir betrachten ein zufälliges dynamisches System. Sei $S : \mathbb{R} \to \mathbb{R}$ ein dynamisches System und definieren einen stochastischen Prozess $\{X_n\}_{n \ge 0}$ durch $X_{n+1} = S(X_n) + Y_n$, wobei $Y_0, Y_1, \dots$ unabhängige Zufallsvariablen mit Werten in $\mathbb{R}$ sind, die jeweils die gleiche Dichte $g$ haben, und $X_0$ und $\{Y_n\}_{n \ge 0}$ unabhängig sind. Dann ist der stochastische Prozess $\{X_n\}$ ein Markov-Prozess.} \citep[S.~13]{KhalilGhaffari2023}
+Markov Prozesse sind laut dieser Definition Systeme aus Zuständen, die sich über die Zeit verändern.
+Sie dürfen dabei nur von dem aktuellen Zustand abhängen und nicht von den vorherigen Zuständen.
+Die Definition bezieht sich auf ein Stochastisches System und sieht deshalb eine Normierung der Werte im Bereich 0 bis 1 vor.
+Die Zustände des Systems werden durch die Zufallsvariablen $X_n$ beschrieben.
+
+In der aktuellen Version nimmt das Modell einen vollständig abgebildetes stochastisches Zufallsexperiment an.
+Es wird davon zudem davon ausgegangen, dass die Zustände des Systems vollständig beobachtbar sind.
+
+
+\subsection{Conditional Random Fields als generalisiertes Markov-Modell}
+
+Conditional Random Fields (CRF) beschreiben eine Klasse von Modellen, mit denen sich Übergangswahrscheinlichkeiten darstellen lassen. Generell handelt es sich bei CRF um ein diskriminatives Modell, es wird also direkt die bedingte Wahrscheinlichkeit $P(Y|X)$ der Ausgabevariablen $Y$ gegeben die Eingabevariablen $X$ modelliert, anstatt der gemeinsamen Wahrscheinlichkeit $P(X, Y)$.
+Diese Modellklasse ist die generalisierte Form von Hidden Markov Models. Die 
 
 Das Grundlagenkapitel soll den Stand der Forschung erläutern und mit Literatur belegen.
 Auf diesem Kapitel bauen die Erkenntnisse der Arbeit auf.
