@@ -1,7 +1,7 @@
 %************************************************
 \chapter{Einleitung}\label{ch:introduction}
 %************************************************
-Die Durchführung von Endoskopien ist ein wesentlicher Bestandteil der modernen medizinischen Diagnostik. Mit dem Aufkommen von Künstlicher Intelligenz (KI) und maschinellem Lernen eröffnen sich neue Möglichkeiten zur Automatisierung und Verbesserung der Analyse von Endoskopie-Videos. Diese Arbeit konzentriert sich auf die Optimierung der framebasierten Segmentierung von Endoskopie-Videos durch den Vergleich von Markov Models und Conditional Random Fields.
+Die Durchführung von Endoskopien ist ein wesentlicher Bestandteil der modernen medizinischen Diagnostik. Mit dem Aufkommen von Künstlicher Intelligenz (KI) und maschinellem Lernen eröffnen sich neue Möglichkeiten zur Automatisierung und Verbesserung der Analyse von Endoskopie-Videos. Diese Arbeit konzentriert sich auf die Optimierung der Vorhersagen, die durch eine CNN-gestützte framebasierte Segmentierung von Endoskopie-Videos durch den Vergleich von Markov Models und Conditional Random Fields.
 
 \section{Gegenstand}
 
@@ -19,13 +19,13 @@ Die Verbesserung des Endoskopie-Workflows könnte in Zukunft durch KI-basierte S
 
 Die Pipeline basiert auf einer Multi-Label-KI, die die Wahrscheinlichkeit von für die aktuelle Endoskopie wichtigen Labels vorhersagt. Die Labels werden verwendet, um das Video in Kategorien zu segmentieren. Ein fein abgestimmtes RegNetX800MF-Modell sagt die Wahrscheinlichkeit von für den aktuellen Endoskopie-Frame wichtigen Labels Frame für Frame voraus. Die Labels werden verwendet, um das Video in Kategorien zu segmentieren. Die Segmentierung wird dann verwendet, um dem Arzt eine Zusammenfassung des Videos zu liefern.
 
-\subsection{Die Bedeutung der Zökum-Rückzugsrate}
+\subsection{Die Bedeutung der Zökum-Rückzugszeit}
 
-Ein kritisches Segment, das vom Modell ausgegeben wird, verdient besondere Aufmerksamkeit und ist die primäre Motivation für diese Studie. Die \enquote{Outside}-Vorhersage entspricht der Zökum-Rückzugsrate. Diese Messung ist ein wichtiger Qualitätsindikator für die Qualität der Koloskopie. Sie wird verwendet, um die Zeit zu messen, die das Endoskop benötigt, um den Körper zu verlassen, wobei die Messung am Zökum beginnt. 
+Ein kritisches Segment, das vom Modell ausgegeben wird, verdient besondere Aufmerksamkeit und ist die primäre Motivation für diese Studie. Die \enquote{Outside}-Vorhersage entspricht der Zökum-Rückzugszeit. Diese Messung ist ein wichtiger Qualitätsindikator für die Qualität der Koloskopie. Sie wird verwendet, um die Zeit zu messen, die das Endoskop benötigt, um den Körper zu verlassen, wobei die Messung am Zökum beginnt. 
 
 Das Zökum ist als erster Teil des Dickdarms der vorgesehene Ausgangspunkt für Koloskopien. Vom Zökum aus sollte die Zeit, die das Koloskop benötigt, um den Körper zu verlassen, mehr als 6 Minuten betragen~\citep{profanter-2020,leung-2019}. Um diesen Indikator zu berechnen, können genaue Messungen der Zeit verwendet werden, die das Endoskop benötigt, um den Körper zu verlassen.
 
-Dieser Ansatz wurde in mehreren Studien getestet, wie der von Vilmann et~al.\ durchgeführten Studie, die zeigte, dass die Zökum-Rückzugsrate mit der Adenom-Detektionsrate verbunden ist~\citep{vilmann-2022}.
+Dieser Ansatz wurde in mehreren Studien getestet, wie der von Vilmann et~al.\ durchgeführten Studie, die zeigte, dass die Zökum-Rückzugszeit mit der Adenom-Detektionsrate verbunden ist~\citep{vilmann-2022}.
 
 \subsection{Aktuelle Herausforderungen}
 
@@ -40,7 +40,7 @@ Die aktuelle Implementierung der Video-Segmentierung für Endoskopie-Aufnahmen w
 
 \begin{itemize}
 \item Die derzeitige Glättungsfunktion zur Nachbearbeitung der Frame-basierten Vorhersagen ist unzureichend für eine präzise Bestimmung der Segment-Grenzen
-\item Unterbrechungen in der \enquote{Outside}-Label-Erkennung führen zu ungenauen Messungen der Zökum-Rückzugsrate
+\item Unterbrechungen in der \enquote{Outside}-Label-Erkennung führen zu ungenauen Messungen der Zökum-Rückzugszeit
 \item Die Anonymität der Patienten wird durch unpräzise Segmentierung gefährdet, da \enquote{Outside}-Frames oft Personen zeigen
 \item Lichtreflexionen und Wasserartefakte verursachen fehlerhafte Segmentierungen
 \end{itemize}
@@ -49,7 +49,7 @@ Konkret werden in dieser Arbeit folgende Probleme gelöst:
 
 \begin{itemize}
 \item \textbf{Problem P1: Unzuverlässige Segment-Grenzbestimmung} \\
-Die aktuelle Methode zur Glättung der Frame-basierten Vorhersagen mittels gleitendem Durchschnitt führt zu ungenauen Start- und Endzeit-Stempeln für die \enquote{Outside}-Segmente, was die Berechnung der Zökum-Rückzugsrate beeinträchtigt.
+Die aktuelle Methode zur Glättung der Frame-basierten Vorhersagen mittels gleitendem Durchschnitt führt zu ungenauen Start- und Endzeit-Stempeln für die \enquote{Outside}-Segmente, was die Berechnung der Zökum-Rückzugszeit beeinträchtigt.
 
 \item \textbf{Problem P2: Fehlende Berücksichtigung visueller Merkmale} \\
 Die derzeitige Nachbearbeitung berücksichtigt keine zusätzlichen visuellen Informationen (wie Farbinformationen) aus den Bildern, die zur Verbesserung der Segmentierungsgenauigkeit beitragen könnten.
@@ -65,7 +65,7 @@ Diese Probleme stehen im engen Zusammenhang mit den in \cref{sec:zielsetzung} be
 Die Lösung der beschriebenen Probleme ist aus mehreren Gründen von hoher Relevanz:
 
 \begin{itemize}
-\item \textbf{Medizinische Qualitätssicherung:} Eine präzise Messung der Zökum-Rückzugsrate ist essentiell für die Qualitätsbewertung von Koloskopien und kann direkt zur Verbesserung der Patientenversorgung beitragen.
+\item \textbf{Medizinische Qualitätssicherung:} Eine präzise Messung der Zökum-Rückzugszeit ist essentiell für die Qualitätsbewertung von Koloskopien und kann direkt zur Verbesserung der Patientenversorgung beitragen.
 
 \item \textbf{Effizienzsteigerung in der Endoskopie:} Automatisierte und zuverlässige Segmentierung kann Ärzte bei der Dokumentation entlasten und die Durchführung von Qualitätskontrollen beschleunigen.
 
