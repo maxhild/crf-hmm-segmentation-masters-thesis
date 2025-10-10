@@ -182,6 +182,16 @@ P^{(n+m)} \;=\; P^{(m)} \cdot P^{(n)},
 \end{equation}
 wobei $P^{(r)}$ die $r$-Schritt-Übergangsmatrix bezeichnet.
 
+Über eine solche Übergangsmatrix können Vorhersagen über zukünftige Zustände eines Markov-Prozesses getroffen werden, indem die Matrix potenziert wird.
+Das bedeutet, dass die $n$-Schritt-Übergangsmatrix $P^{(n)}$ durch die $n$-fache Multiplikation der 1-Schritt-Übergangsmatrix $P$ mit sich selbst berechnet werden kann:
+\begin{equation}
+P^{(n)} \;=\; P \cdot P \cdots P \ (n \text{ Mal}).
+\end{equation} 
+
+
+\subsection{Viterbi-Dekodierung}
+
+Der Viterbi-Algorithmus ist ein dynamischer Programmieralgorithmus, der verwendet wird, um die wahrscheinlichste Sequenz von versteckten Zuständen in einem Hidden Markov Model (HMM) zu finden, basierend auf einer gegebenen Sequenz von beobachteten Ereignissen. Der Algorithmus wurde von Andrew Viterbi 1967 erstmals vorgeschlagen und ist besonders nützlich in Anwendungen, bei denen sequenzielle Daten auftreten, deren Zusammensetzung Schlüse auf die zugrundeliegenden wahren Zustände zulassen. Die Fähigkeit, aus den beobachtbaren Zuständen auf versteckte Wahrheiten schließen zu können, macht den Viterbi- Algorithmus praxisrelevant in vielen Bereichen, wie in der Elektrotechnik bei der Analyse von Kommunikationssystemen oder in der Bioinformatik bei der Genomsequenzierung.
 
 \begin{definition}[Beispieldefinition]
 Dies ist eine Beispieldefinition.
