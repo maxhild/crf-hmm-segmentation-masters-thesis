@@ -89,53 +89,37 @@ Sie dürfen dabei nur von dem aktuellen Zustand abhängen und nicht von den vorh
 Die Definition bezieht sich auf ein Stochastisches System und sieht deshalb eine Normierung der Werte im Bereich 0 bis 1 vor.
 Die Zustände des Systems werden durch die Zufallsvariablen $X_n$ beschrieben.
 \newline
-Der Name der Markov-Prozesse stammt aus der Arbeit von A. A. Markov \citep{markov1906extension}.
-Das erste Paper von Markov behandelt, inwiefern das schwache Gesetz der großen Zahlen auch auf einfach abhängige
-Variablen anwendbar ist. Diese Idee wurde weiterentwickelt, um durch passende Modelle effiziente Vorhersagen über zukünftige Ereignisse treffen zu können.
+Der Name der Markov-Prozesse stammt aus der Arbeit von A. A. Markov. Insbesondere interessant ist hier die Publikation \enquote{Beispiel von statistischer Forschung auf einem Text von \enquote{Eugene Onegin}, der interkonnektivität abhängiger Versuche in einer Kette klassifiziert.} \citep{markov-1913}.
+Anhand eines Gedichts und der Verteilung der Konsonanten und Vokale untersuchte Markov hier, ob durch vielfache Wiederholung eines Zufallsexperiments, bei dem die Versuche voneinander abhängig sind, eine statistische Vorhersage getroffen werden kann. Dieser empirische Beweis greift eine frühere Publikation seinerseits auf, die theoretisch darlegt, dass das Gesetz der großen Zahlen auch auf abhängige
+Zufallsvariablen anwendbar ist. Durch empirisches Messen der Häufigkeiten der Variablen erfasste Markov eine Übergangswahrscheinlichkeit. Diese konnte er im Nachgang einsetzen, um über diese Wahrscheinlichkeiten wiederum eine Buchstabenfolge zu generieren, bei der die Anzahl der Konsonanten und Vokale wieder auf einem Niveau einpendelten, das mit dem russischen Originaltext vergleichbar war.
+Somit widerlegte er die These von Pawel Nekrassov, der die These aufgestellt hatte dass statistische Untersuchungen nur auf unabhängigen Variablen durchgeführt werden können, weil abhängige Größen durch den freien Willen beeinflusst sind. Diese These stützte er darauf, dass bei sozialen Statistiken wie der Rate der Hochzeiten in einer Gesellschaft in aufeinanderfolgenden Jahren oft ähnliche Hochzeitsraten auftreten. \citep{nekrasov-1912} Durch Markovs empiririschen Beweis seiner theoretischen Grundlage \citep{markov-1906} zeigte er, dass auch abhängige Variablen in oft wiederholten Zufallsexperimenten messbare Gesetzmäßigkeiten aufzeigen können.  Diese Idee wurde weiterentwickelt, um durch passende Modelle effiziente Vorhersagen über zukünftige Ereignisse treffen zu können.
 Seine Arbeit hat bis heute großen Einfluss und findet sich auch in aktuellen Entwicklungen wie Recurrent Neural Networks wieder.
 
-$$
-\sum{X}
-$$
+A. W. Drake beschreibt diskrete Markov-Prozesse als Kette von Zuständen, deren zukünftige Entwicklung nur vom aktuellen Zustand abhängt und deren Übergänge durch Übergangswahrscheinlichkeiten bestimmt werden \cite{drake88}.
 
-\subsection{Sequenzielle Datenmodellierung}
+\subsection{Sequenzielle Datenmodellierung mit Markov-Prozessen}
 
 Die Modellierung sequenzieller Daten ist ein wichtiger Aspekt in vielen Bereichen der Informatik und Statistik, insbesondere in der Verarbeitung natürlicher Sprache, Zeitreihenanalyse und Bioinformatik. Sequenzielle Daten bestehen aus einer geordneten Folge von Elementen, bei denen die Reihenfolge der Elemente eine entscheidende Rolle spielt. Beispiele für sequenzielle Daten sind Textdokumente, DNA-Sequenzen und Zeitreihen von Messwerten.
-\newline
-Im Kontext von Markov-Prozessen und Hidden Markov Models (HMM) ist die Modellierung sequenzieller Daten besonders relevant, da diese Modelle darauf abzielen, die Abhängigkeiten zwischen aufeinanderfolgenden Zuständen in einer Sequenz zu erfassen.
-\newline
-Wir haben die 1-Schritt-Übergangsmatrix $P$.
-Per Definition:
+Basierend auf der Entdeckung von Markov, wurden hierfür vielfältige Erweiterungen mit weitreichenden Anwendungen konzipiert.
+Im Kontext von  und Hidden Markov Models (HMM) ist die Modellierung sequenzieller Daten besonders relevant, da diese Modelle darauf abzielen, die Abhängigkeiten zwischen aufeinanderfolgenden Zuständen in einer Sequenz zu erfassen.
 
-$$
-(P)_{ij} = P(X_{t+1} = j \mid X_t = i)
-$$
+Für die 1-Schritt-Übergangsmatrix $P$ gilt per Definition:
+\begin{equation}
+P_{ij} = P(X_{t+1} = j \mid X_t = i).
+\end{equation}
 
-Wenn 
+Für eine 2-Schritt-Übergangswahrscheinlichkeit $P(X_{t+2} = j \mid X_t = i)$ müssen wir durch einen Zwischenzustand $k$ gehen:
+\begin{equation}
+P(X_{t+2} = j \mid X_t = i) = \sum_k P(X_{t+1} = k \mid X_t = i) \cdot P(X_{t+2} = j \mid X_{t+1} = k).
+\end{equation}
 
-$$
-P(X_{t+2} = j \mid X_t = i)
-$$
+Die Übergangswahrscheinlichkeiten können in einer Matrix $P$ zusammengefasst werden, wobei die Einträge $P_{ij}$ die Wahrscheinlichkeit angeben, vom Zustand $i$ in den Zustand $j$ überzugehen. Die Matrix $P$ wird als Übergangsmatrix bezeichnet und hat die Eigenschaft, dass die Summe der Einträge in jeder Zeile gleich 1 ist, da sie die gesamten Übergangswahrscheinlichkeiten von einem Zustand zu allen möglichen Zuständen repräsentiert.
 
-Um dort hin zu gelangen, müssen wir durch einen Zwischenzustand $k$ gehen:
-$$
-P(X_{t+2} = j \mid X_t = i) = \sum_k P(X_{t+1} = k \mid X_t = i)\; P(X_{t+2} = j \mid X_{t+1} = k)
-$$
-
-\newline
-Die Übergangswahrscheinlichkeiten können in einer Matrix $P$ zusammengefasst werden,
-wobei die Einträge $P_{ij}$ die Wahrscheinlichkeit angeben, vom Zustand $i$ in den Zustand $j$ überzugehen.
-Die Matrix $P$ wird als Übergangsmatrix bezeichnet und hat die Eigenschaft, dass die Summe der Einträge in jeder Zeile gleich 1 ist, da sie die gesamten Übergangswahrscheinlichkeiten von einem Zustand zu allen möglichen Zuständen repräsentiert.
-\newline
-
-
-In der Definition nimmt das Modell ein vollständig abgebildetes stochastisches Zufallsexperiment an.
-Es wird zudem davon ausgegangen, dass die Zustände des Systems vollständig beobachtbar sind.
-Einer einfachen Definition folgend, muss für jedes Label $y_i$ eines Frames $x_i$ die Wahrscheinlichkeit $P(y_i|x_i)$ modelliert werden.
+In der Definition nimmt das Modell ein vollständig abgebildetes stochastisches Zufallsexperiment an. Es wird zudem davon ausgegangen, dass die Zustände des Systems vollständig beobachtbar sind. Einer einfachen Definition folgend, muss für jedes Label $y_i$ eines Frames $x_i$ die Wahrscheinlichkeit $P(y_i \mid x_i)$ modelliert werden.
 
 \subsection{Markov Ketten}
 
-Markov Modelle basieren auf der Erweiterung des schwachen Gesetzes der großen Zahlen sowie des Theorems der 
+Markov Ketten werden generell benutzt, um zeitlich aufeinanderfolgende Ereignisse zu modellieren. Hierfür werden Übergangswahrscheinlichkeiten definiert, die  Hierbei ist es in der einfachsten Version üblicherweise so, dass die anfänglichen Wahrscheinlichkeiten geschätzt oder gemessen werden.
 
 \subsection{Markov Modelle}
 
@@ -156,42 +140,104 @@ Diese Modellklasse ist die generalisierte Form von Markov Models. Hidden Markov 
 
 
 
-\subsection{Chapman--Kolmogorov-Gleichung}
+\subsection{Chapman-Kolmogorov-Gleichung}
 
-Die Chapman--Kolmogorov-Gleichung beschreibt, wie die Übergangswahrscheinlichkeit eines Markov-Prozesses über mehrere Zeitschritte hinweg berechnet werden kann. 
+Die Chapman-Kolmogorov-Gleichung beschreibt, wie die Übergangswahrscheinlichkeit eines Markov-Prozesses über mehrere Zeitschritte hinweg berechnet werden kann. 
 Dabei wird ein möglicher Zwischenzustand $k$ zu einem Zeitpunkt $m$ berücksichtigt, sodass die Wahrscheinlichkeit für einen Übergang von Zustand $i$ zu Zustand $j$ nach $n+m$ Schritten über die Gesamtheit aller Zwischenzustände dargestellt werden kann.
 
-Formell gilt für $i, j \in S$ und $n, m \geq 0$:
+Für einen Markov-Prozess $\{X_t\}_{t \geq 0}$ mit Zustandsraum $S$ gilt für alle $i, j \in S$ und $n, m \geq 0$:
 \begin{equation}
-P(X_{n+m} = j \mid X_0 = i) \;=\; \sum_{k \in S} P(X_{n+m} = j \mid X_m = k, X_0 = i)\; P(X_m = k \mid X_0 = i).
+P(X_{n+m} = j \mid X_0 = i) = \sum_{k \in S} P(X_{n+m} = j \mid X_m = k, X_0 = i) \cdot P(X_m = k \mid X_0 = i).
 \end{equation}
 
 Mit Hilfe der Markov-Eigenschaft vereinfacht sich der erste Term, da der zukünftige Zustand $X_{n+m}$ nur vom aktuellen Zustand $X_m$ abhängt, nicht aber vom gesamten Verlauf bis $X_0 = i$:
 \begin{equation}
-P(X_{n+m} = j \mid X_m = k, X_0 = i) \;=\; P(X_{n+m} = j \mid X_m = k).
+P(X_{n+m} = j \mid X_m = k, X_0 = i) = P(X_{n+m} = j \mid X_m = k).
 \end{equation}
 
-Damit ergibt sich die Chapman--Kolmogorov-Gleichung in der üblichen Form:
+Damit ergibt sich die Chapman-Kolmogorov-Gleichung in der üblichen Form:
 \begin{equation}
-P(X_{n+m} = j \mid X_0 = i) \;=\; \sum_{k \in S} P(X_{n+m} = j \mid X_m = k)\, P(X_m = k \mid X_0 = i).
+P(X_{n+m} = j \mid X_0 = i) = \sum_{k \in S} P(X_{n+m} = j \mid X_m = k) \cdot P(X_m = k \mid X_0 = i).
 \end{equation}
 
 Schreibt man die Übergangswahrscheinlichkeiten in Matrixform, so entspricht dies der Aussage:
 \begin{equation}
-P^{(n+m)} \;=\; P^{(m)} \cdot P^{(n)},
+P^{(n+m)} = P^{(m)} \cdot P^{(n)},
 \end{equation}
 wobei $P^{(r)}$ die $r$-Schritt-Übergangsmatrix bezeichnet.
 
 Über eine solche Übergangsmatrix können Vorhersagen über zukünftige Zustände eines Markov-Prozesses getroffen werden, indem die Matrix potenziert wird.
 Das bedeutet, dass die $n$-Schritt-Übergangsmatrix $P^{(n)}$ durch die $n$-fache Multiplikation der 1-Schritt-Übergangsmatrix $P$ mit sich selbst berechnet werden kann:
 \begin{equation}
-P^{(n)} \;=\; P \cdot P \cdots P \ (n \text{ Mal}).
+P^{(n)} = \underbrace{P \cdot P \cdot \cdots \cdot P}_{n \text{ Mal}} = P^n.
 \end{equation} 
 
 
 \subsection{Viterbi-Dekodierung}
 
-Der Viterbi-Algorithmus ist ein dynamischer Programmieralgorithmus, der verwendet wird, um die wahrscheinlichste Sequenz von versteckten Zuständen in einem Hidden Markov Model (HMM) zu finden, basierend auf einer gegebenen Sequenz von beobachteten Ereignissen. Der Algorithmus wurde von Andrew Viterbi 1967 erstmals vorgeschlagen und ist besonders nützlich in Anwendungen, bei denen sequenzielle Daten auftreten, deren Zusammensetzung Schlüse auf die zugrundeliegenden wahren Zustände zulassen. Die Fähigkeit, aus den beobachtbaren Zuständen auf versteckte Wahrheiten schließen zu können, macht den Viterbi- Algorithmus praxisrelevant in vielen Bereichen, wie in der Elektrotechnik bei der Analyse von Kommunikationssystemen oder in der Bioinformatik bei der Genomsequenzierung.
+Der Viterbi-Algorithmus ist ein dynamischer Programmieralgorithmus, der verwendet wird, um die wahrscheinlichste Sequenz von versteckten Zuständen in einem Hidden Markov Model (HMM) zu finden, basierend auf einer gegebenen Sequenz von beobachteten Ereignissen. Der Algorithmus wurde von Andrew Viterbi 1967 erstmals vorgeschlagen und ist besonders nützlich in Anwendungen, bei denen sequenzielle Daten auftreten, deren Zusammensetzung Schlüsse auf die zugrundeliegenden wahren Zustände zulassen. Die Fähigkeit, aus den beobachtbaren Zuständen auf versteckte Wahrheiten schließen zu können, macht den Viterbi-Algorithmus praxisrelevant in vielen Bereichen, wie in der Elektrotechnik bei der Analyse von Kommunikationssystemen oder in der Bioinformatik bei der Genomsequenzierung.
+Hierbei werden Emissionswahrscheinlichkeiten sowie Übergangswahrscheinlichkeiten zwischen den Zuständen berücksichtigt, um die wahrscheinlichste Sequenz zu bestimmen.
+
+\medskip
+\textbf{Notation:} 
+Seien $i, j \in \{1, \ldots, N\}$ die Zustände und $o_1, \ldots, o_T$ die Beobachtungssequenz.
+Die Übergangswahrscheinlichkeiten sind $a_{ij} = P(q_t = j \mid q_{t-1} = i)$, 
+die Emissionswahrscheinlichkeiten $b_j(o_t) = P(o_t \mid q_t = j)$ und 
+die Anfangsverteilung $\pi_i = P(q_1 = i)$.
+Dabei bezeichnet $\delta_t(j)$ die maximale Pfadwahrscheinlichkeit bis zum Zeitpunkt $t$, die im Zustand $j$ endet, 
+und $\psi_t(j)$ den optimalen Vorgängerzustand.
+
+\paragraph{Initialisierung}
+\begin{align}
+  \delta_1(i) &= \pi_i \cdot b_i(o_1), \quad \text{für } i = 1, \ldots, N, \\
+  \psi_1(i)   &= 0.
+\end{align}
+
+\paragraph{Rekursion}
+Für $t = 2, \ldots, T$ und $j = 1, \ldots, N$:
+\begin{align}
+  \delta_t(j) &= \left[\max_{i \in \{1, \ldots, N\}} \delta_{t-1}(i) \cdot a_{ij} \right] \cdot b_j(o_t), \\
+  \psi_t(j)   &= \arg\max_{i \in \{1, \ldots, N\}} \delta_{t-1}(i) \cdot a_{ij}.
+\end{align}
+
+\paragraph{Terminierung}
+\begin{align}
+  P^* &= \max_{i \in \{1, \ldots, N\}} \delta_T(i), \\
+  q_T^* &= \arg\max_{i \in \{1, \ldots, N\}} \delta_T(i).
+\end{align}
+
+\paragraph{Rückverfolgung}
+Für $t = T-1, T-2, \ldots, 1$:
+\begin{equation}
+  q_t^* = \psi_{t+1}(q_{t+1}^*).
+\end{equation}
+
+\paragraph{Logarithmiert (numerisch stabil)}
+Um numerische Unterläufe zu vermeiden, kann der Algorithmus im Logarithmusbereich durchgeführt werden.
+Definiere $\ell_t(j) = \log \delta_t(j)$. Dann gilt:
+
+\textbf{Initialisierung:}
+\begin{equation}
+  \ell_1(i) = \log \pi_i + \log b_i(o_1), \quad \text{für } i = 1, \ldots, N.
+\end{equation}
+
+\textbf{Rekursion:}
+Für $t = 2, \ldots, T$ und $j = 1, \ldots, N$:
+\begin{align}
+  \ell_t(j) &= \max_{i \in \{1, \ldots, N\}} [\ell_{t-1}(i) + \log a_{ij}] + \log b_j(o_t), \\
+  \psi_t(j) &= \arg\max_{i \in \{1, \ldots, N\}} [\ell_{t-1}(i) + \log a_{ij}].
+\end{align}
+
+\textbf{Terminierung:}
+\begin{align}
+  P^* &= \max_{i \in \{1, \ldots, N\}} \ell_T(i), \\
+  q_T^* &= \arg\max_{i \in \{1, \ldots, N\}} \ell_T(i).
+\end{align}
+
+\textbf{Rückverfolgung:}
+\begin{equation}
+  q_t^* = \psi_{t+1}(q_{t+1}^*), \quad \text{für } t = T-1, T-2, \ldots, 1.
+\end{equation}
 
 \begin{definition}[Beispieldefinition]
 Dies ist eine Beispieldefinition.
