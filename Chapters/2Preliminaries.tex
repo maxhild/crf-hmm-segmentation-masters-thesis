@@ -4,8 +4,9 @@
 
 In diesem Kapitel werden die medizinischen und technischen Grundlagen erläutert, die für das Verständnis der Arbeit notwendig sind.
 Dabei wird zuerst auf die medizinischen Hintergründe des behandelten Problems eingegangen.
-Anschließend werden das technische Fundament der aktuellen Segmentierung sowie gängige Bildgebungsverfahren erläutert, die zur Lösung des Problems eingesetzt werden können.
-Die verwendeten mathematischen Hintergründe und Theoreme werden ebenfalls in diesem Kapitel vorgestellt, um die theoretische Basis der Arbeit zu untermauern.
+Anschließend werden das technische Fundament der Segmentierung sowie gängige Bildgebungsverfahren behandelt, die zur Lösung des Problems eingesetzt werden können.
+Dabei sollen Markov Modelle mit Methoden aus der Signal- und Bildverarbeitung kombiniert werden, um eine robuste Segmentierung von Endoskopievideos zu ermöglichen.
+Die der technischen Implementierung zugrundeliegenden mathematischen Hintergründe und Theoreme werden ebenfalls in diesem Kapitel vorgestellt, um die theoretische Basis der Arbeit zu untermauern.
 
 \section{Medizinischer Hintergrund}
 Endoskopie ist eine der zentralen Behandlungs- und Diagnosemöglichkeiten in der Therapie von Darmkrebs, 
@@ -53,8 +54,8 @@ Die Europäische Gesellschaft für Gastroenterologie (ESGE) hat hierzu einige Fo
 \end{enumerate}
 \citep{kaminski-performance-2017}
 
-Eine der Motivationen für ein zuverlässiges Segmentationsmodell für Endoskopievideos ist es, 
-dass die Zökum-Rückzugszeit automatisch berechnet werden könnte. Wenn anhand der outside prediction der letzte Frame, 
+Eine Motivation für ein zuverlässiges Segmentationsmodell für Endoskopievideos ist es, 
+dass die Zökum-Rückzugszeit automatisch berechnet werden könnte. Wenn anhand der Vorhersage des letzten Frames, 
 der innerhalb des Körpers gefunden wird, festgestellt ist, ist die untere Schranke für den der Berechnung zugrundeliegenden Abschnitt des 
 Videos bereits gegeben. Für die Berechnung der Zäkum-Rückzugszeit würde sich das so errechnete Upper Bound bei den Frames in dem Moment eignen, 
 in dem auch das Zäkum vertrauenswürdig erkannt wird. Die zuverlässige Erkennung von Organteilen des Darms im Video ist 
@@ -76,12 +77,18 @@ Die Inferenz mit CNN basierten Modellen wie ResNet50 oder EfficientNetB0 hat sic
 Diese Modelle sind in der Lage, Bilddaten zu klassifizieren und können auch für die Segmentierung von Videos als Frames genutzt werden.
 Die Ergebnisse dieser Klassifikation sind bei ausreichendem Training in einer kontinuierlichen Pipeline nutzbar.
 
+\subsection{Assistierte Dokumentation von Endoskopievideos}
+
+Lux et. al \citet{lux-2023} beschreiben ein Verfahren zur automatisierten Dokumentation von Endoskopievideos. Dabei wird ein auf Deep Learning basierendes System eingesetzt, um relevante Informationen aus den Videos zu extrahieren und in strukturierter Form bereitzustellen. Das System nutzt Convolutional Neural Networks (CNNs), um verschiedene Merkmale in den Endoskopiebildern zu erkennen, wie z.B. Polypen, Läsionen oder anatomische Strukturen. Die extrahierten Informationen werden dann in einem Bericht zusammengefasst, der dem Arzt bei der Diagnose und Behandlung unterstützt. Die Autoren zeigen, dass das System eine gute Genauigkeit bei der Erkennung relevanter Merkmale aufweist und somit die Effizienz und Qualität der Endoskopiedokumentation verbessern kann.
+
+Das Ziel dieser Publikation war es, eine Methode zur assistierten Dokumentation zu präsentieren, die Labels mit dazugehörigen Frames verknüpft und somit eine strukturierte Übersicht über das Videomaterial bietet. Dies ist besonders relevant für die Nachbereitung von Endoskopien, da Ärzte so schneller auf wichtige Informationen zugreifen können. Die Autoren betonen, dass eine solche assistierte Dokumentation nicht nur die Effizienz steigert, sondern auch die Genauigkeit der Berichte verbessert, indem menschliche Fehler reduziert werden. Die weitere Entwicklung der assistierten Dokumentation wird als neuer Fokus vorgeschlagen. Diese Empfehlung deckt sich weitestgehend mit der Zielsetzung aus Kaminski et. al \citet{kaminski-performance-2017}, die in ihrer Publikation Forschungsfragen zur Verbesserung der Qualitätssicherung bei der Bewertung der Vollständigkeit von Darmspiegelungen durch Dokumentation aufstellen. Hierbei kann also als Optimierung angenommen werden, dass sich diese vor entweder durch Verbesserung von korrekter Segmentierung der Frames eines Videos oder durch eine Beschleunigung der Verarbeitung und das Nutzbar machen der automatisierten Dokumentation durch Beschleunigung erreichen lässt.  
+
 \section{Technische und mathematische Grundlagen}
 
 Dieses Kapitel wird die Herangehensweise an die mathematische Modellierung der Segmentierung von Endoskopievideos erläutern.
-In diesem Kontext soll später im Kapitel Methodik herausgearbeitet werden, welche Modelle sich für eine statistisch haltbare Bewertung von Frameregionen eignen.
+In diesem Kontext soll später im Kapitel Methodik herausgearbeitet werden, welche Modelle sich für eine statistisch haltbare Bewertung von Frameregionen eignen. Da es sich bei einer Endoskopie, wie in Lux et al. demonstriert, um eine Intervention handelt, die sich in Phasen, beziehungsweise Zustände einteilen lässt, wurde der Fokus auf Zustandsbasierte Modelle wie Markovmodelle gelegt.
 
-\subsubsection{Markov-Prozesse}
+\subsubsection{Markovprozesse - Eine Methode um abhängige Variablen probabilistisch zu quantisieren.}
 
 \enquote{Wir betrachten ein zufälliges dynamisches System. Sei $S : \mathbb{R} \to \mathbb{R}$ ein dynamisches System und definieren einen stochastischen Prozess $\{X_n\}_{n \ge 0}$ durch $X_{n+1} = S(X_n) + Y_n$, wobei $Y_0, Y_1, \dots$ unabhängige Zufallsvariablen mit Werten in $\mathbb{R}$ sind, die jeweils die gleiche Dichte $g$ haben, und $X_0$ und $\{Y_n\}_{n \ge 0}$ unabhängig sind. Dann ist der stochastische Prozess $\{X_n\}$ ein Markov-Prozess.} \citep[S.~13]{KhalilGhaffari2023}
 Markov Prozesse sind laut dieser Definition Systeme aus Zuständen, die sich über die Zeit verändern.
@@ -89,44 +96,117 @@ Sie dürfen dabei nur von dem aktuellen Zustand abhängen und nicht von den vorh
 Die Definition bezieht sich auf ein Stochastisches System und sieht deshalb eine Normierung der Werte im Bereich 0 bis 1 vor.
 Die Zustände des Systems werden durch die Zufallsvariablen $X_n$ beschrieben.
 \newline
-Der Name der Markov-Prozesse stammt aus der Arbeit von A. A. Markov. Insbesondere interessant ist hier die Publikation \enquote{Beispiel von statistischer Forschung auf einem Text von \enquote{Eugene Onegin}, der interkonnektivität abhängiger Versuche in einer Kette klassifiziert.} \citep{markov-1913}.
+Der Name der Markov-Prozesse stammt aus der Arbeit von A. A. Markov. Insbesondere interessant ist hier die Publikation \enquote{Beispiel von statistischer Forschung auf einem Text von \enquote{Eugene Onegin}, der interkonnektivität abhängiger Versuche in einer Kette klassifiziert.} \citep{markov1913onegin}.
 Anhand eines Gedichts und der Verteilung der Konsonanten und Vokale untersuchte Markov hier, ob durch vielfache Wiederholung eines Zufallsexperiments, bei dem die Versuche voneinander abhängig sind, eine statistische Vorhersage getroffen werden kann. Dieser empirische Beweis greift eine frühere Publikation seinerseits auf, die theoretisch darlegt, dass das Gesetz der großen Zahlen auch auf abhängige
-Zufallsvariablen anwendbar ist. Durch empirisches Messen der Häufigkeiten der Variablen erfasste Markov eine Übergangswahrscheinlichkeit. Diese konnte er im Nachgang einsetzen, um über diese Wahrscheinlichkeiten wiederum eine Buchstabenfolge zu generieren, bei der die Anzahl der Konsonanten und Vokale wieder auf einem Niveau einpendelten, das mit dem russischen Originaltext vergleichbar war.
-Somit widerlegte er die These von Pawel Nekrassov, der die These aufgestellt hatte dass statistische Untersuchungen nur auf unabhängigen Variablen durchgeführt werden können, weil abhängige Größen durch den freien Willen beeinflusst sind. Diese These stützte er darauf, dass bei sozialen Statistiken wie der Rate der Hochzeiten in einer Gesellschaft in aufeinanderfolgenden Jahren oft ähnliche Hochzeitsraten auftreten. \citep{nekrasov-1912} Durch Markovs empiririschen Beweis seiner theoretischen Grundlage \citep{markov-1906} zeigte er, dass auch abhängige Variablen in oft wiederholten Zufallsexperimenten messbare Gesetzmäßigkeiten aufzeigen können.  Diese Idee wurde weiterentwickelt, um durch passende Modelle effiziente Vorhersagen über zukünftige Ereignisse treffen zu können.
-Seine Arbeit hat bis heute großen Einfluss und findet sich auch in aktuellen Entwicklungen wie Recurrent Neural Networks wieder.
+Zufallsvariablen anwendbar ist. Durch empirisches Messen der Häufigkeiten der Variablen erfasste Markov eine Übergangswahrscheinlichkeit. 
+\begin{equation}
+p_{ij} = P(X_{n+1} = j \mid X_n = i),
+\quad \text{mit} \quad \sum_j p_{ij} = 1.
+\label{eq:transition_prob}
+\end{equation}
+Diese konnte er im Nachgang einsetzen, um über diese Wahrscheinlichkeiten wiederum eine Buchstabenfolge zu generieren, bei der die Anzahl der Konsonanten und Vokale wieder auf einem Niveau einpendelten, das mit dem russischen Originaltext vergleichbar war.
+Ausgang für diese Untersuchung war die These von Pawel Nekrasov. Dieser hatte in seiner „Theorie der Wahrscheinlichkeit“ angezweifelt, dass probabilistische Modelle in Untersuchungen von abhängigen Variablen wie sozialen Zusammenhängen angewandt werden könnten, weil abhängige Größen nur durch den freien Willen und nicht durch Naturgesetze beeinflusst sind. Ilona Svetlikova beschreibt in der Sekundäranalyse von Nekrasov die philosophisch-theologische Haltung hinter Nekrasovs Argumentation.
+Laut Svetlikova argumentiert Nekrasov, dass Wahrscheinlichkeitsgesetze Ausdruck des göttlichen Willens seien und daher nicht auf abhängige oder soziale Prozesse angewandt werden dürften - da diese den freien Willen der Menschen widerspiegeln.\citep{svetlikova2013nekrasov} Diese These stützte Nekrasov auf Beobachtungen, dass bei sozialen Statistiken wie der Rate der Hochzeiten in einer Gesellschaft in aufeinanderfolgenden Jahren oft ähnliche Hochzeitsraten auftreten obwohl sich die gesellschaftlichen Bedingungen ändern. \citep{nekrasov1912} Durch Markovs empiririschen Beweis seiner theoretischen Grundlagenpublikation \citet{markov1906extension} zeigte er, dass auch abhängige Variablen in oft wiederholten Zufallsexperimenten messbare Gesetzmäßigkeiten aufzeigen können.  Diese Idee wurde weiterentwickelt, um durch passende Modelle effiziente Vorhersagen über zukünftige Ereignisse treffen zu können.
+Seine Arbeit hat bis heute großen Einfluss und begründete die Klasse der Markovprozesse. Diese sind und findet sich auch in aktuellen Entwicklungen wie Recurrent Neural Networks wieder.
 
-A. W. Drake beschreibt diskrete Markov-Prozesse als Kette von Zuständen, deren zukünftige Entwicklung nur vom aktuellen Zustand abhängt und deren Übergänge durch Übergangswahrscheinlichkeiten bestimmt werden \cite{drake88}.
+In seinem Einführungswerk beschreibt A. W. Drake Markovprozesse in diskreter Zeit und mit diskreter Zustandsmenge. Er definiert sie allgemein als Kette von Zuständen $S$, deren zukünftige Entwicklung nur vom aktuellen Zustand abhängt und deren Übergänge durch Übergangswahrscheinlichkeiten bestimmt werden. Eine Bedingung für das Vorliegen eines Markovprozesses wird so definiert als \begin{equation}
+P(X_{n+1} = x_{n+1} \mid X_n = x_n, X_{n-1} = \newline x_{n-1}, \dots, X_0 = x_0)
+= P(X_{n+1} = x_{n+1} \mid X_n = x_n)
+\label{eq:markov_property}
+\end{equation}.
+Weitergehend ist die zweite Eigenschaft der Übergangswahrscheinlichkeiten ausgehend von einem aktuellen Prozess, dass die ausgehenden Wahrscheinlichkeiten des Prozesses sich zu eins addieren sollten damit es sich hierbei um eine vollständige Abbildung aller möglichen Zustände handelt.
+\begin{equation}
+  \sum_j P_{ij} = 1.
+\end{equation}
+Wobei $P_{ij}$ die Wahrscheinlichkeit beschreibt, dass das System, nachdem der aktuelle Zustands $S_i$ ist, in den nächsten Zustand $S_j$ übergehen wird.\citet{drake88}
 
-\subsection{Sequenzielle Datenmodellierung mit Markov-Prozessen}
+Generalisiert kann davon gesprochen werden, dass ein Markovprozess sich aus dem Zustandsraum $\Omega$ zusammensetzt, der alle möglichen Zustände des Systems umfasst. Die einzelnen Zustände $S_i$ oder $\omega$ sind Elemente dieses Zustandsraums $\omega~\Omega$. Genauso gilt für die Wahrscheinlichkeiten $P(X_{n})$ dass Sie Elemente des Wahrscheinlichkeitsraums $\mathcal{P}$ sind. Auch die Zeit $\{n\}$, in der sich die Zustände ändern, kann als Element eines Zeitraums $\mathcal{T}$ betrachtet werden. Somit lässt sich ein Markovprozess als Tripel $(\Omega, \mathcal{P}, \mathcal{T})$ beschreiben.
+
+\subsection{Arten von Systemen modellierbar durch Markovprozesse.}
+
+Ein Markovprozess kann generell 
+Generell können eine Vielzahl von Systemen durch Markovprozesse modelliert werden. Es gibt jedoch Unterschiede bei der Komplexität sowie bei der mathematischen Beweislage auf. Während Markovprozesse auf wwohldefiniert sind auf
+
+\subsection{Invarianz von Maßen und stationäre Verteilungen in Markovprozessen - Messen der langfristigen Stabilität von Systemen}
+
+Ein häufig auftretendes Problem bei der Modellierung von kontinuierlichen Systemen ist es, dass ein System, wenn es langfristig betrachtet wird oftmals eine stationäre Verteilung erreicht. Das beschriebene Phänomen ist der Ruin des Spielers, der Gamblers Ruin. Dieses berühmte Problem trägt den Namen, da bei der Analyse von Glücksspielen entdeckt wurde, dass bekannte Glücksspiele wie Roulette oder Poker, die wiederholt mit einem jede Runde reinvestierten Startkapital gespielt werden, langfristig immer der finanzielle Ruin eines Spielers führen. Es kann dabei durch den Aufbau sowie das Startkapital sowie den Einsatz des Spiels lediglich die Länge des Spiels beeinflusst werden, nicht jedoch das Endergebnis. Wie J.L. Coolidge zeigen konnte, ist der genaue Zeitpunkt des Ruins eines Spielers wird unbekannt, liegt jedoch stets innerhalb eines definierbaren Limits. \citep{coolidge1909gamblers}
+
+Angenommen $\mu$ ist die Verteilung des Gewichts $\omega\epsilon\Omega$ eines Objekts zu einem Zeitpunkt $t$ wobei $\Omega$ die Menge aller möglichen Gewichte, der Zustandsraum ist. Es wird von einem Gewicht der Kante $i$ zu einem Gewicht der Kante $j$ übergegangen mit der Wahrscheinlichkeit $P_{ij}$.
+Wenn der Zustand $\omega$ zufällig und mit der Verteilung $\mu$ verteilt ist, und die angenommene Wahrscheinlichkeit für $\mu$ gleich wie die $P_\mu$ ist, dann wird eine P-invariante Verteilung $P_\mu = \mu$ genannt. Der Nachweis der theoretischen Existenz von Invarianz bei  \citep{Lester1966}
+
+Aus dieser Definition der Verteilung und ihrer Konvergenz in Markovsystemen, in denen die Anzahld er Versuche gegen Unendlich geht entstand eine weitere Maßeinheit von Markovsystemen. Um zu determinieren, wie sich das System langfristig verhalten wird, muss festgestellt werden ob es Ergozität aufweist. Die Prozesse gelten als ergozid, wenn es einen stabilen Zustand gibt, in den das System konvergiert, unabhängig vom Anfangszustand. \cite{MeynTweedie1993}
+
+Wenn die wahre Verteilung $\mu$ und die dazugehörige Übergangswahrscheinlichkeit $P_\mu$ in der Praxis nicht bekannt sind, wird eine geschätzte Verteilung $\pi$ und die dazugehörige Übergangswahrscheinlichkeit $P_\pi$ genutzt. Um ein stabil
+
+
+\subsection{Sequenzielle Datenmodellierung mit Markovprozessen.}
 
 Die Modellierung sequenzieller Daten ist ein wichtiger Aspekt in vielen Bereichen der Informatik und Statistik, insbesondere in der Verarbeitung natürlicher Sprache, Zeitreihenanalyse und Bioinformatik. Sequenzielle Daten bestehen aus einer geordneten Folge von Elementen, bei denen die Reihenfolge der Elemente eine entscheidende Rolle spielt. Beispiele für sequenzielle Daten sind Textdokumente, DNA-Sequenzen und Zeitreihen von Messwerten.
 Basierend auf der Entdeckung von Markov, wurden hierfür vielfältige Erweiterungen mit weitreichenden Anwendungen konzipiert.
-Im Kontext von  und Hidden Markov Models (HMM) ist die Modellierung sequenzieller Daten besonders relevant, da diese Modelle darauf abzielen, die Abhängigkeiten zwischen aufeinanderfolgenden Zuständen in einer Sequenz zu erfassen.
+Markovmodelle zielen darauf ab, die Abhängigkeiten zwischen aufeinanderfolgenden unabhängigen Zuständen in einer Sequenz zu erfassen.
 
 Für die 1-Schritt-Übergangsmatrix $P$ gilt per Definition:
 \begin{equation}
 P_{ij} = P(X_{t+1} = j \mid X_t = i).
 \end{equation}
 
-Für eine 2-Schritt-Übergangswahrscheinlichkeit $P(X_{t+2} = j \mid X_t = i)$ müssen wir durch einen Zwischenzustand $k$ gehen:
+Für eine 2-Schritt-Übergangswahrscheinlichkeit $P(X_{t+2} = j \mid X_t = i)$ müssen wir einen Zwischenzustand $k$ beachten:
 \begin{equation}
-P(X_{t+2} = j \mid X_t = i) = \sum_k P(X_{t+1} = k \mid X_t = i) \cdot P(X_{t+2} = j \mid X_{t+1} = k).
+P(X_{t+2} = j \mid X_t = i) = \newline \sum_k P(X_{t+1} = k \mid X_t = i) \cdot P(X_{t+2} = j \mid X_{t+1} = k).
 \end{equation}
 
 Die Übergangswahrscheinlichkeiten können in einer Matrix $P$ zusammengefasst werden, wobei die Einträge $P_{ij}$ die Wahrscheinlichkeit angeben, vom Zustand $i$ in den Zustand $j$ überzugehen. Die Matrix $P$ wird als Übergangsmatrix bezeichnet und hat die Eigenschaft, dass die Summe der Einträge in jeder Zeile gleich 1 ist, da sie die gesamten Übergangswahrscheinlichkeiten von einem Zustand zu allen möglichen Zuständen repräsentiert.
 
-In der Definition nimmt das Modell ein vollständig abgebildetes stochastisches Zufallsexperiment an. Es wird zudem davon ausgegangen, dass die Zustände des Systems vollständig beobachtbar sind. Einer einfachen Definition folgend, muss für jedes Label $y_i$ eines Frames $x_i$ die Wahrscheinlichkeit $P(y_i \mid x_i)$ modelliert werden.
+In der Definition nimmt das Modell ein vollständig abgebildetes stochastisches Zufallsexperiment an. Es wird zudem davon ausgegangen, dass die Zustände des Systems vollständig beobachtbar sind. Einer einfachen Definition folgend, müsste so für jedes Label $y_i$ eines Frames $x_i$ die Wahrscheinlichkeit $P(y_i \mid x_i)$ modelliert werden. \citet{drake88}
 
-\subsection{Markov Ketten}
+\subsection{Markovketten in diskreter Zeit zur Modellierung von Systemen mit endlichem Zustandsraum.}
 
-Markov Ketten werden generell benutzt, um zeitlich aufeinanderfolgende Ereignisse zu modellieren. Hierfür werden Übergangswahrscheinlichkeiten definiert, die  Hierbei ist es in der einfachsten Version üblicherweise so, dass die anfänglichen Wahrscheinlichkeiten geschätzt oder gemessen werden.
+Eine Markovkette ist ein Spezialfall eines Markovprozesses mit diskreten Zeitpunkten und endlichem Zustandsraum. 
+Sei $S = \{s_1, s_2, \dots, s_N\}$ die Menge der möglichen Zustände.
+Die Folge $\{X_t\}_{t \ge 0}$ heißt Markovkette, wenn für alle $t \ge 0$ gilt:
+\begin{equation}
+P(X_{t+1} = s_j \mid X_t = s_i, X_{t-1}, \dots, X_0)
+= P(X_{t+1} = s_j \mid X_t = s_i).
+\end{equation}
+
+Die Wahrscheinlichkeiten $P_{ij} = P(X_{t+1} = s_j \mid X_t = s_i)$ bilden die
+\emph{Übergangsmatrix} $P \in \mathbb{R}^{N \times N}$.
+Jede Zeile von $P$ ist normiert, d.\,h.
+\begin{equation}
+\sum_{j=1}^{N} P_{ij} = 1, \quad \forall i.
+\end{equation}
+
+\paragraph{Anfangsverteilung.}
+Die Wahrscheinlichkeiten, mit denen das System in einem Zustand startet, werden durch den Vektor $\pi = (\pi_1, \ldots, \pi_N)$ beschrieben, wobei $\pi_i = P(X_0 = s_i)$ gilt.
+
+\paragraph{n-Schritt-Übergänge.}
+Für $n > 1$ ergibt sich die Anzahl der Felder der $n$-Schritt-Übergangsmatrix durch Potenzieren:
+\begin{equation}
+P^{(n)} = P^n.
+\end{equation}
+
+\paragraph{Stationäre Verteilung.}
+Eine Verteilung $\pi^*$ heißt \emph{stationär}, wenn sie unter Anwendung der Übergangsmatrix invariant bleibt:
+\begin{equation}
+\pi^* = \pi^* P.
+\end{equation}
+
+\paragraph{Beispiel.}
+Für ein zweizuständiges System mit Zuständen „Innen“ und „Außen“ im Endoskopievideo sei
+\[
+P = \begin{pmatrix}
+0.9 & 0.1 \\
+0.3 & 0.7
+\end{pmatrix}.
+\]
+Dann beschreibt $P_{12} = 0.1$ die Wahrscheinlichkeit, dass ein Frame vom Typ „Innen“ im nächsten Schritt zu „Außen“ wechselt.
+
 
 \subsection{Markov Modelle}
 
 Markov Modelle sind eine Klasse von statistischen Modellen, die verwendet werden, um Systeme zu modellieren, die sich über die Zeit verändern. Sie basieren auf der Annahme, dass der zukünftige Zustand eines Systems nur vom aktuellen Zustand abhängt und nicht von den vorherigen Zuständen. Dies wird als Markov-Eigenschaft bezeichnet.
-Die Modelle werden als \enquote{Hidden} bezeichnet, da die zugrunde liegenden Zustände nicht direkt beobachtet werden können, sondern nur durch beobachtbare Ausgaben oder Emissionen inferiert werden.
+Die Modelle werden als \enquote{Hidden} bezeichnet, wenn die zugrunde liegenden Zustände nicht direkt beobachtet werden, sondern nur durch beobachtbare Ausgaben oder Emissionen inferiert werden.
 \newline
-HMM sind eine 
 Generell handelt es sich bei HMM um ein generatives Modell, es wird also eine Wahrscheinlichkeit basierend auf dem zugrundeliegenden gelernten System abgebildet.
 $P(X, Y)$
 
@@ -175,7 +255,8 @@ P^{(n)} = \underbrace{P \cdot P \cdot \cdots \cdot P}_{n \text{ Mal}} = P^n.
 
 \subsection{Viterbi-Dekodierung}
 
-Der Viterbi-Algorithmus ist ein dynamischer Programmieralgorithmus, der verwendet wird, um die wahrscheinlichste Sequenz von versteckten Zuständen in einem Hidden Markov Model (HMM) zu finden, basierend auf einer gegebenen Sequenz von beobachteten Ereignissen. Der Algorithmus wurde von Andrew Viterbi 1967 erstmals vorgeschlagen und ist besonders nützlich in Anwendungen, bei denen sequenzielle Daten auftreten, deren Zusammensetzung Schlüsse auf die zugrundeliegenden wahren Zustände zulassen. Die Fähigkeit, aus den beobachtbaren Zuständen auf versteckte Wahrheiten schließen zu können, macht den Viterbi-Algorithmus praxisrelevant in vielen Bereichen, wie in der Elektrotechnik bei der Analyse von Kommunikationssystemen oder in der Bioinformatik bei der Genomsequenzierung.
+Der Viterbi-Algorithmus ist ein dynamischer Programmieralgorithmus, der verwendet wird, um die wahrscheinlichste Sequenz von versteckten Zuständen in einem Hidden Markov Model (HMM) zu finden, basierend auf einer gegebenen Sequenz von beobachteten Ereignissen. Der Algorithmus wurde von Andrew Viterbi 1967 \citet{viterbierror},
+erstmals vorgeschlagen und ist besonders nützlich in Anwendungen, bei denen sequenzielle Daten auftreten, deren Zusammensetzung Schlüsse auf die zugrundeliegenden wahren Zustände zulassen. Die Fähigkeit, aus den beobachtbaren Zuständen auf versteckte Wahrheiten schließen zu können, macht den Viterbi-Algorithmus praxisrelevant in vielen Bereichen, wie in der Elektrotechnik bei der Analyse von Kommunikationssystemen oder in der Bioinformatik bei der Genomsequenzierung.
 Hierbei werden Emissionswahrscheinlichkeiten sowie Übergangswahrscheinlichkeiten zwischen den Zuständen berücksichtigt, um die wahrscheinlichste Sequenz zu bestimmen.
 
 \medskip
