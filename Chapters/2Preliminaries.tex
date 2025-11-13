@@ -79,9 +79,9 @@ Die Ergebnisse dieser Klassifikation sind bei ausreichendem Training in einer ko
 
 \subsection{Assistierte Dokumentation von Endoskopievideos}
 
-Lux et. al \citet{lux-2023} beschreiben ein Verfahren zur automatisierten Dokumentation von Endoskopievideos. Dabei wird ein auf Deep Learning basierendes System eingesetzt, um relevante Informationen aus den Videos zu extrahieren und in strukturierter Form bereitzustellen. Das System nutzt Convolutional Neural Networks (CNNs), um verschiedene Merkmale in den Endoskopiebildern zu erkennen, wie z.B. Polypen, Läsionen oder anatomische Strukturen. Die extrahierten Informationen werden dann in einem Bericht zusammengefasst, der dem Arzt bei der Diagnose und Behandlung unterstützt. Die Autoren zeigen, dass das System eine gute Genauigkeit bei der Erkennung relevanter Merkmale aufweist und somit die Effizienz und Qualität der Endoskopiedokumentation verbessern kann.
+\citet{lux-2023} beschreiben ein Verfahren zur automatisierten Dokumentation von Endoskopievideos. Dabei wird ein auf Deep Learning basierendes System eingesetzt, um relevante Informationen aus den Videos zu extrahieren und in strukturierter Form bereitzustellen. Das System nutzt Convolutional Neural Networks (CNNs), um verschiedene Merkmale in den Endoskopiebildern zu erkennen, wie z.B. Polypen, Läsionen oder anatomische Strukturen. Die extrahierten Informationen werden dann in einem Bericht zusammengefasst, der dem Arzt bei der Diagnose und Behandlung unterstützt. Die Autoren zeigen, dass das System eine gute Genauigkeit bei der Erkennung relevanter Merkmale aufweist und somit die Effizienz und Qualität der Endoskopiedokumentation verbessern kann.
 
-Das Ziel dieser Publikation war es, eine Methode zur assistierten Dokumentation zu präsentieren, die Labels mit dazugehörigen Frames verknüpft und somit eine strukturierte Übersicht über das Videomaterial bietet. Dies ist besonders relevant für die Nachbereitung von Endoskopien, da Ärzte so schneller auf wichtige Informationen zugreifen können. Die Autoren betonen, dass eine solche assistierte Dokumentation nicht nur die Effizienz steigert, sondern auch die Genauigkeit der Berichte verbessert, indem menschliche Fehler reduziert werden. Die weitere Entwicklung der assistierten Dokumentation wird als neuer Fokus vorgeschlagen. Diese Empfehlung deckt sich weitestgehend mit der Zielsetzung aus Kaminski et. al \citet{kaminski-performance-2017}, die in ihrer Publikation Forschungsfragen zur Verbesserung der Qualitätssicherung bei der Bewertung der Vollständigkeit von Darmspiegelungen durch Dokumentation aufstellen. Hierbei kann also als Optimierung angenommen werden, dass sich diese vor entweder durch Verbesserung von korrekter Segmentierung der Frames eines Videos oder durch eine Beschleunigung der Verarbeitung und das Nutzbar machen der automatisierten Dokumentation durch Beschleunigung erreichen lässt.  
+Das Ziel dieser Publikation war es, eine Methode zur assistierten Dokumentation zu präsentieren, die Labels mit dazugehörigen Frames verknüpft und somit eine strukturierte Übersicht über das Videomaterial bietet. Dies ist besonders relevant für die Nachbereitung von Endoskopien, da Ärzte so schneller auf wichtige Informationen zugreifen können. Die Autoren betonen, dass eine solche assistierte Dokumentation nicht nur die Effizienz steigert, sondern auch die Genauigkeit der Berichte verbessert, indem menschliche Fehler reduziert werden. Die weitere Entwicklung der assistierten Dokumentation wird als neuer Fokus vorgeschlagen. Diese Empfehlung deckt sich weitestgehend mit der Zielsetzung aus \citet{kaminski-performance-2017}, die in ihrer Publikation Forschungsfragen zur Verbesserung der Qualitätssicherung bei der Bewertung der Vollständigkeit von Darmspiegelungen durch Dokumentation aufstellen. Hierbei kann also als Optimierung angenommen werden, dass sich diese vor entweder durch Verbesserung von korrekter Segmentierung der Frames eines Videos oder durch eine Beschleunigung der Verarbeitung und das Nutzbar machen der automatisierten Dokumentation durch Beschleunigung erreichen lässt.  
 
 \section{Technische und mathematische Grundlagen}
 
@@ -106,7 +106,7 @@ p_{ij} = P(X_{n+1} = j \mid X_n = i),
 \end{equation}
 Diese konnte er im Nachgang einsetzen, um über diese Wahrscheinlichkeiten wiederum eine Buchstabenfolge zu generieren, bei der die Anzahl der Konsonanten und Vokale wieder auf einem Niveau einpendelten, das mit dem russischen Originaltext vergleichbar war.
 Ausgang für diese Untersuchung war die These von Pawel Nekrasov. Dieser hatte in seiner „Theorie der Wahrscheinlichkeit“ angezweifelt, dass probabilistische Modelle in Untersuchungen von abhängigen Variablen wie sozialen Zusammenhängen angewandt werden könnten, weil abhängige Größen nur durch den freien Willen und nicht durch Naturgesetze beeinflusst sind. Ilona Svetlikova beschreibt in der Sekundäranalyse von Nekrasov die philosophisch-theologische Haltung hinter Nekrasovs Argumentation.
-Laut Svetlikova argumentiert Nekrasov, dass Wahrscheinlichkeitsgesetze Ausdruck des göttlichen Willens seien und daher nicht auf abhängige oder soziale Prozesse angewandt werden dürften - da diese den freien Willen der Menschen widerspiegeln.\citep{svetlikova2013nekrasov} Diese These stützte Nekrasov auf Beobachtungen, dass bei sozialen Statistiken wie der Rate der Hochzeiten in einer Gesellschaft in aufeinanderfolgenden Jahren oft ähnliche Hochzeitsraten auftreten obwohl sich die gesellschaftlichen Bedingungen ändern. \citep{nekrasov1912} Durch Markovs empiririschen Beweis seiner theoretischen Grundlagenpublikation \citet{markov1906extension} zeigte er, dass auch abhängige Variablen in oft wiederholten Zufallsexperimenten messbare Gesetzmäßigkeiten aufzeigen können.  Diese Idee wurde weiterentwickelt, um durch passende Modelle effiziente Vorhersagen über zukünftige Ereignisse treffen zu können.
+Laut Svetlikova argumentiert Nekrasov, dass Wahrscheinlichkeitsgesetze Ausdruck des göttlichen Willens seien und daher nicht auf abhängige oder soziale Prozesse angewandt werden dürften - da diese den freien Willen der Menschen widerspiegeln.\citep{svetlikova2013nekrasov} Diese These stützte Nekrasov auf Beobachtungen, dass bei sozialen Statistiken wie der Rate der Hochzeiten in einer Gesellschaft in aufeinanderfolgenden Jahren oft ähnliche Hochzeitsraten auftreten obwohl sich die gesellschaftlichen Bedingungen ändern. \citep{nekrasov1912} Durch Markovs empiririschen Beweis seiner theoretischen Grundlagenpublikation \citep{markov1906extension} zeigte er, dass auch abhängige Variablen in oft wiederholten Zufallsexperimenten messbare Gesetzmäßigkeiten aufzeigen können.  Diese Idee wurde weiterentwickelt, um durch passende Modelle effiziente Vorhersagen über zukünftige Ereignisse treffen zu können.
 Seine Arbeit hat bis heute großen Einfluss und begründete die Klasse der Markovprozesse. Diese sind und findet sich auch in aktuellen Entwicklungen wie Recurrent Neural Networks wieder.
 
 In seinem Einführungswerk beschreibt A. W. Drake Markovprozesse in diskreter Zeit und mit diskreter Zustandsmenge. Er definiert sie allgemein als Kette von Zuständen $S$, deren zukünftige Entwicklung nur vom aktuellen Zustand abhängt und deren Übergänge durch Übergangswahrscheinlichkeiten bestimmt werden. Eine Bedingung für das Vorliegen eines Markovprozesses wird so definiert als \begin{equation}
@@ -218,6 +218,38 @@ $P(X, Y)$
 Conditional Random Fields (CRF) beschreiben eine Klasse von Modellen, mit denen sich Übergangswahrscheinlichkeiten darstellen lassen. Generell handelt es sich bei CRF um ein diskriminatives Modell, es wird also direkt die bedingte Wahrscheinlichkeit $P(Y|X)$ der Ausgabevariablen $Y$ gegeben die Eingabevariablen $X$ modelliert, anstatt der gemeinsamen Wahrscheinlichkeit $P(X, Y)$.
 Diese Modellklasse ist die generalisierte Form von Markov Models. Hidden Markov Models beschreiben, wie im Kapitel erläutert, die Annahme, dass aufgrund von dem vorherigen versteckten Zustand das System vorhergesagt werden kann. Hierfür müsste jedoch das System von der Menge der versteckten Zustände vollständig beobachtbar sowie abbildbar sein.
 
+\subsection{Kontinuierliche Markov Prozesse - Kalman Filter für Approximation linearer dynamischer Systeme}
+
+Für die Darstellung von nicht diskreten Zeit sowie Zustandsräumen wurden komplexere Versionen der Markovprozesse entwickelt. Insbesondere wenn es sich um eine Bewertung mehrdimensionaler Systeme handelt, reichen einfache diskrete Markovketten oftmals nicht aus.
+Speziell wenn eine Linearität der zugrundeliegenden Funktionen sowie eine gauss'sche Verteilung der Messfehler angenommen werden kann, bietet sich der Einsatz von Kalman Filtern an. Diese wurden 1960 von R.E. Kalman vorgestellt \citet{kalman1960new} und sind eine Methode zur Schätzung des Zustands eines dynamischen Systems aus einer Reihe von verrauschten Messungen.
+Kalman Filter können aus einem vorherigen Zustand eine Vorhersage des nächsten Zustands treffen und diese Vorhersage dann mit einer neuen Messung aktualisieren, um eine verbesserte Schätzung zu erhalten. Dies geschieht durch die Anwendung von zwei Hauptschritten: dem Vorhersageschritt und dem Aktualisierungsschritt.
+
+Der Kalman Filter modelliert das System als lineares Dynamisches System. Hierbei wird der Zustand $x_k$ zum Zeitpunkt $k$ durch die Zustandsübergangsmatrix $A$, die Steuerungsmatrix $B$ und das Steuerungssignal $u_{k-1}$ beschrieben. Der Prozessrauschen $w_{k-1}$ wird als Gaußsches Rauschen mit mittlerem Wert null und Kovarianz $Q$ modelliert.
+Durch Konstruktion eines Modells mit diesen Annahmen kann der Kalman Filter effizient den Zustand des Systems schätzen, indem er die Unsicherheit in den Messungen und im Prozessrauschen berücksichtigt.
+Dabei kommt die Qualität der Schätzung darauf an, ob zu Beginn sinnvolle Kovarianzen für das gaußsche Rauschen, das die Messung beeinflusst, gewählt wurde, sowie ob die Matrix A die Dynamik des Systems gut beschreibt.
+Der Kalman Filter kann auch über mehrere Dimensionen erweitert werden, um komplexere Systeme zu modellieren. In diesem Fall werden die Zustandsvektoren, Messvektoren und Rauschkovarianzmatrizen entsprechend angepasst.
+Ein allgemeines Beispiel für ein Modell solches System ist:
+
+\begin{equation}
+x_{k} = H x_{k} + v_{k}
+\end{equation}
+
+Auch eine Erweiterung um Steuerungssignale ist möglich:
+
+\begin{equation}
+x_{k} = H x_{k-1} + B u_{k-1} + v_{k-1}
+\end{equation}
+
+Hier wird $x_k$, der Zustand des Systems zum Zeitpunkt $k$ aus der vorherigen Zustand $x_{k-1}$, dem Steuerungssignal $u_{k-1}$ und dem Prozessrauschen $w_{k-1}$ berechnet. Die Matrix $H$ beschreibt die Dynamik des Systems und $B$ beschreibt die Auswirkungen des Steuerungssignals auf den Zustand.
+In diesem Beispiel gibt es also zwei Messungen und ein modelliertes Rauschen, die in das System einfließen: Das Steuerungssignal $u_{k-1}$, die Messung $x_{k-1}$ und das Prozessrauschen $w_{k-1}$.
+
+Bei der Evaluation des Systems zum Zeitpunkt $x_k$ wird im ersten Schritt die Messung $z_k$ durch die Messmatrix $H$ und das Messrauschen $v_k$ beschrieben:
+
+\begin{equation}
+
+
+\end{equation}
+
 \subsection{Non Markov Modelle}
 
 
@@ -271,23 +303,23 @@ Dabei bezeichnet $\delta_t(j)$ die maximale Pfadwahrscheinlichkeit bis zum Zeitp
 und $\psi_t(j)$ den optimalen Vorgängerzustand.
 
 \paragraph{Initialisierung}
-\begin{align}
-  \delta_1(i) &= \pi_i \cdot b_i(o_1), \quad \text{für } i = 1, \ldots, N, \\
-  \psi_1(i)   &= 0.
-\end{align}
+\begin{equation}
+  \delta_1(i) = \pi_i \cdot b_i(o_1), \quad \text{für } i = 1, \ldots, N, \\
+  \psi_1(i) = 0.
+\end{equation}
 
 \paragraph{Rekursion}
 Für $t = 2, \ldots, T$ und $j = 1, \ldots, N$:
-\begin{align}
+\begin{equation}
   \delta_t(j) &= \left[\max_{i \in \{1, \ldots, N\}} \delta_{t-1}(i) \cdot a_{ij} \right] \cdot b_j(o_t), \\
   \psi_t(j)   &= \arg\max_{i \in \{1, \ldots, N\}} \delta_{t-1}(i) \cdot a_{ij}.
-\end{align}
+\end{equation}
 
 \paragraph{Terminierung}
-\begin{align}
+\begin{equation}
   P^* &= \max_{i \in \{1, \ldots, N\}} \delta_T(i), \\
   q_T^* &= \arg\max_{i \in \{1, \ldots, N\}} \delta_T(i).
-\end{align}
+\end{equation}
 
 \paragraph{Rückverfolgung}
 Für $t = T-1, T-2, \ldots, 1$:
@@ -306,16 +338,21 @@ Definiere $\ell_t(j) = \log \delta_t(j)$. Dann gilt:
 
 \textbf{Rekursion:}
 Für $t = 2, \ldots, T$ und $j = 1, \ldots, N$:
-\begin{align}
+\begin{equation}
+\begin{aligned}
   \ell_t(j) &= \max_{i \in \{1, \ldots, N\}} [\ell_{t-1}(i) + \log a_{ij}] + \log b_j(o_t), \\
   \psi_t(j) &= \arg\max_{i \in \{1, \ldots, N\}} [\ell_{t-1}(i) + \log a_{ij}].
-\end{align}
+\end{aligned}
+\end{equation}
 
 \textbf{Terminierung:}
-\begin{align}
+\begin{equation}
+\begin{aligned}
+  \
   P^* &= \max_{i \in \{1, \ldots, N\}} \ell_T(i), \\
   q_T^* &= \arg\max_{i \in \{1, \ldots, N\}} \ell_T(i).
-\end{align}
+\end{aligned}
+\end{equation}
 
 \textbf{Rückverfolgung:}
 \begin{equation}

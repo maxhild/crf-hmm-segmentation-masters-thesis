@@ -1,5 +1,67 @@
 %*****************************************
 \chapter{Lösungsansatz}\label{ch:approach}
 %*****************************************
-Das Ziel, eine assistierte Dokumentation von Endoskopievideos zu ermöglichen, kann nur gelingen, wenn die
-Verarbeitung der Videodaten in Quasi-Echtzeit erfolgt. Daher ist es notwendig, effiziente Algorithmen zu verwenden, die eine schnelle Segmentierung von Videoframes ermöglichen.    
+Eine assistierte Dokumentation von Endoskopievideos zu ermöglichen kann nur gelingen, wenn die
+Verarbeitung der Videodaten in Quasi-Echtzeit erfolgt. Daher ist es notwendig, effiziente Algorithmen zu verwenden, die eine schnelle Segmentierung von Videoframes ermöglichen.
+Um eine robuste Segmentierung eines Endoskopievideos zu gewährleisten, sollte das Verfahren in der Lage sein, sowohl lokale Bildinformationen als auch den globalen Kontext der Videoaufnahme zu berücksichtigen.
+\vspace{0.5em}
+\noindent
+Das Ziel der Untersuchung ist es, ein System zu entwickeln, das diese Anforderungen erfüllt und eine präzise sowie effiziente Analyse von Endoskopievideos ermöglicht.
+Am Ende soll vermieden werden, dass die Berechnungen des Systems zu komplex für eine praxisrelevante Nutzung werden. Aus diesem Grund verwendet das System den Ansatz der Teilung entlang der temporalen Achse direkt in der Architektur.
+Die Intuition hierbei ist die folgende: Wenn das Ziel die Bewertung des Videos in einzelnen Segmenten ist, dann ist es sinnvoll, auch die Kriterien für die Segmente nicht universell sondern segmentiert anzuwenden.
+\vspace{0.5em} 
+
+\section{Konzeptionelles Modell zur Zustandsabschätzung in endoskopischen Videosequenzen}
+
+Die Analyse endoskopischer Videos stellt eine besondere Herausforderung dar, da die Bildfolgen sowohl kontinuierliche visuelle Dynamiken (Beleuchtung, Bewegung, Farbspektrum) als auch diskrete prozedurale Phasen (Eintritt, Navigation, Filterwechsel, Rückzug) aufweisen. Ein reines kontinuierliches Modell erfasst die abrupten Übergänge zwischen diesen Phasen nur unzureichend, während ein ausschließlich diskretes Modell die innerhalb einer Phase auftretenden Messrauschprozesse und langsamen Veränderungen nicht adäquat beschreibt. Aus diesem Grund wird in dieser Arbeit ein hybrides probabilistisches Modell vorgeschlagen, das diskrete und kontinuierliche Zustandsdynamiken in einem gemeinsamen formalen Rahmen kombiniert.
+
+\vspace{0.5em}
+\noindent
+\textbf{Grundidee.}  
+Das vorgeschlagene System basiert auf einer hierarchischen Struktur, in der eine \emph{Markov-Kette} als übergeordneter Prozess die semantischen Phasen des Videos beschreibt, während innerhalb jeder Phase ein \emph{Kalman-Filter} die kontinuierlichen visuellen Messgrößen schätzt. Jede diskrete Phase \(s_t \in \{1,\dots,K\}\) besitzt somit ein eigenes lokales Zustandsraummodell:
+\begin{align}
+x_t &= F_{s_t} x_{t-1} + w_t, \quad w_t \sim \mathcal{N}(0,Q_{s_t}),\\
+y_t &= H_{s_t} x_t + v_t, \quad v_t \sim \mathcal{N}(0,R_{s_t}),
+\end{align}
+wobei \(x_t \in \mathbb{R}^n\) den latenten Systemzustand (z.\,B. Bewegungsenergie, Farbverteilung, Beleuchtungsintensität) und \(y_t \in \mathbb{R}^m\) die beobachteten Merkmale eines Videoframes beschreibt. Die Übergänge zwischen den Phasen werden durch eine diskrete Übergangsmatrix \(A = [A_{ij}]\) bestimmt:
+\[
+P(s_t = j \mid s_{t-1} = i) = A_{ij}.
+\]
+Dieses übergeordnete Markov-Modell bestimmt, welcher Kalman-Filter zur jeweiligen Zeit aktiv ist und welche Systemdynamik angenommen wird.
+
+\vspace{0.5em}
+\noindent
+\textbf{Beziehung zu bestehenden Arbeiten.}  
+Das Grundprinzip weist eine formale Dualität zu dem Ansatz von \textcite{odhner2010kalman} auf, die einen \emph{Kalman-Filter für inhomogene Populations-Markov-Ketten} entwickelten. In deren Arbeit wurde eine Markov-Kette als zugrunde liegendes System betrachtet, während der Kalman-Filter als Beobachter zur Schätzung der Populationsverteilung fungierte. Die vorliegende Arbeit kehrt diese Struktur um: Hier dient der Kalman-Filter als lokaler kontinuierlicher Schätzer, und die Markov-Kette bildet die diskrete Steuerungsebene, welche die Phasenwechsel des endoskopischen Prozesses modelliert. Diese Umkehrung erlaubt es, die Stärken beider Verfahren zu kombinieren – die lokale Glättung und Rauschunterdrückung des Kalman-Filters sowie die sequenzielle Zustandslogik der Markov-Kette.
+
+\vspace{0.5em}
+\noindent
+\textbf{Kopplung der Schichten.}  
+Die Kopplung zwischen kontinuierlicher und diskreter Ebene erfolgt über die \emph{Innovationsgröße} des Kalman-Filters:
+\[
+\epsilon_t = y_t - H_{s_t}\hat{x}_{t|t-1},
+\]
+welche die Abweichung zwischen vorhergesagtem und gemessenem Signal beschreibt. Große Innovationswerte deuten auf eine Abnahme der Modellgüte hin und erhöhen somit die Wahrscheinlichkeit eines Zustandswechsels. Formal lässt sich diese Idee durch eine modifizierte Übergangswahrscheinlichkeit ausdrücken:
+\[
+P(s_t = j \mid s_{t-1} = i, \epsilon_t) \propto A_{ij}\,\exp\!\left(-\tfrac{1}{2}\epsilon_t^\top W_{ij}^{-1}\epsilon_t\right),
+\]
+wobei \(W_{ij}\) eine skalierende Gewichtungsmatrix darstellt. Dadurch wird der Zustandsübergang datengetrieben und adaptiv: Das System „lernt“, wann das aktuell aktive Modell nicht mehr zur beobachteten Dynamik passt.
+
+\vspace{0.5em}
+\noindent
+\textbf{Globaler Kontext und Regularisierung.}  
+Über die gesamte Videolänge hinweg entsteht so eine \emph{Markov-Kette von Kalman-Filtern}. Um zeitliche Kohärenz zu gewährleisten, kann die diskrete Zustandsfolge zusätzlich als \emph{Diskretes Random Field (DRF)} über die Zeit modelliert werden:
+\[
+P(s_{1:T}) = \prod_{t=1}^{T} P(s_t \mid s_{t-1}),
+\]
+wobei Dauerwahrscheinlichkeiten (\emph{duration priors}) für typische Phasenlängen in die Regularisierung eingehen. Diese Formulierung erlaubt es, das Verfahren nicht nur als rekursiven Filter, sondern auch als sequentielles Optimierungsproblem (z.\,B. mittels Viterbi-Dekodierung) zu interpretieren.
+
+\vspace{0.5em}
+\noindent
+\textbf{Anwendung auf endoskopische Videos.}  
+Für die konkrete Anwendung werden die Zustände der Markov-Kette semantisch interpretiert, etwa als \emph{Eintritt in das Lumen}, \emph{stabile Navigation}, \emph{NBI-Modus}, \emph{Nahaufnahme der Mukosa} oder \emph{Austritt}. Jeder dieser Zustände besitzt eine spezifische Dynamik visueller Merkmale, welche durch ein Kalman-Modell mit angepassten Rauschparametern \(Q_{s_t}, R_{s_t}\) beschrieben wird. Diese Parameter können durch Domänenwissen vorinitialisiert werden – etwa durch die erwartete Kamerabewegung oder typische Helligkeitsschwankungen in einem bestimmten Abschnitt – und anschließend datengetrieben verfeinert werden. 
+
+\vspace{0.5em}
+\noindent
+\textbf{Zusammenfassung.}  
+Das resultierende Modell kann als \emph{hybrides Markov–Kalman-System} verstanden werden, in dem kontinuierliche Zustände die lokalen visuellen Eigenschaften schätzen und diskrete Zustände den prozeduralen Kontext erfassen. Diese duale Architektur erlaubt eine interpretierbare, probabilistisch fundierte Beschreibung endoskopischer Prozesse, die sowohl abrupten Zustandswechseln als auch stochastischen Messrauschen gerecht wird. Im Gegensatz zu rein datengetriebenen neuronalen Ansätzen basiert das hier entwickelte Verfahren auf explizitem Domänenwissen, was eine robuste und nachvollziehbare Zustandsabschätzung ermöglicht.

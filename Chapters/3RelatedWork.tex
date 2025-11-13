@@ -2,8 +2,26 @@
 \chapter{Stand der Forschung}\label{ch:relatedWork}
 %*****************************************
 
-Diese Abschlussarbeit basiert auf der Publikation von 
-\paragraph{Beispielzitierungen}
-\citet{sniktec} beschreiben ein Verfahren zur X von Y auf Basis von Z.
-Alternativ: X von Y lässt sich auf Basis von Z ermitteln~\citep{sniktec}.
+Diese Abschlussarbeit basiert auf der Publikation von Lux et. al. \cite{lux-2023}, in der ein framebasierter Ansatz zur Segmentierung von Endoskopievideos vorgestellt wird.
+Die Autoren verwenden hier ein CNN um einzelne Frames verschiedenen Segmentierungskategorien zuzuordnen. Die Klassifikation von Videos mit ResNet, einem residuellen neuronalen Netz, wird 
+als Standard in der Industrie in vielen verschiedenen Publikationen beschrieben und zeigt gute Ergebnisse. %#TODO% Referenzen hinzufügen
 
+\section{Computer Vision - Verarbeitung von Bilddaten}
+
+Der visuelle Kortex des Menschen ist darauf aufgebaut, die Intensitätswerte von Wellenlängen des Lichts, das auf die Zellen der Netzhaut fällt, auszuwerten. Hierbei ist es 
+
+
+\section{CNN - Konvolutionskernels und Attentionmechanismus}
+
+CNNs, konvolutionale neuronale Netze, sind eine spezielle Klasse künstlicher neuronaler Netze, die insbesondere für die Verarbeitung von Bilddaten entwickelt wurden. Das zentrale Element eines CNN ist die Faltungsschicht, in der sogenannte Filter (oder Konvolutionskerne) die Pixel des Eingabebilds in lokale Merkmale übersetzen. Dabei gleiten Konvolutionskerne  über das Bild. Mathematisch basiert diese Operation auf der Faltung (engl. convolution), bei der die Werte eines kleinen Bereichs des Bildes mit den Werten des Filters multipliziert und aufsummiert werden. Dadurch entstehen Featuremaps, die charakteristische Muster wie Kanten, Ecken oder komplexere Strukturen erkennen können.
+
+Durch die hierarchische Anordnung mehrerer Faltungs- und Pooling-Schichten können CNNs zunehmend abstrakte Merkmale aus den Rohdaten extrahieren. Dies ermöglicht es, Bildinhalte effizient zu analysieren und zu klassifizieren. Die Parameter der Filter werden während des Trainingsprozesses durch Backpropagation optimiert, sodass das Netzwerk lernt, relevante Merkmale für die jeweilige Aufgabe zu erkennen. 
+
+Seitdem die Transformer Architektur \cite{NIPS2017_3f5ee243} den Attentionmechanismus als zentrales Element für die natürliche Sprachverarbeitung einführte, gab es im Bereich der großen Sprachmodelle viele Fortschritte. Seit der Publikation des Vision Transformer wird der Attentionmechanismus auch in der Bildverarbeitung eingesetzt. 
+
+\begin{equation}
+    Attention(Q,K,V) = softmax(\frac{QK^T}{\sqrt{d}}*V)
+\end{equation}
+
+Um die Qualität der Segmentierung bei komputational vertretbarem Rechenaufwand zu verbessern, konnte mit dem InceptionNext ein neuer vielversprechender Ansatz gefunden werden. \cite{yu2024inceptionnext}
+Yu et. al. nutzen in Ihrer Publikation kleinere Konvolutionskernels um die Rechenzeit zu reduzieren. Gleichzeitig halten Sie.
