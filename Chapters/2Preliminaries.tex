@@ -79,10 +79,6 @@ Die Ergebnisse dieser Klassifikation sind bei ausreichendem Training in einer ko
 
 \subsection{Assistierte Dokumentation von Endoskopievideos}
 
-Lux et. al \citet{lux-2023} beschreiben ein Verfahren zur automatisierten Dokumentation von Endoskopievideos. Dabei wird ein auf Deep Learning basierendes System eingesetzt, um relevante Informationen aus den Videos zu extrahieren und in strukturierter Form bereitzustellen. Das System nutzt Convolutional Neural Networks (CNNs), um verschiedene Merkmale in den Endoskopiebildern zu erkennen, wie z.B. Polypen, Läsionen oder anatomische Strukturen. Die extrahierten Informationen werden dann in einem Bericht zusammengefasst, der dem Arzt bei der Diagnose und Behandlung unterstützt. Die Autoren zeigen, dass das System eine gute Genauigkeit bei der Erkennung relevanter Merkmale aufweist und somit die Effizienz und Qualität der Endoskopiedokumentation verbessern kann.
-
-Das Ziel dieser Publikation war es, eine Methode zur assistierten Dokumentation zu präsentieren, die Labels mit dazugehörigen Frames verknüpft und somit eine strukturierte Übersicht über das Videomaterial bietet. Dies ist besonders relevant für die Nachbereitung von Endoskopien, da Ärzte so schneller auf wichtige Informationen zugreifen können. Die Autoren betonen, dass eine solche assistierte Dokumentation nicht nur die Effizienz steigert, sondern auch die Genauigkeit der Berichte verbessert, indem menschliche Fehler reduziert werden. Die weitere Entwicklung der assistierten Dokumentation wird als neuer Fokus vorgeschlagen. Diese Empfehlung deckt sich weitestgehend mit der Zielsetzung aus Kaminski et. al \citet{kaminski-performance-2017}, die in ihrer Publikation Forschungsfragen zur Verbesserung der Qualitätssicherung bei der Bewertung der Vollständigkeit von Darmspiegelungen durch Dokumentation aufstellen. Hierbei kann also als Optimierung angenommen werden, dass sich diese vor entweder durch Verbesserung von korrekter Segmentierung der Frames eines Videos oder durch eine Beschleunigung der Verarbeitung und das Nutzbar machen der automatisierten Dokumentation durch Beschleunigung erreichen lässt.  
-
 \section{Technische und mathematische Grundlagen}
 
 Dieses Kapitel wird die Herangehensweise an die mathematische Modellierung der Segmentierung von Endoskopievideos erläutern.
@@ -106,7 +102,7 @@ p_{ij} = P(X_{n+1} = j \mid X_n = i),
 \end{equation}
 Diese konnte er im Nachgang einsetzen, um über diese Wahrscheinlichkeiten wiederum eine Buchstabenfolge zu generieren, bei der die Anzahl der Konsonanten und Vokale wieder auf einem Niveau einpendelten, das mit dem russischen Originaltext vergleichbar war.
 Ausgang für diese Untersuchung war die These von Pawel Nekrasov. Dieser hatte in seiner „Theorie der Wahrscheinlichkeit“ angezweifelt, dass probabilistische Modelle in Untersuchungen von abhängigen Variablen wie sozialen Zusammenhängen angewandt werden könnten, weil abhängige Größen nur durch den freien Willen und nicht durch Naturgesetze beeinflusst sind. Ilona Svetlikova beschreibt in der Sekundäranalyse von Nekrasov die philosophisch-theologische Haltung hinter Nekrasovs Argumentation.
-Laut Svetlikova argumentiert Nekrasov, dass Wahrscheinlichkeitsgesetze Ausdruck des göttlichen Willens seien und daher nicht auf abhängige oder soziale Prozesse angewandt werden dürften - da diese den freien Willen der Menschen widerspiegeln.\citep{svetlikova2013nekrasov} Diese These stützte Nekrasov auf Beobachtungen, dass bei sozialen Statistiken wie der Rate der Hochzeiten in einer Gesellschaft in aufeinanderfolgenden Jahren oft ähnliche Hochzeitsraten auftreten obwohl sich die gesellschaftlichen Bedingungen ändern. \citep{nekrasov1912} Durch Markovs empiririschen Beweis seiner theoretischen Grundlagenpublikation \citet{markov1906extension} zeigte er, dass auch abhängige Variablen in oft wiederholten Zufallsexperimenten messbare Gesetzmäßigkeiten aufzeigen können.  Diese Idee wurde weiterentwickelt, um durch passende Modelle effiziente Vorhersagen über zukünftige Ereignisse treffen zu können.
+Laut Svetlikova argumentiert Nekrasov, dass Wahrscheinlichkeitsgesetze Ausdruck des göttlichen Willens seien und daher nicht auf abhängige oder soziale Prozesse angewandt werden dürften - da diese den freien Willen der Menschen widerspiegeln.\citep{svetlikova2013nekrasov} Diese These stützte Nekrasov auf Beobachtungen, dass bei sozialen Statistiken wie der Rate der Hochzeiten in einer Gesellschaft in aufeinanderfolgenden Jahren oft ähnliche Hochzeitsraten auftreten obwohl sich die gesellschaftlichen Bedingungen ändern. \citep{nekrasov1912} Durch Markovs empiririschen Beweis seiner theoretischen Grundlagenpublikation \citep{markov1906extension} zeigte er, dass auch abhängige Variablen in oft wiederholten Zufallsexperimenten messbare Gesetzmäßigkeiten aufzeigen können.  Diese Idee wurde weiterentwickelt, um durch passende Modelle effiziente Vorhersagen über zukünftige Ereignisse treffen zu können.
 Seine Arbeit hat bis heute großen Einfluss und begründete die Klasse der Markovprozesse. Diese sind und findet sich auch in aktuellen Entwicklungen wie Recurrent Neural Networks wieder.
 
 In seinem Einführungswerk beschreibt A. W. Drake Markovprozesse in diskreter Zeit und mit diskreter Zustandsmenge. Er definiert sie allgemein als Kette von Zuständen $S$, deren zukünftige Entwicklung nur vom aktuellen Zustand abhängt und deren Übergänge durch Übergangswahrscheinlichkeiten bestimmt werden. Eine Bedingung für das Vorliegen eines Markovprozesses wird so definiert als \begin{equation}
@@ -196,31 +192,73 @@ Eine Verteilung $\pi^*$ heißt \emph{stationär}, wenn sie unter Anwendung der �
 \paragraph{Beispiel.}
 Für ein zweizuständiges System mit Zuständen „Innen“ und „Außen“ im Endoskopievideo sei
 \[
-P = \begin{pmatrix}
-0.9 & 0.1 \\
-0.3 & 0.7
-\end{pmatrix}.
+  P = \begin{pmatrix}
+    0.9 & 0.1 \\
+    0.3 & 0.7
+  \end{pmatrix}.
 \]
-Dann beschreibt $P_{12} = 0.1$ die Wahrscheinlichkeit, dass ein Frame vom Typ „Innen“ im nächsten Schritt zu „Außen“ wechselt.
+Dann beschreibt $P_{12} = 0{,}1$ die Wahrscheinlichkeit, dass ein Frame vom Typ „Innen“ im nächsten Schritt zu „Außen“ wechselt.
 
+\subsection{Markov-Modelle}
 
-\subsection{Markov Modelle}
+Markov-Modelle sind eine Klasse von statistischen Modellen, die verwendet werden, um Systeme zu modellieren, die sich über die Zeit verändern. 
+Sie basieren auf der Annahme, dass der zukünftige Zustand eines Systems nur vom aktuellen Zustand abhängt und nicht von den vorherigen Zuständen. 
+Dies wird als Markov-Eigenschaft bezeichnet.
 
-Markov Modelle sind eine Klasse von statistischen Modellen, die verwendet werden, um Systeme zu modellieren, die sich über die Zeit verändern. Sie basieren auf der Annahme, dass der zukünftige Zustand eines Systems nur vom aktuellen Zustand abhängt und nicht von den vorherigen Zuständen. Dies wird als Markov-Eigenschaft bezeichnet.
 Die Modelle werden als \enquote{Hidden} bezeichnet, wenn die zugrunde liegenden Zustände nicht direkt beobachtet werden, sondern nur durch beobachtbare Ausgaben oder Emissionen inferiert werden.
-\newline
-Generell handelt es sich bei HMM um ein generatives Modell, es wird also eine Wahrscheinlichkeit basierend auf dem zugrundeliegenden gelernten System abgebildet.
-$P(X, Y)$
 
+Generell handelt es sich bei HMMs um generative Modelle, d.\,h.\ sie modellieren die gemeinsame Verteilung
+\[
+  P(X, Y),
+\]
+wobei $X$ die Folge der versteckten Zustände und $Y$ die Folge der Beobachtungen bezeichnet.
 
 \subsection{Conditional Random Fields als generalisiertes Markov-Modell}
 
-Conditional Random Fields (CRF) beschreiben eine Klasse von Modellen, mit denen sich Übergangswahrscheinlichkeiten darstellen lassen. Generell handelt es sich bei CRF um ein diskriminatives Modell, es wird also direkt die bedingte Wahrscheinlichkeit $P(Y|X)$ der Ausgabevariablen $Y$ gegeben die Eingabevariablen $X$ modelliert, anstatt der gemeinsamen Wahrscheinlichkeit $P(X, Y)$.
-Diese Modellklasse ist die generalisierte Form von Markov Models. Hidden Markov Models beschreiben, wie im Kapitel erläutert, die Annahme, dass aufgrund von dem vorherigen versteckten Zustand das System vorhergesagt werden kann. Hierfür müsste jedoch das System von der Menge der versteckten Zustände vollständig beobachtbar sowie abbildbar sein.
+Conditional Random Fields (CRF) beschreiben eine Klasse von Modellen, mit denen sich Übergangswahrscheinlichkeiten darstellen lassen. 
+Generell handelt es sich bei CRF um diskriminative Modelle: Es wird direkt die bedingte Wahrscheinlichkeit
+\[
+  P(Y \mid X)
+\]
+der Ausgabevariablen $Y$ gegeben die Eingabevariablen $X$ modelliert, anstatt der gemeinsamen Wahrscheinlichkeit $P(X, Y)$.
 
-\subsection{Non Markov Modelle}
+Diese Modellklasse kann als Verallgemeinerung von Markov-Modellen aufgefasst werden. 
+Hidden Markov Models beschreiben, wie im vorigen Abschnitt erläutert, die Annahme, dass aufgrund des vorherigen versteckten Zustands das System vorhergesagt werden kann. 
+Hierfür müsste das System durch die Menge der versteckten Zustände vollständig beobachtbar und adäquat abbildbar sein.
 
+\subsection{Kontinuierliche Markov-Prozesse – Kalman-Filter für Approximation linearer dynamischer Systeme}
 
+Für die Darstellung nichtdiskreter Zeit- sowie Zustandsräume wurden komplexere Versionen der Markov-Prozesse entwickelt. 
+Insbesondere wenn es sich um eine Bewertung mehrdimensionaler Systeme handelt, reichen einfache diskrete Markovketten oftmals nicht aus.
+
+Speziell wenn eine Linearität der zugrunde liegenden Funktionen sowie eine gaußsche Verteilung der Messfehler angenommen werden kann, bietet sich der Einsatz von Kalman-Filtern an. 
+Diese wurden 1960 von R.\,E.~Kalman vorgestellt \cite{kalman1960new} und sind eine Methode zur Schätzung des Zustands eines dynamischen Systems aus einer Reihe von verrauschten Messungen.
+
+Kalman-Filter können aus einem vorherigen Zustand eine Vorhersage des nächsten Zustands treffen und diese Vorhersage dann mit einer neuen Messung aktualisieren, um eine verbesserte Schätzung zu erhalten. 
+Dies geschieht durch die Anwendung von zwei Hauptschritten: dem Vorhersageschritt und dem Aktualisierungsschritt.
+
+Das zugrunde liegende System wird als lineares dynamisches System modelliert. 
+Der Zustand $x_k$ zum Zeitpunkt $k$ ergibt sich aus dem vorherigen Zustand $x_{k-1}$, dem Steuerungssignal $u_{k-1}$ und dem Prozessrauschen $w_{k-1}$:
+\begin{equation}
+  x_k = A x_{k-1} + B u_{k-1} + w_{k-1}, 
+  \qquad w_{k-1} \sim \mathcal{N}(0, Q).
+\end{equation}
+
+Die Messung $z_k$ wird durch die Messmatrix $H$ und das Messrauschen $v_k$ beschrieben:
+\begin{equation}
+  z_k = H x_k + v_k, 
+  \qquad v_k \sim \mathcal{N}(0, R).
+\end{equation}
+
+Durch Konstruktion eines Modells mit diesen Annahmen kann der Kalman-Filter effizient den Zustand des Systems schätzen, indem er die Unsicherheit in den Messungen und im Prozessrauschen berücksichtigt.
+Die Qualität der Schätzung hängt dabei insbesondere davon ab, ob zu Beginn sinnvolle Kovarianzen $Q$ und $R$ für die jeweiligen Rauschanteile gewählt wurden und ob die Matrix $A$ die Dynamik des Systems gut beschreibt.
+
+Der Kalman-Filter kann auf mehrere Dimensionen erweitert werden, um komplexere Systeme zu modellieren. 
+In diesem Fall werden die Zustandsvektoren, Messvektoren und Rauschkovarianzmatrizen entsprechend angepasst.
+
+\subsection{Non-Markov-Modelle}
+
+% (Inhalt folgt)
 
 \subsection{Chapman-Kolmogorov-Gleichung}
 
@@ -229,8 +267,10 @@ Dabei wird ein möglicher Zwischenzustand $k$ zu einem Zeitpunkt $m$ berücksich
 
 Für einen Markov-Prozess $\{X_t\}_{t \geq 0}$ mit Zustandsraum $S$ gilt für alle $i, j \in S$ und $n, m \geq 0$:
 \begin{equation}
-P(X_{n+m} = j \mid X_0 = i) = \sum_{k \in S} P(X_{n+m} = j \mid X_m = k, X_0 = i) \cdot P(X_m = k \mid X_0 = i).
+  P(X_{n+m} = j \mid X_0 = i)
+  = \sum_{k \in S} P(X_{n+m} = j \mid X_m = k, X_0 = i) \cdot P(X_m = k \mid X_0 = i).
 \end{equation}
+
 
 Mit Hilfe der Markov-Eigenschaft vereinfacht sich der erste Term, da der zukünftige Zustand $X_{n+m}$ nur vom aktuellen Zustand $X_m$ abhängt, nicht aber vom gesamten Verlauf bis $X_0 = i$:
 \begin{equation}
@@ -257,8 +297,7 @@ P^{(n)} = \underbrace{P \cdot P \cdot \cdots \cdot P}_{n \text{ Mal}} = P^n.
 
 \subsection{Viterbi-Dekodierung}
 
-Der Viterbi-Algorithmus ist ein dynamischer Programmieralgorithmus, der verwendet wird, um die wahrscheinlichste Sequenz von versteckten Zuständen in einem Hidden Markov Model (HMM) zu finden, basierend auf einer gegebenen Sequenz von beobachteten Ereignissen. Der Algorithmus wurde von Andrew Viterbi 1967 \citet{viterbierror},
-erstmals vorgeschlagen und ist besonders nützlich in Anwendungen, bei denen sequenzielle Daten auftreten, deren Zusammensetzung Schlüsse auf die zugrundeliegenden wahren Zustände zulassen. Die Fähigkeit, aus den beobachtbaren Zuständen auf versteckte Wahrheiten schließen zu können, macht den Viterbi-Algorithmus praxisrelevant in vielen Bereichen, wie in der Elektrotechnik bei der Analyse von Kommunikationssystemen oder in der Bioinformatik bei der Genomsequenzierung.
+Der Viterbi-Algorithmus ist ein dynamischer Programmieralgorithmus, der verwendet wird, um die wahrscheinlichste Sequenz von versteckten Zuständen in einem Hidden Markov Model (HMM) zu finden, basierend auf einer gegebenen Sequenz von beobachteten Ereignissen. Der Algorithmus wurde von Andrew Viterbi 1967 \cite{viterbierror} erstmals vorgeschlagen und ist besonders nützlich in Anwendungen, bei denen sequenzielle Daten auftreten, deren Zusammensetzung Schlüsse auf die zugrundeliegenden wahren Zustände zulassen. Die Fähigkeit, aus den beobachtbaren Zuständen auf versteckte Wahrheiten schließen zu können, macht den Viterbi-Algorithmus praxisrelevant in vielen Bereichen, etwa in der Elektrotechnik bei der Analyse von Kommunikationssystemen oder in der Bioinformatik bei der Genomsequenzierung.
 Hierbei werden Emissionswahrscheinlichkeiten sowie Übergangswahrscheinlichkeiten zwischen den Zuständen berücksichtigt, um die wahrscheinlichste Sequenz zu bestimmen.
 
 \medskip
@@ -272,20 +311,20 @@ und $\psi_t(j)$ den optimalen Vorgängerzustand.
 
 \paragraph{Initialisierung}
 \begin{align}
-  \delta_1(i) &= \pi_i \cdot b_i(o_1), \quad \text{für } i = 1, \ldots, N, \\
-  \psi_1(i)   &= 0.
+  \delta_1(i) &= \pi_i \cdot b_i(o_1), && \text{für } i = 1, \ldots, N, \\
+  \psi_1(i)   &= 0,                   && \text{für } i = 1, \ldots, N.
 \end{align}
 
 \paragraph{Rekursion}
 Für $t = 2, \ldots, T$ und $j = 1, \ldots, N$:
 \begin{align}
-  \delta_t(j) &= \left[\max_{i \in \{1, \ldots, N\}} \delta_{t-1}(i) \cdot a_{ij} \right] \cdot b_j(o_t), \\
+  \delta_t(j) &= \left[ \max_{i \in \{1, \ldots, N\}} \delta_{t-1}(i) \cdot a_{ij} \right] \cdot b_j(o_t), \\
   \psi_t(j)   &= \arg\max_{i \in \{1, \ldots, N\}} \delta_{t-1}(i) \cdot a_{ij}.
 \end{align}
 
 \paragraph{Terminierung}
 \begin{align}
-  P^* &= \max_{i \in \{1, \ldots, N\}} \delta_T(i), \\
+  P^*   &= \max_{i \in \{1, \ldots, N\}} \delta_T(i), \\
   q_T^* &= \arg\max_{i \in \{1, \ldots, N\}} \delta_T(i).
 \end{align}
 
@@ -306,16 +345,20 @@ Definiere $\ell_t(j) = \log \delta_t(j)$. Dann gilt:
 
 \textbf{Rekursion:}
 Für $t = 2, \ldots, T$ und $j = 1, \ldots, N$:
-\begin{align}
-  \ell_t(j) &= \max_{i \in \{1, \ldots, N\}} [\ell_{t-1}(i) + \log a_{ij}] + \log b_j(o_t), \\
-  \psi_t(j) &= \arg\max_{i \in \{1, \ldots, N\}} [\ell_{t-1}(i) + \log a_{ij}].
-\end{align}
+\begin{equation}
+\begin{aligned}
+  \ell_t(j) &= \max_{i \in \{1, \ldots, N\}} \bigl[\ell_{t-1}(i) + \log a_{ij}\bigr] + \log b_j(o_t), \\
+  \psi_t(j) &= \arg\max_{i \in \{1, \ldots, N\}} \bigl[\ell_{t-1}(i) + \log a_{ij}\bigr].
+\end{aligned}
+\end{equation}
 
 \textbf{Terminierung:}
-\begin{align}
-  P^* &= \max_{i \in \{1, \ldots, N\}} \ell_T(i), \\
+\begin{equation}
+\begin{aligned}
+  P^*   &= \max_{i \in \{1, \ldots, N\}} \ell_T(i), \\
   q_T^* &= \arg\max_{i \in \{1, \ldots, N\}} \ell_T(i).
-\end{align}
+\end{aligned}
+\end{equation}
 
 \textbf{Rückverfolgung:}
 \begin{equation}
