@@ -1,5 +1,5 @@
 from erode_dilate import opening, erode, dilate, closing, binarize
-from masks import sobel
+from masks import laplace, sobel, Difference_of_Gaussians
 import cv2
 import numpy as np
 
@@ -37,7 +37,9 @@ def thinning(img, x=1):
     
     return output_img
 
-img=cv2.imread("frame1.jpg", cv2.IMREAD_GRAYSCALE)
-#img=binarize(img)
-#img=sobel(img) # für Kantendetektion
-cv2.imwrite("thinning.png", thinning(img, x=1))
+#img=cv2.imread("frame1.jpg", cv2.IMREAD_GRAYSCALE)
+img=binarize("frame2.jpg")
+img=laplace(img)
+#img=Difference_of_Gaussians(img)
+img=thinning(img, x=1)# für Kantendetektion
+cv2.imwrite("thinning_2.png", img)
