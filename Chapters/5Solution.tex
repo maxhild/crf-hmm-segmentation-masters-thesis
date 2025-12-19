@@ -1,8 +1,43 @@
-%*****************************************
-\chapter{Ausführung der Lösung}\label{ch:solution}
-%*****************************************
-Dieses Kapitel kann auch in mehrere Kapitel aufgeteilt werden, wenn das sinnvoll ist!
+\section{Merkmalsextraktion und Reduktion des Beobachtungsraums}
+\label{sec:feature_extraction}
 
-\section{Unterkapitel n}
+Um die Echtzeitanforderungen des Systems zu erfüllen, wird auf die Verwendung rechenintensiver Deep-Learning-Features verzichtet. Stattdessen wird jedes Videobild $I_t$ zu einem Zeitpunkt $t$ auf einen kompakten, niederdimensionalen Messvektor $y_t \in \mathbb{R}^6$ reduziert. Dieser Vektor aggregiert globale Informationen über Bewegung, Farbverteilung und Bildstruktur, die als Eingangsgrößen für die Bank der Kalman-Filter dienen.
 
-\subsection{Unterunterkapitel n}
+Der Messvektor $y_t$ ist definiert als:
+\begin{equation}
+    y_t = \begin{bmatrix} v_{x,t} & v_{y,t} & \mu_{H,t} & \mu_{S,t} & \mu_{V,t} & E_{\text{text},t} \end{bmatrix}^\top
+\end{equation}
+
+Im Folgenden werden die einzelnen Komponenten hergeleitet.
+
+\subsection{Globale Bewegungsschätzung (Motion)}
+Die relative Bewegung der Endoskopiekamera korreliert stark mit den prozeduralen Phasen (z.\,B. schnelle Bewegung bei Navigation vs. statisches Bild bei Inspektion). Zur Schätzung der globalen Kamerabewegung wird zunächst das dichte optische Flussfeld $F_t$ zwischen dem aktuellen Frame $I_t$ und dem vorherigen Frame $I_{t-1}$ berechnet. Sei $f_t(u,v) = (\delta x, \delta y)$ der Verschiebungsvektor für ein Pixel an der Position $(u,v)$.
+
+Da endoskopische Aufnahmen oft lokale Störungen enthalten (z.\,B. sich bewegende Instrumente oder Flüssigkeiten), ist der arithmetische Mittelwert des Flussfeldes kein robuster Schätzer für die globale Kamerabewegung. Stattdessen wird der \emph{Median} der Flusskomponenten verwendet, um Ausreißer effektiv zu unterdrücken:
+\begin{align}
+    v_{x,t} &= \text{median}_{(u,v)} \{ \delta x \mid (\delta x, \delta y) \in F_t \} \\
+    v_{y,t} &= \text{median}_{(u,v)} \{ \delta y \mid (\delta x, \delta y) \in F_t \}
+\end{align}
+Dies liefert einen robusten Geschwindigkeitsvektor für die dominante Hintergrundbewegung.
+
+\subsection{Farbstatistik (Color)}
+Die Farbverteilung ist ein kritischer Indikator für den betrachteten Gewebetyp (Mukosa, Blut, Stuhl) oder technische Zustände (NBI-Modus, unzureichende Beleuchtung). Um die Farbinformation von reinen Helligkeitsschwankungen zu entkoppeln, wird das Bild zunächst vom RGB-Farbraum in den HSV-Farbraum (Hue, Saturation, Value) transformiert.
+
+Für jeden Kanal $c \in \{H, S, V\}$ wird der globale Mittelwert berechnet:
+\begin{equation}
+    \mu_{c,t} = \frac{1}{W \cdot H} \sum_{u=1}^{W} \sum_{v=1}^{H} I_t^{(c)}(u,v)
+\end{equation}
+Hierbei bezeichnen $W$ und $H$ die Breite und Höhe des Videoframes. Der Kanal $\mu_H$ (Farbton) dient hierbei primär der Unterscheidung von Gewebearten, während $\mu_V$ (Helligkeit) zur Detektion von Unterbelichtung oder Outside-Zuständen genutzt wird.
+
+\subsection{Texturenergie und Bildschärfe (Texture)}
+Die Strukturinformation des Bildes gibt Aufschluss darüber, ob die Kamera fokussiert ist oder ob die Sicht durch Rauch, Flüssigkeit oder zu geringen Wandabstand beeinträchtigt ist. Als Maß für die Bildschärfe ("Texturenergie") wird die Varianz des mit einem Laplace-Operator gefilterten Grauwertbildes verwendet.
+
+Sei $L_t$ das Resultat der Faltung des Grauwertbildes $I_t^{\text{gray}}$ mit dem Laplace-Kernel $\nabla^2$:
+\begin{equation}
+    L_t(u,v) = (I_t^{\text{gray}} * \nabla^2)(u,v)
+\end{equation}
+Die Texturenergie $E_{\text{text},t}$ ist definiert als die Varianz dieses gefilterten Bildes:
+\begin{equation}
+    E_{\text{text},t} = \text{Var}(L_t) = \frac{1}{W \cdot H} \sum_{u,v} (L_t(u,v) - \bar{L}_t)^2
+\end{equation}
+Hohe Werte von $E_{\text{text},t}$ indizieren scharfe Kanten und strukturreiches Gewebe, während Werte nahe Null auf Unschärfe oder homogene Flächen (z.\,B. Überbelichtung) hinweisen.
