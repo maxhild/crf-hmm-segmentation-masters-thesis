@@ -1,7 +1,7 @@
 %*****************************************
 \chapter{Lösungsansatz}\label{ch:approach}
 %*****************************************
-Eine assistierte Dokumentation von Endoskopievideos zu ermöglichen kann nur gelingen, wenn die
+Die assistierte Dokumentation von Endoskopievideos zu ermöglichen kann nur gelingen, wenn die
 Verarbeitung der Videodaten in Quasi-Echtzeit erfolgt. Daher ist es notwendig, effiziente Algorithmen zu verwenden, die eine schnelle Segmentierung von Videoframes ermöglichen.
 Um eine robuste Segmentierung eines Endoskopievideos zu gewährleisten, sollte das Verfahren in der Lage sein, sowohl lokale Bildinformationen als auch den globalen Kontext der Videoaufnahme zu berücksichtigen.
 \vspace{0.5em}
@@ -18,7 +18,23 @@ Die Analyse endoskopischer Videos stellt eine besondere Herausforderung dar, da 
 \vspace{0.5em}
 \noindent
 \textbf{Grundidee.}  
-Das vorgeschlagene System basiert auf einer hierarchischen Struktur, in der eine \emph{Markov-Kette} als übergeordneter Prozess die semantischen Phasen des Videos beschreibt, während innerhalb jeder Phase ein \emph{Kalman-Filter} die kontinuierlichen visuellen Messgrößen schätzt. Jede diskrete Phase \(s_t \in \{1,\dots,K\}\) besitzt somit ein eigenes lokales Zustandsraummodell:
+Das vorgeschlagene System basiert auf einer hierarchischen Struktur, in der eine \emph{Markov-Kette} als übergeordneter Prozess die semantischen Phasen des Videos beschreibt, während innerhalb jeder Phase verschiedene Klassifikationsmodelle, vorrangig ein CNN, aus kontinuierlichen visuellen Messgrößen Wahrscheinlichkeiten schätzt. Dafür soll im folgenden ein Modell konzipiert werden, das die Zustandsvariable $S_t$ schätzt. Darüber soll modelliert werden, welcher Zustand $s_i$ aktuell vorliegt.
+
+
+\begin{equation}
+S_t = s_i
+\end{equation}
+
+Da es sich um ein stochstisches Modell handelt, wird das Gesetz der totalen Wahrscheinlichkeit als Grundlage für die Schätzung der Zufallsvariable angenommen.
+
+\begin{equation}
+P(S_t) = \sum_{i=1}^{K} P(S_t = s_i) P(y_t \mid S_t = s_i)
+\end{equation}
+
+
+
+
+Jede diskrete Phase \(s_t \in \{1,\dots,K\}\) besitzt somit ein eigenes lokales Zustandsraummodell:
 \begin{align}
 x_t &= F_{s_t} x_{t-1} + w_t, \quad w_t \sim \mathcal{N}(0,Q_{s_t}),\\
 y_t &= H_{s_t} x_t + v_t, \quad v_t \sim \mathcal{N}(0,R_{s_t}),
@@ -50,11 +66,17 @@ wobei \(W_{ij}\) eine skalierende Gewichtungsmatrix darstellt. Dadurch wird der 
 \vspace{0.5em}
 \noindent
 \textbf{Globaler Kontext und Regularisierung.}  
-Über die gesamte Videolänge hinweg entsteht so eine \emph{Markov-Kette von Kalman-Filtern}. Um zeitliche Kohärenz zu gewährleisten, kann die diskrete Zustandsfolge zusätzlich als \emph{Diskretes Random Field (DRF)} über die Zeit modelliert werden:
+Über die gesamte Videolänge hinweg entsteht so eine Markov-Kette, bei der die einzelnen Zustände durch verschiedene Modelle über Featurevektoren aktualisiert werden. Hierbei wurden verschiedene Features erprobt, die auf im Voraus bekannte Merkmale oder gelernte Features angepasst werden können. Nach der Markovannahme lassen sich die Annahmen aus den vorherigen Durchläufen, also die Priors, im Prior des aktuellen Zustands zusammenfassen.
+
+\begin{equation}
+P(s_t \mid y_{1:t-1}) = \sum_{i=1}^{K} P(s_t \mid s_{t-1}=i) P(s_{t-1}=i \mid y_{1:t-1})
+\end{equation}
+
+Da bei Endoskopievideos stellenweise vorhersehbarer, zeitlicher Zusammenhang zwischen den Zuständen vorliegen kann, soll die diskrete Zustandsfolge zusätzlich als \emph{Diskretes Random Field (DRF)} über die Zeit modelliert werden:
 \[
 P(s_{1:T}) = \prod_{t=1}^{T} P(s_t \mid s_{t-1}),
 \]
-wobei Dauerwahrscheinlichkeiten (\emph{duration priors}) für typische Phasenlängen in die Regularisierung eingehen. Diese Formulierung erlaubt es, das Verfahren nicht nur als rekursiven Filter, sondern auch als sequentielles Optimierungsproblem (z.\,B. mittels Viterbi-Dekodierung) zu interpretieren.
+Hier sollen Dauerwahrscheinlichkeiten für typische Phasenlängen in die Regularisierung eingehen. Diese Formulierung erlaubt es, das Verfahren nicht nur als rekursiven Filter, sondern auch als sequentielles Optimierungsproblem (z.\,B. mittels Viterbi-Dekodierung) zu interpretieren. 
 
 \vspace{0.5em}
 \noindent
