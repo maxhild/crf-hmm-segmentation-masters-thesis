@@ -1,37 +1,33 @@
 %*****************************************
 \chapter{Lösungsansatz}\label{ch:approach}
 %*****************************************
-Die assistierte Dokumentation von Endoskopievideos zu ermöglichen kann nur gelingen, wenn die
-Verarbeitung der Videodaten in Quasi-Echtzeit erfolgt. Daher ist es notwendig, effiziente Algorithmen zu verwenden, die eine schnelle Segmentierung von Videoframes ermöglichen.
+Wie in den vorangegangenen Kapiteln dargelegt, besteht ein valides und belegbares Interesse daran, die Durchführung von Endoskopien durch den Einsatz von künstlicher Intelligenz und Informationssystemen effizienter zu gestalten. Dabei ist es jedoch, wie Hann et al. \cite{hann_entscheidungsunterstutzung_2025} darlegten, sinnvoll zu evaluieren wo sich die erweiterten Methoden tatsächlich positiv auf den Arbeitsaufwand auswirken. Um automatisiert assistierte Dokumentation von Endoskopievideos im Arbeitsalltag zu integrieren, sollte die Verarbeitung der Videodaten mit möglichst geringem Rechenaufwand erfolgen. Daher ist es reizvoll, effiziente Algorithmen zu entwickeln, die eine schnelle Segmentierung von Videoframes in Kategorien zu ermöglichen. Wenn diese Kategorien nach der Untersuchung bereits gesichert analysiert wurden, könnten Statistiken zur Endoskopie sowie vorgefertigte Dokumentationsskelette zur verfügung gestellt werden.
 Um eine robuste Segmentierung eines Endoskopievideos zu gewährleisten, sollte das Verfahren in der Lage sein, sowohl lokale Bildinformationen als auch den globalen Kontext der Videoaufnahme zu berücksichtigen.
-\vspace{0.5em}
 \noindent
 Das Ziel der Untersuchung ist es, ein System zu entwickeln, das diese Anforderungen erfüllt und eine präzise sowie effiziente Analyse von Endoskopievideos ermöglicht.
-Am Ende soll vermieden werden, dass die Berechnungen des Systems zu komplex für eine praxisrelevante Nutzung werden. Aus diesem Grund verwendet das System den Ansatz der Teilung entlang der temporalen Achse direkt in der Architektur.
+Am Ende soll vermieden werden, das die Berechnungen des Systems zu komplex für eine praxisrelevante Nutzung werden. Aus diesem Grund verwendet das System den Ansatz der Teilung entlang der temporalen Achse direkt in der Architektur.
 Die Intuition hierbei ist die folgende: Wenn das Ziel die Bewertung des Videos in einzelnen Segmenten ist, dann ist es sinnvoll, auch die Kriterien für die Segmente nicht universell sondern segmentiert anzuwenden.
-\vspace{0.5em} 
 
 \section{Konzeptionelles Modell zur Zustandsabschätzung in endoskopischen Videosequenzen}
 
-Die Analyse endoskopischer Videos stellt eine besondere Herausforderung dar, da die Bildfolgen sowohl kontinuierliche visuelle Dynamiken (Beleuchtung, Bewegung, Farbspektrum) als auch diskrete prozedurale Phasen (Eintritt, Navigation, Filterwechsel, Rückzug) aufweisen. Ein reines kontinuierliches Modell erfasst die abrupten Übergänge zwischen diesen Phasen nur unzureichend, während ein ausschließlich diskretes Modell die innerhalb einer Phase auftretenden Messrauschprozesse und langsamen Veränderungen nicht adäquat beschreibt. Aus diesem Grund wird in dieser Arbeit ein hybrides probabilistisches Modell vorgeschlagen, das diskrete und kontinuierliche Zustandsdynamiken in einem gemeinsamen formalen Rahmen kombiniert.
+Die Analyse endoskopischer Videos stellt eine besondere Herausforderung dar, da die Bildfolgen sowohl kontinuierliche visuelle Dynamiken (Beleuchtung, Bewegung, Farbspektrum) als auch diskrete prozedurale Phasen (Eintritt, Navigation, Filterwechsel, Rückzug) aufweisen. Ein reines kontinuierliches Modell erfasst die abrupten Übergänge zwischen diesen Phasen nur unzureichend, während ein ausschließlich diskretes Modell die innerhalb einer Phase auftretenden Messrauschprozesse und langsamen Veränderungen nicht adäquat beschreibt. Aus diesem Grund wird in dieser Arbeit ein hybrides probabilistisches Modell vorgeschlagen, das diskrete und kontinuierliche Zustandsdynamiken in einem gemeinsamen formalen  Rahmen kombiniert.
 
 \vspace{0.5em}
 \noindent
 \textbf{Grundidee.}  
-Das vorgeschlagene System basiert auf einer hierarchischen Struktur, in der eine \emph{Markov-Kette} als übergeordneter Prozess die semantischen Phasen des Videos beschreibt, während innerhalb jeder Phase verschiedene Klassifikationsmodelle, vorrangig ein CNN, aus kontinuierlichen visuellen Messgrößen Wahrscheinlichkeiten schätzt. Dafür soll im folgenden ein Modell konzipiert werden, das die Zustandsvariable $S_t$ schätzt. Darüber soll modelliert werden, welcher Zustand $s_i$ aktuell vorliegt.
+Das vorgeschlagene System basiert auf einer hierarchischen Struktur, in der eine \emph{Markov-Kette} als übergeordneter Prozess die semantischen Phasen des Videos beschreibt, während innerhalb jeder Phase verschiedene Klassifikationsmodelle, wie ein CNN oder ein binäres Zustandsbasiertes Switchmodell, aus kontinuierlichen visuellen Messgrößen Wahrscheinlichkeiten schätzt. Dafür soll im folgenden ein Modell konzipiert werden, das die Zustandsvariable $S_t$ schätzt. Darüber soll modelliert werden, welcher Zustand $s_i$ aktuell vorliegt.
 
 
 \begin{equation}
 S_t = s_i
 \end{equation}
 
-Da es sich um ein stochstisches Modell handelt, wird das Gesetz der totalen Wahrscheinlichkeit als Grundlage für die Schätzung der Zufallsvariable angenommen.
+Da es sich um ein stochastisches Modell handelt, wird das Gesetz der totalen Wahrscheinlichkeit als Grundlage für die Schätzung einer Zufallsvariable angenommen. 
+
 
 \begin{equation}
 P(S_t) = \sum_{i=1}^{K} P(S_t = s_i) P(y_t \mid S_t = s_i)
 \end{equation}
-
-
 
 
 Jede diskrete Phase \(s_t \in \{1,\dots,K\}\) besitzt somit ein eigenes lokales Zustandsraummodell:
@@ -43,7 +39,9 @@ wobei \(x_t \in \mathbb{R}^n\) den latenten Systemzustand (z.\,B. Bewegungsenerg
 \[
 P(s_t = j \mid s_{t-1} = i) = A_{ij}.
 \]
-Dieses übergeordnete Markov-Modell bestimmt, welcher Kalman-Filter zur jeweiligen Zeit aktiv ist und welche Systemdynamik angenommen wird.
+Dieses übergeordnete Markov-Modell bestimmt, welcher Kalman-Filter zur jeweiligen Zeit wie stark aktiv ist und welche Systemdynamik angenommen wird.
+
+
 
 \vspace{0.5em}
 \noindent
@@ -78,12 +76,14 @@ P(s_{1:T}) = \prod_{t=1}^{T} P(s_t \mid s_{t-1}),
 \]
 Hier sollen Dauerwahrscheinlichkeiten für typische Phasenlängen in die Regularisierung eingehen. Diese Formulierung erlaubt es, das Verfahren nicht nur als rekursiven Filter, sondern auch als sequentielles Optimierungsproblem (z.\,B. mittels Viterbi-Dekodierung) zu interpretieren. 
 
-\vspace{0.5em}
+\subsection{CRF - ähnliches Verhalten einer Bank von Kalman Filtern}
+
+In der Umsetzung sollen für jeden Zusatandsübergang Kalmanfilter auf einem Featurevektor trainiert werden. Die Reihenfolge der Auswertung des Kalmanfilters wird durch die Zustandsübergangswahrscheinlichkeiten der Markovkette bestimmt. Da die Kalmanfilter vorher auf allen Frames, die mit dem gegebenen Zustand annotiert sind, trainiert werden um eine individualle Binäre Klassifikation durchzuführen, erfüllen Sie das Markovkriterium nur teilweise.
+Sie nutzen die Informationen der vorherigen Frames nicht direkt sondern über das Training. Deshalb bewerten Sie den Übergang anhand des gelernten Durchschnittsmodell. Dieser Wert wird für die Wahrscheinlikeitsberechnung des nächsten Zustandsübergangs aufgenommen. Der aktuelle Zustand wird mit dem Wissen aus der Vergangenheit bestimmt. Daher verhält sich das Gesamtsystem wie ein bedingtes Random Field (CRF), in dem die Kalmanfilter die lokalen Beobachtungen modellieren und die Markov-Kette die Abhängigkeiten zwischen den Zuständen über die Zeit steuert.
 \noindent
 \textbf{Anwendung auf endoskopische Videos.}  
 Für die konkrete Anwendung werden die Zustände der Markov-Kette semantisch interpretiert, etwa als \emph{Eintritt in das Lumen}, \emph{stabile Navigation}, \emph{NBI-Modus}, \emph{Nahaufnahme der Mukosa} oder \emph{Austritt}. Jeder dieser Zustände besitzt eine spezifische Dynamik visueller Merkmale, welche durch ein Kalman-Modell mit angepassten Rauschparametern \(Q_{s_t}, R_{s_t}\) beschrieben wird. Diese Parameter können durch Domänenwissen vorinitialisiert werden – etwa durch die erwartete Kamerabewegung oder typische Helligkeitsschwankungen in einem bestimmten Abschnitt – und anschließend datengetrieben verfeinert werden. 
 
-\vspace{0.5em}
 \noindent
 \textbf{Zusammenfassung.}  
 Das resultierende Modell kann als \emph{hybrides Markov–Kalman-System} verstanden werden, in dem kontinuierliche Zustände die lokalen visuellen Eigenschaften schätzen und diskrete Zustände den prozeduralen Kontext erfassen. Diese duale Architektur erlaubt eine interpretierbare, probabilistisch fundierte Beschreibung endoskopischer Prozesse, die sowohl abrupten Zustandswechseln als auch stochastischen Messrauschen gerecht wird. Im Gegensatz zu rein datengetriebenen neuronalen Ansätzen basiert das hier entwickelte Verfahren auf explizitem Domänenwissen, was eine robuste und nachvollziehbare Zustandsabschätzung ermöglicht.

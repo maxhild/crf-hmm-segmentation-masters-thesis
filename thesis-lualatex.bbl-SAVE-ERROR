@@ -65,7 +65,6 @@
       \strng{authornamehash}{1fcfc68348618b25363572b58bb4157a}
       \strng{authorfullhash}{f0aa80a050f87e52aea98d284a33ee7c}
       \strng{authorfullhashraw}{f0aa80a050f87e52aea98d284a33ee7c}
-      \field{labelalpha}{Arn+20}
       \field{sortinit}{A}
       \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
       \field{labelnamesource}{author}
@@ -204,7 +203,6 @@
       \strng{authornamehash}{4c8708c2581c7e35ffa61583fee74b3a}
       \strng{authorfullhash}{6357e8907e7cb04fe7b3b875a849cd8b}
       \strng{authorfullhashraw}{6357e8907e7cb04fe7b3b875a849cd8b}
-      \field{labelalpha}{Bre+22}
       \field{sortinit}{B}
       \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
       \field{labelnamesource}{author}
@@ -345,7 +343,6 @@
       \strng{authornamehash}{873658876f0880f073976ddbab93c143}
       \strng{authorfullhash}{60517cf52ab529f0b0a7eccf24befec3}
       \strng{authorfullhashraw}{60517cf52ab529f0b0a7eccf24befec3}
-      \field{labelalpha}{Bud+25}
       \field{sortinit}{B}
       \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
       \field{labelnamesource}{author}
@@ -389,7 +386,6 @@
       \strng{authornamehash}{f28cffe719bb1e44e36c11a10344286b}
       \strng{authorfullhash}{4f4a0d75e11d3b9882bf58a8dcc796bd}
       \strng{authorfullhashraw}{4f4a0d75e11d3b9882bf58a8dcc796bd}
-      \field{labelalpha}{CYR03}
       \field{sortinit}{C}
       \field{sortinithash}{4d103a86280481745c9c897c925753c0}
       \field{labelnamesource}{author}
@@ -421,7 +417,6 @@
       \strng{authornamehash}{8fd8878f59438a03b1fc323c155c769f}
       \strng{authorfullhash}{8fd8878f59438a03b1fc323c155c769f}
       \strng{authorfullhashraw}{8fd8878f59438a03b1fc323c155c769f}
-      \field{labelalpha}{Coo09}
       \field{sortinit}{C}
       \field{sortinithash}{4d103a86280481745c9c897c925753c0}
       \field{labelnamesource}{author}
@@ -441,6 +436,91 @@
       \endverb
       \verb{url}
       \verb https://www.jstor.org/stable/2968473
+      \endverb
+    \endentry
+    \entry{vit_2025}{article}{}{}
+      \name{author}{12}{}{%
+        {{hash=72308762399d6ab62bbd9391c64c7bfd}{%
+           family={Dosovitskiy},
+           familyi={D\bibinitperiod},
+           given={Alexey},
+           giveni={A\bibinitperiod}}}%
+        {{hash=836254958eac09b30d45dd67a75ce4fa}{%
+           family={Beyer},
+           familyi={B\bibinitperiod},
+           given={Lucas},
+           giveni={L\bibinitperiod}}}%
+        {{hash=6807e3c00242c6bf6a3179905040471b}{%
+           family={Kolesnikov},
+           familyi={K\bibinitperiod},
+           given={Alexander},
+           giveni={A\bibinitperiod}}}%
+        {{hash=b398fca6879fde89a032b8e7de2f26b5}{%
+           family={Weissenborn},
+           familyi={W\bibinitperiod},
+           given={Dirk},
+           giveni={D\bibinitperiod}}}%
+        {{hash=00b950307c7d096765bb6df00c7c5c3a}{%
+           family={Zhai},
+           familyi={Z\bibinitperiod},
+           given={Xiaohua},
+           giveni={X\bibinitperiod}}}%
+        {{hash=1a47640139e63b9b5969c969dfe95def}{%
+           family={Unterthiner},
+           familyi={U\bibinitperiod},
+           given={Thomas},
+           giveni={T\bibinitperiod}}}%
+        {{hash=3ecd5c92979bca617eed2523da86dae2}{%
+           family={Deghani},
+           familyi={D\bibinitperiod},
+           given={Mostafa},
+           giveni={M\bibinitperiod}}}%
+        {{hash=06829adce8713f0ace444279dcd7328f}{%
+           family={Minderer},
+           familyi={M\bibinitperiod},
+           given={Matthias},
+           giveni={M\bibinitperiod}}}%
+        {{hash=c95269b4a2e23e1e526be521c7ec6ad4}{%
+           family={Heigold},
+           familyi={H\bibinitperiod},
+           given={Georg},
+           giveni={G\bibinitperiod}}}%
+        {{hash=450963f966620925cb8fecd32f7a6ee1}{%
+           family={Gelly},
+           familyi={G\bibinitperiod},
+           given={Sylvain},
+           giveni={S\bibinitperiod}}}%
+        {{hash=831027ee0ebf22375e2a86afc1881909}{%
+           family={Uszkoreit},
+           familyi={U\bibinitperiod},
+           given={Jakob},
+           giveni={J\bibinitperiod}}}%
+        {{hash=493a532418540859dca92cf3b579de2a}{%
+           family={Houlsby},
+           familyi={H\bibinitperiod},
+           given={Neil},
+           giveni={N\bibinitperiod}}}%
+      }
+      \strng{namehash}{d96316bc7578db680aba71d4226354c8}
+      \strng{fullhash}{e94b3a21341cdcb693367eaf0750f962}
+      \strng{fullhashraw}{e94b3a21341cdcb693367eaf0750f962}
+      \strng{bibnamehash}{d96316bc7578db680aba71d4226354c8}
+      \strng{authorbibnamehash}{d96316bc7578db680aba71d4226354c8}
+      \strng{authornamehash}{d96316bc7578db680aba71d4226354c8}
+      \strng{authorfullhash}{e94b3a21341cdcb693367eaf0750f962}
+      \strng{authorfullhashraw}{e94b3a21341cdcb693367eaf0750f962}
+      \field{sortinit}{D}
+      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{ICLR}
+      \field{title}{An image is worth 16X16 words: transformers for image recognition at scale}
+      \field{year}{2021}
+      \verb{urlraw}
+      \verb https://arxiv.org/pdf/2010.11929
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/pdf/2010.11929
       \endverb
     \endentry
     \entry{Doubeni291}{article}{}{}
@@ -532,7 +612,6 @@
       \strng{authornamehash}{eddeecda71f85010280a46dbba169281}
       \strng{authorfullhash}{6b3bfa73c68f0a0a2ef4abb1aaa4e4f2}
       \strng{authorfullhashraw}{6b3bfa73c68f0a0a2ef4abb1aaa4e4f2}
-      \field{labelalpha}{Dou+18}
       \field{sortinit}{D}
       \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
       \field{labelnamesource}{author}
@@ -577,7 +656,6 @@
       \strng{authornamehash}{a002d03c177970a482f38d6ecd073f0d}
       \strng{authorfullhash}{a002d03c177970a482f38d6ecd073f0d}
       \strng{authorfullhashraw}{a002d03c177970a482f38d6ecd073f0d}
-      \field{labelalpha}{Dra88}
       \field{sortinit}{d}
       \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
       \field{labelnamesource}{author}
@@ -610,7 +688,6 @@
       \strng{authornamehash}{b81fcda9aacb09727e9575c0da9d53dc}
       \strng{authorfullhash}{b81fcda9aacb09727e9575c0da9d53dc}
       \strng{authorfullhashraw}{b81fcda9aacb09727e9575c0da9d53dc}
-      \field{labelalpha}{DF66}
       \field{sortinit}{D}
       \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
       \field{labelnamesource}{author}
@@ -653,7 +730,6 @@
       \strng{authornamehash}{cc88fc5122f18827b9e8f5a5ff01dcee}
       \strng{authorfullhash}{cc88fc5122f18827b9e8f5a5ff01dcee}
       \strng{authorfullhashraw}{cc88fc5122f18827b9e8f5a5ff01dcee}
-      \field{labelalpha}{eV15}
       \field{sortinit}{e}
       \field{sortinithash}{8da8a182d344d5b9047633dfc0cc9131}
       \field{labelnamesource}{author}
@@ -668,6 +744,35 @@
       \verb{url}
       \verb https://www.dgav.de/fileadmin/media/texte_pdf/zertifizierung/Zertifizierungsordnung_DGAV_4_2.pdf
       \endverb
+    \endentry
+    \entry{farneback2003two}{inproceedings}{}{}
+      \name{author}{1}{}{%
+        {{hash=7bda08f257f451eba0f1d8902689c8fb}{%
+           family={Farnebäck},
+           familyi={F\bibinitperiod},
+           given={Gunnar},
+           giveni={G\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{7bda08f257f451eba0f1d8902689c8fb}
+      \strng{fullhash}{7bda08f257f451eba0f1d8902689c8fb}
+      \strng{fullhashraw}{7bda08f257f451eba0f1d8902689c8fb}
+      \strng{bibnamehash}{7bda08f257f451eba0f1d8902689c8fb}
+      \strng{authorbibnamehash}{7bda08f257f451eba0f1d8902689c8fb}
+      \strng{authornamehash}{7bda08f257f451eba0f1d8902689c8fb}
+      \strng{authorfullhash}{7bda08f257f451eba0f1d8902689c8fb}
+      \strng{authorfullhashraw}{7bda08f257f451eba0f1d8902689c8fb}
+      \field{sortinit}{F}
+      \field{sortinithash}{2638baaa20439f1b5a8f80c6c08a13b4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Scandinavian Conference on Image Analysis}
+      \field{title}{Two-frame motion estimation based on polynomial expansion}
+      \field{year}{2003}
+      \field{pages}{363\bibrangedash 370}
+      \range{pages}{8}
     \endentry
     \entry{ferlay-2024}{book}{}{}
       \name{author}{10}{}{%
@@ -733,7 +838,6 @@
       \strng{authornamehash}{2dfa8db5d26cd084ce5f64846b03dc59}
       \strng{authorfullhash}{65f46181bdb5989f40bea3bdb65130f4}
       \strng{authorfullhashraw}{65f46181bdb5989f40bea3bdb65130f4}
-      \field{labelalpha}{Fer+24}
       \field{sortinit}{F}
       \field{sortinithash}{2638baaa20439f1b5a8f80c6c08a13b4}
       \field{labelnamesource}{author}
@@ -745,6 +849,87 @@
       \endverb
       \verb{url}
       \verb https://gco.iarc.who.int/media/globocan/factsheets/cancers/8-colon-fact-sheet.pdf
+      \endverb
+    \endentry
+    \entry{ha2018worldmodels}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=4467056eb9d0a44c1ec21bbb4d6152c5}{%
+           family={Ha},
+           familyi={H\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod}}}%
+        {{hash=288bdbcfe1b91ad7484d7a24f74f99ed}{%
+           family={Schmidhuber},
+           familyi={S\bibinitperiod},
+           given={Jürgen},
+           giveni={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{ac33097a207e3840f68fa6e4bd34710c}
+      \strng{fullhash}{ac33097a207e3840f68fa6e4bd34710c}
+      \strng{fullhashraw}{ac33097a207e3840f68fa6e4bd34710c}
+      \strng{bibnamehash}{ac33097a207e3840f68fa6e4bd34710c}
+      \strng{authorbibnamehash}{ac33097a207e3840f68fa6e4bd34710c}
+      \strng{authornamehash}{ac33097a207e3840f68fa6e4bd34710c}
+      \strng{authorfullhash}{ac33097a207e3840f68fa6e4bd34710c}
+      \strng{authorfullhashraw}{ac33097a207e3840f68fa6e4bd34710c}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{arXiv preprint arXiv:1803.10122}
+      \field{note}{See also https://worldmodels.github.io/}
+      \field{title}{World Models}
+      \field{year}{2018}
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/1803.10122
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/1803.10122
+      \endverb
+    \endentry
+    \entry{hafner2019dreamer}{inproceedings}{}{}
+      \name{author}{4}{}{%
+        {{hash=6a1d86e250a782086160211ed8814f06}{%
+           family={Hafner},
+           familyi={H\bibinitperiod},
+           given={Danijar},
+           giveni={D\bibinitperiod}}}%
+        {{hash=3a6fdf4df9a25f1d2d506ad9e86e1f6c}{%
+           family={Lillicrap},
+           familyi={L\bibinitperiod},
+           given={Timothy},
+           giveni={T\bibinitperiod}}}%
+        {{hash=8aa66e8231cc2fdbe67aa4f18ca970c6}{%
+           family={Ba},
+           familyi={B\bibinitperiod},
+           given={Jimmy},
+           giveni={J\bibinitperiod}}}%
+        {{hash=e34c5aa67281924804d54d88e58ca38a}{%
+           family={Norouzi},
+           familyi={N\bibinitperiod},
+           given={Mohammad},
+           giveni={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{9aca3b76f5abae60a22a50ebaaabe505}
+      \strng{fullhash}{88c74a45afdd86b1e3b1ee23d1d5c536}
+      \strng{fullhashraw}{88c74a45afdd86b1e3b1ee23d1d5c536}
+      \strng{bibnamehash}{88c74a45afdd86b1e3b1ee23d1d5c536}
+      \strng{authorbibnamehash}{88c74a45afdd86b1e3b1ee23d1d5c536}
+      \strng{authornamehash}{9aca3b76f5abae60a22a50ebaaabe505}
+      \strng{authorfullhash}{88c74a45afdd86b1e3b1ee23d1d5c536}
+      \strng{authorfullhashraw}{88c74a45afdd86b1e3b1ee23d1d5c536}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{International Conference on Learning Representations (ICLR)}
+      \field{title}{Dream to Control: Learning Behaviors by Latent Imagination}
+      \field{year}{2020}
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/1912.01603
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/1912.01603
       \endverb
     \endentry
     \entry{hann_entscheidungsunterstutzung_2025}{article}{}{}
@@ -763,7 +948,6 @@
       \strng{authornamehash}{26be2cba4f58031342608d92e9494d3a}
       \strng{authorfullhash}{26be2cba4f58031342608d92e9494d3a}
       \strng{authorfullhashraw}{26be2cba4f58031342608d92e9494d3a}
-      \field{labelalpha}{Han25}
       \field{sortinit}{H}
       \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
       \field{labelnamesource}{author}
@@ -791,7 +975,57 @@
       \verb https://doi.org/10.1007/s11377-024-00846-z
       \endverb
     \endentry
-    \entry{Junghanns2025rztebarometer}{report}{}{}
+    \entry{hwang2008generalized}{article}{}{}
+      \name{author}{3}{}{%
+        {{hash=4df8b8039a1158d2b656f75ae01dabae}{%
+           family={Hwang},
+           familyi={H\bibinitperiod},
+           given={Youngbae},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=a9036670970cfcf0a93dec5da42b57b5}{%
+           family={Kim},
+           familyi={K\bibinitperiod},
+           given={Jun-Sik},
+           giveni={J\bibinithyphendelim S\bibinitperiod}}}%
+        {{hash=50f6dcecf93b4184edf04491b09f3521}{%
+           family={Kweon},
+           familyi={K\bibinitperiod},
+           given={In-So},
+           giveni={I\bibinithyphendelim S\bibinitperiod}}}%
+      }
+      \strng{namehash}{9f97f62e293b0564b707eb82812e5697}
+      \strng{fullhash}{96cb9ee777a5a1b32330b17292f2a834}
+      \strng{fullhashraw}{96cb9ee777a5a1b32330b17292f2a834}
+      \strng{bibnamehash}{96cb9ee777a5a1b32330b17292f2a834}
+      \strng{authorbibnamehash}{96cb9ee777a5a1b32330b17292f2a834}
+      \strng{authornamehash}{9f97f62e293b0564b707eb82812e5697}
+      \strng{authorfullhash}{96cb9ee777a5a1b32330b17292f2a834}
+      \strng{authorfullhashraw}{96cb9ee777a5a1b32330b17292f2a834}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We present a new noise model for color channels for statistical change detection. Based on this noise modeling, we estimate the distribution of Euclidean distances between the pixel colors of the background image and those of the foreground image. The optimal threshold for change detection is automatically determined using the estimated distribution. We show that our noise modeling is appropriate for various color spaces. Because the detection results differ according to the color space, we utilize the expected number of error pixels to select the appropriate color space for our method. Even if we detect changes based on the optimal threshold in a properly selected color space, there will inevitably be some false classifications. To reject these erroneous cases, we adopt graph cuts that efficiently minimize the global energy while taking into account the effect of neighboring pixels. To validate the proposed method, we show experimental results for a large number of images including indoor and outdoor scenes with complex clutter.}
+      \field{issn}{1077-3142}
+      \field{journaltitle}{Computer Vision and Image Understanding}
+      \field{number}{3}
+      \field{title}{Change detection using a statistical model in an optimally selected color space}
+      \field{volume}{112}
+      \field{year}{2008}
+      \field{pages}{231\bibrangedash 242}
+      \range{pages}{12}
+      \verb{doi}
+      \verb https://doi.org/10.1016/j.cviu.2008.05.001
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/S1077314208000696
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/S1077314208000696
+      \endverb
+      \keyw{Change detection,Noise modeling,Color space selection,Graph cuts}
+    \endentry
+    \entry{Junghanns2025Ärztebarometer}{report}{}{}
       \name{author}{4}{}{%
         {{hash=4454996d006aabc3931a75bde62c6e46}{%
            family={Junghanns},
@@ -831,14 +1065,13 @@
       \strng{authornamehash}{83d929de2b0c43159b217820d1eaa0fb}
       \strng{authorfullhash}{f42c5e428d6114120d52748b996d3da8}
       \strng{authorfullhashraw}{f42c5e428d6114120d52748b996d3da8}
-      \field{labelalpha}{Jun+25}
       \field{sortinit}{J}
       \field{sortinithash}{b2f54a9081ace9966a7cb9413811edb4}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{isbn}{978-3-9824068-6-2}
       \field{number}{Januar 2025}
-      \field{title}{"Ärztebarometer": Eine Querschnittsbefragung ambulant-tätiger Ärzte in Deutschland}
+      \field{title}{Ärztebarometer": Eine Querschnittsbefragung ambulant-tätiger Ärzte in Deutschland}
       \field{type}{WIP-Analyse}
       \field{year}{2025}
       \verb{urlraw}
@@ -890,7 +1123,6 @@
       \strng{authornamehash}{4791fcacf6b386f15a669b425c321d8e}
       \strng{authorfullhash}{df26a26a9db8840e9f18917d5236e5c3}
       \strng{authorfullhashraw}{df26a26a9db8840e9f18917d5236e5c3}
-      \field{labelalpha}{Kah+18}
       \field{sortinit}{K}
       \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
       \field{labelnamesource}{author}
@@ -940,7 +1172,6 @@
       \strng{authornamehash}{2bdc83bc7a4c09a9020f492d9e1b5c92}
       \strng{authorfullhash}{2bdc83bc7a4c09a9020f492d9e1b5c92}
       \strng{authorfullhashraw}{2bdc83bc7a4c09a9020f492d9e1b5c92}
-      \field{labelalpha}{Kal60}
       \field{sortinit}{K}
       \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
       \field{labelnamesource}{author}
@@ -1207,7 +1438,6 @@
       \strng{authornamehash}{0e24b873fb7b80dadceb0a83b3d94d76}
       \strng{authorfullhash}{1bbcfd8d9c4af552a8aff3298adcf74f}
       \strng{authorfullhashraw}{1bbcfd8d9c4af552a8aff3298adcf74f}
-      \field{labelalpha}{Kam+17}
       \field{sortinit}{K}
       \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
       \field{labelnamesource}{author}
@@ -1247,7 +1477,6 @@
       \strng{authornamehash}{ad497e2c106315e73a028732f093b419}
       \strng{authorfullhash}{ad497e2c106315e73a028732f093b419}
       \strng{authorfullhashraw}{ad497e2c106315e73a028732f093b419}
-      \field{labelalpha}{KG23}
       \field{sortinit}{K}
       \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
       \field{labelnamesource}{author}
@@ -1292,7 +1521,6 @@
       \strng{authornamehash}{b3fd31ac26530bdd31b91f5ba2eb0135}
       \strng{authorfullhash}{dc25f47fc5058b47f22ff10dd08f0018}
       \strng{authorfullhashraw}{dc25f47fc5058b47f22ff10dd08f0018}
-      \field{labelalpha}{Kou+21}
       \field{sortinit}{K}
       \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
       \field{labelnamesource}{author}
@@ -1358,7 +1586,6 @@
       \strng{authornamehash}{f1155b1f67f66bee6615e534c43850a6}
       \strng{authorfullhash}{7b667b027cfb999b948c3ad0e4eeaf91}
       \strng{authorfullhashraw}{7b667b027cfb999b948c3ad0e4eeaf91}
-      \field{labelalpha}{Lab+13}
       \field{sortinit}{L}
       \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
       \field{labelnamesource}{author}
@@ -1372,6 +1599,67 @@
       \range{pages}{-1}
       \verb{doi}
       \verb 10.1093/annonc/mdt354
+      \endverb
+    \endentry
+    \entry{6795724}{article}{}{}
+      \name{author}{7}{}{%
+        {{hash=9ae8dc3a930d73e11e1b22a9ef065055}{%
+           family={LeCun},
+           familyi={L\bibinitperiod},
+           given={Y.},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=7eacb03f7d28612977f50d8cb1be0bad}{%
+           family={Boser},
+           familyi={B\bibinitperiod},
+           given={B.},
+           giveni={B\bibinitperiod}}}%
+        {{hash=2ff32262125f2230f4fdc214030486c4}{%
+           family={Denker},
+           familyi={D\bibinitperiod},
+           given={J.\bibnamedelimi S.},
+           giveni={J\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+        {{hash=1d66cfa216fa640e918783d1c120463c}{%
+           family={Henderson},
+           familyi={H\bibinitperiod},
+           given={D.},
+           giveni={D\bibinitperiod}}}%
+        {{hash=1c36863cdb1999c03faa3c243dcda1a3}{%
+           family={Howard},
+           familyi={H\bibinitperiod},
+           given={R.\bibnamedelimi E.},
+           giveni={R\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{hash=ebda9ed808cef915758a63247dd83737}{%
+           family={Hubbard},
+           familyi={H\bibinitperiod},
+           given={W.},
+           giveni={W\bibinitperiod}}}%
+        {{hash=d1aa31ea5533302c18283f093ceec347}{%
+           family={Jackel},
+           familyi={J\bibinitperiod},
+           given={L.\bibnamedelimi D.},
+           giveni={L\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+      }
+      \strng{namehash}{a8a87a12538dbdb246c3bc01b5a3dcc2}
+      \strng{fullhash}{ffc15443f8a7fdf7e6f50273527fa0b5}
+      \strng{fullhashraw}{ffc15443f8a7fdf7e6f50273527fa0b5}
+      \strng{bibnamehash}{ffc15443f8a7fdf7e6f50273527fa0b5}
+      \strng{authorbibnamehash}{ffc15443f8a7fdf7e6f50273527fa0b5}
+      \strng{authornamehash}{a8a87a12538dbdb246c3bc01b5a3dcc2}
+      \strng{authorfullhash}{ffc15443f8a7fdf7e6f50273527fa0b5}
+      \strng{authorfullhashraw}{ffc15443f8a7fdf7e6f50273527fa0b5}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Neural Computation}
+      \field{number}{4}
+      \field{title}{Backpropagation Applied to Handwritten Zip Code Recognition}
+      \field{volume}{1}
+      \field{year}{1989}
+      \field{pages}{541\bibrangedash 551}
+      \range{pages}{11}
+      \verb{doi}
+      \verb 10.1162/neco.1989.1.4.541
       \endverb
     \endentry
     \entry{leung-2019}{article}{}{}
@@ -1415,7 +1703,6 @@
       \strng{authornamehash}{c673f248a19871226557b1695e7fc4e2}
       \strng{authorfullhash}{d441d258d92540c5784f9a5e58308d81}
       \strng{authorfullhashraw}{d441d258d92540c5784f9a5e58308d81}
-      \field{labelalpha}{Leu+19}
       \field{sortinit}{L}
       \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
       \field{labelnamesource}{author}
@@ -1480,7 +1767,6 @@
       \strng{authornamehash}{97bef6fb1b0872fb0e137aade6bcdacb}
       \strng{authorfullhash}{abdb2ab82dae66218b1769e136311767}
       \strng{authorfullhashraw}{abdb2ab82dae66218b1769e136311767}
-      \field{labelalpha}{Lie+12}
       \field{sortinit}{L}
       \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
       \field{labelnamesource}{author}
@@ -1494,6 +1780,84 @@
       \range{pages}{10}
       \verb{doi}
       \verb 10.7326/0003-4819-157-4-201208210-00002
+      \endverb
+    \endentry
+    \entry{liu2008siftflow}{inproceedings}{}{}
+      \name{author}{5}{}{%
+        {{hash=17bf470b120f24c48675bbcb261cab37}{%
+           family={Liu},
+           familyi={L\bibinitperiod},
+           given={Ce},
+           giveni={C\bibinitperiod}}}%
+        {{hash=8864d7fbf53b9f91f62caaa5bdad4067}{%
+           family={Yuen},
+           familyi={Y\bibinitperiod},
+           given={Jenny},
+           giveni={J\bibinitperiod}}}%
+        {{hash=2a80dd1cae02059e95bfed2f2715fd0a}{%
+           family={Torralba},
+           familyi={T\bibinitperiod},
+           given={Antonio},
+           giveni={A\bibinitperiod}}}%
+        {{hash=928b303d802c0389256c746430ef1935}{%
+           family={Sivic},
+           familyi={S\bibinitperiod},
+           given={Josef},
+           giveni={J\bibinitperiod}}}%
+        {{hash=3cfd34e389ca31c6581913f35af138c8}{%
+           family={Freeman},
+           familyi={F\bibinitperiod},
+           given={William\bibnamedelima T.},
+           giveni={W\bibinitperiod\bibinitdelim T\bibinitperiod}}}%
+      }
+      \name{editor}{3}{}{%
+        {{hash=751a9393d43438966f829203de48f8d4}{%
+           family={Forsyth},
+           familyi={F\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod}}}%
+        {{hash=637cf9e6546686b7ce3fcafd1946098d}{%
+           family={Torr},
+           familyi={T\bibinitperiod},
+           given={Philip},
+           giveni={P\bibinitperiod}}}%
+        {{hash=c72fc39e94030f67717052309266a44d}{%
+           family={Zisserman},
+           familyi={Z\bibinitperiod},
+           given={Andrew},
+           giveni={A\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Berlin, Heidelberg}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{f974f5a8e6f386c58b992632943e5943}
+      \strng{fullhash}{b599cab6b11354f45b9249949e6d1e7e}
+      \strng{fullhashraw}{b599cab6b11354f45b9249949e6d1e7e}
+      \strng{bibnamehash}{b599cab6b11354f45b9249949e6d1e7e}
+      \strng{authorbibnamehash}{b599cab6b11354f45b9249949e6d1e7e}
+      \strng{authornamehash}{f974f5a8e6f386c58b992632943e5943}
+      \strng{authorfullhash}{b599cab6b11354f45b9249949e6d1e7e}
+      \strng{authorfullhashraw}{b599cab6b11354f45b9249949e6d1e7e}
+      \strng{editorbibnamehash}{1705bf1f660c29172a4371a08b9b2ef8}
+      \strng{editornamehash}{a668c4775567a68ed76eeff3947034db}
+      \strng{editorfullhash}{1705bf1f660c29172a4371a08b9b2ef8}
+      \strng{editorfullhashraw}{1705bf1f660c29172a4371a08b9b2ef8}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Computer Vision -- ECCV 2008}
+      \field{series}{Lecture Notes in Computer Science}
+      \field{title}{SIFT Flow: Dense Correspondence across Different Scenes}
+      \field{volume}{5304}
+      \field{year}{2008}
+      \field{pages}{28\bibrangedash 42}
+      \range{pages}{15}
+      \verb{doi}
+      \verb 10.1007/978-3-540-88690-7_3
       \endverb
     \endentry
     \entry{lux-2023}{article}{}{}
@@ -1557,7 +1921,6 @@
       \strng{authornamehash}{be7cadd44ca1c427c27946dc4590921a}
       \strng{authorfullhash}{8e5eaea7e557fd9ecca780640db05fae}
       \strng{authorfullhashraw}{8e5eaea7e557fd9ecca780640db05fae}
-      \field{labelalpha}{Lux+23}
       \field{sortinit}{L}
       \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
       \field{labelnamesource}{author}
@@ -1606,7 +1969,6 @@
       \strng{authornamehash}{6d5015e56ba8de4c4d2da5e5a30f2fc8}
       \strng{authorfullhash}{b96504f71ac6fe694e59cf885b994c5d}
       \strng{authorfullhashraw}{b96504f71ac6fe694e59cf885b994c5d}
-      \field{labelalpha}{MBF08}
       \field{sortinit}{M}
       \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
       \field{labelnamesource}{author}
@@ -1640,7 +2002,6 @@
       \strng{authorfullhash}{9272b9913f5a955f49f1d8ab4ee1a76c}
       \strng{authorfullhashraw}{9272b9913f5a955f49f1d8ab4ee1a76c}
       \field{extraname}{1}
-      \field{labelalpha}{Mar06}
       \field{sortinit}{M}
       \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
       \field{labelnamesource}{author}
@@ -1670,7 +2031,6 @@
       \strng{authorfullhash}{9272b9913f5a955f49f1d8ab4ee1a76c}
       \strng{authorfullhashraw}{9272b9913f5a955f49f1d8ab4ee1a76c}
       \field{extraname}{2}
-      \field{labelalpha}{Mar13}
       \field{sortinit}{M}
       \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
       \field{labelnamesource}{author}
@@ -1710,7 +2070,6 @@
       \strng{authornamehash}{beef9003a61312e38289717694847498}
       \strng{authorfullhash}{beef9003a61312e38289717694847498}
       \strng{authorfullhashraw}{beef9003a61312e38289717694847498}
-      \field{labelalpha}{MT93}
       \field{sortinit}{M}
       \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
       \field{labelnamesource}{author}
@@ -1754,7 +2113,6 @@
       \strng{authornamehash}{24620d879eaccb707e85f44d66641794}
       \strng{authorfullhash}{9400ee0db1ecdfa46a15a74c2a50abd7}
       \strng{authorfullhashraw}{9400ee0db1ecdfa46a15a74c2a50abd7}
-      \field{labelalpha}{MSB18}
       \field{sortinit}{M}
       \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
       \field{labelnamesource}{author}
@@ -1804,7 +2162,6 @@
       \strng{authornamehash}{b15675ac8bbb982c013135880c500ab0}
       \strng{authorfullhash}{b15675ac8bbb982c013135880c500ab0}
       \strng{authorfullhashraw}{b15675ac8bbb982c013135880c500ab0}
-      \field{labelalpha}{Nek12}
       \field{sortinit}{N}
       \field{sortinithash}{22369a73d5f88983a108b63f07f37084}
       \field{labelnamesource}{author}
@@ -1834,7 +2191,6 @@
       \strng{authornamehash}{951dfc8b71c392b264d377f63c6ec5c8}
       \strng{authorfullhash}{951dfc8b71c392b264d377f63c6ec5c8}
       \strng{authorfullhashraw}{951dfc8b71c392b264d377f63c6ec5c8}
-      \field{labelalpha}{OA10}
       \field{sortinit}{O}
       \field{sortinithash}{2cd7140a07aea5341f9e2771efe90aae}
       \field{labelnamesource}{author}
@@ -1866,7 +2222,6 @@
       \strng{authornamehash}{508f8d6eb97b2f9e42faa560fb6d54eb}
       \strng{authorfullhash}{508f8d6eb97b2f9e42faa560fb6d54eb}
       \strng{authorfullhashraw}{508f8d6eb97b2f9e42faa560fb6d54eb}
-      \field{labelalpha}{PN20}
       \field{sortinit}{P}
       \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
       \field{labelnamesource}{author}
@@ -1927,7 +2282,6 @@
       \strng{authornamehash}{b02c83c0100de7ec51bfccfc24f10ade}
       \strng{authorfullhash}{be09376913d19135b85752c1f604ec54}
       \strng{authorfullhashraw}{be09376913d19135b85752c1f604ec54}
-      \field{labelalpha}{Raf+21}
       \field{sortinit}{R}
       \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
       \field{labelnamesource}{author}
@@ -1959,7 +2313,6 @@
       \strng{authornamehash}{306160098540a0dd529085cef477bd24}
       \strng{authorfullhash}{306160098540a0dd529085cef477bd24}
       \strng{authorfullhashraw}{306160098540a0dd529085cef477bd24}
-      \field{labelalpha}{Rex22}
       \field{sortinit}{R}
       \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
       \field{labelnamesource}{author}
@@ -1971,6 +2324,54 @@
       \field{year}{2022}
       \verb{doi}
       \verb 10.1093/gastro/goad009
+      \endverb
+    \endentry
+    \entry{10.1098/rsos.220531}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=f6af16caf96ba4cbc22a7ff5104e5a90}{%
+           family={Roman},
+           familyi={R\bibinitperiod},
+           given={Sabin},
+           giveni={S\bibinitperiod}}}%
+        {{hash=97d39b9b7f906b674e9fffac843746d4}{%
+           family={Bertolotti},
+           familyi={B\bibinitperiod},
+           given={Francesco},
+           giveni={F\bibinitperiod}}}%
+      }
+      \strng{namehash}{5a658efc1e403cf6aeaa2dcaed1d2bdc}
+      \strng{fullhash}{5a658efc1e403cf6aeaa2dcaed1d2bdc}
+      \strng{fullhashraw}{5a658efc1e403cf6aeaa2dcaed1d2bdc}
+      \strng{bibnamehash}{5a658efc1e403cf6aeaa2dcaed1d2bdc}
+      \strng{authorbibnamehash}{5a658efc1e403cf6aeaa2dcaed1d2bdc}
+      \strng{authornamehash}{5a658efc1e403cf6aeaa2dcaed1d2bdc}
+      \strng{authorfullhash}{5a658efc1e403cf6aeaa2dcaed1d2bdc}
+      \strng{authorfullhashraw}{5a658efc1e403cf6aeaa2dcaed1d2bdc}
+      \field{sortinit}{R}
+      \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We propose a new mechanism for generating power laws. Starting from a random walk, we first outline a simple derivation of the Fokker–Planck equation. By analogy, starting from a certain Markov chain, we derive a master equation for power laws that describes how the number of cascades changes over time (cascades are consecutive transitions that end when the initial state is reached). The partial differential equation has a closed form solution which gives an explicit dependence of the number of cascades on their size and on time. Furthermore, the power law solution has a natural cut-off, a feature often seen in empirical data. This is due to the finite size a cascade can have in a finite time horizon. The derivation of the equation provides a justification for an exponent equal to 2, which agrees well with several empirical distributions, including Richardson’s Law on the size and frequency of deadly conflicts. Nevertheless, the equation can be solved for any exponent value. In addition, we propose an urn model where the number of consecutive ball extractions follows a power law. In all cases, the power law is manifest over the entire range of cascade sizes, as shown through log–log plots in the frequency and rank distributions.}
+      \field{issn}{2054-5703}
+      \field{journaltitle}{Royal Society Open Science}
+      \field{month}{12}
+      \field{number}{12}
+      \field{title}{A master equation for power laws}
+      \field{volume}{9}
+      \field{year}{2022}
+      \field{pages}{220531}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1098/rsos.220531
+      \endverb
+      \verb{eprint}
+      \verb https://royalsocietypublishing.org/rsos/article-pdf/doi/10.1098/rsos.220531/991954/rsos.220531.pdf
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1098/rsos.220531
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1098/rsos.220531
       \endverb
     \endentry
     \entry{9360830}{article}{}{}
@@ -2019,7 +2420,6 @@
       \strng{authornamehash}{6728e36d5c5c3570e40dc87d06d65a46}
       \strng{authorfullhash}{60e0ee7a0559e71e10fa3001bdd95a9c}
       \strng{authorfullhashraw}{60e0ee7a0559e71e10fa3001bdd95a9c}
-      \field{labelalpha}{Rus+21}
       \field{sortinit}{R}
       \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
       \field{labelnamesource}{author}
@@ -2034,6 +2434,233 @@
       \verb 10.1109/ACCESS.2021.3061592
       \endverb
       \keyw{Hemorrhaging;Gastrointestinal tract;Medical diagnostic imaging;Endoscopes;Feature extraction;Deep learning;Wireless communication;Wireless capsule endoscopy;deep learning;computer vision;gastrointestinal tract infection;classification;convolutional neural networks}
+    \endentry
+    \entry{yasushi2016nbi}{article}{}{}
+      \name{author}{38}{}{%
+        {{hash=dc1ee103fbf625f2939b499f5fade288}{%
+           family={Sano},
+           familyi={S\bibinitperiod},
+           given={Yasushi},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=6045b1ca5793bd550efa10e729361a9e}{%
+           family={Tanaka},
+           familyi={T\bibinitperiod},
+           given={Shinji},
+           giveni={S\bibinitperiod}}}%
+        {{hash=03ce9b3148f17ae157a0beee930328d2}{%
+           family={Kudo},
+           familyi={K\bibinitperiod},
+           given={Shin-ei},
+           giveni={S\bibinithyphendelim e\bibinitperiod}}}%
+        {{hash=2ba9aa52b9cd8510b90e5f6b8cef2765}{%
+           family={Saito},
+           familyi={S\bibinitperiod},
+           given={Shoichi},
+           giveni={S\bibinitperiod}}}%
+        {{hash=b8a374ce71cf80da501632077bd89b10}{%
+           family={Matsuda},
+           familyi={M\bibinitperiod},
+           given={Takahisa},
+           giveni={T\bibinitperiod}}}%
+        {{hash=ef58a9d0d74d5b39b2beb52556b1f44e}{%
+           family={Wada},
+           familyi={W\bibinitperiod},
+           given={Yoshiki},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=b6b56392551dfe01cdd97a99edcb6f4a}{%
+           family={Fujii},
+           familyi={F\bibinitperiod},
+           given={Takahiro},
+           giveni={T\bibinitperiod}}}%
+        {{hash=f575fd701146d56f19d1d0b3c1588f13}{%
+           family={Ikematsu},
+           familyi={I\bibinitperiod},
+           given={Hiroaki},
+           giveni={H\bibinitperiod}}}%
+        {{hash=5d7d530ac4c8af3827d57f6c1ee023a9}{%
+           family={Uraoka},
+           familyi={U\bibinitperiod},
+           given={Toshio},
+           giveni={T\bibinitperiod}}}%
+        {{hash=fd5346e64bf1fdeaa003bae29f7f0b1b}{%
+           family={Kobayashi},
+           familyi={K\bibinitperiod},
+           given={Nozomu},
+           giveni={N\bibinitperiod}}}%
+        {{hash=403e5ccfb8dcd78615058bd4b0ac9964}{%
+           family={Nakamura},
+           familyi={N\bibinitperiod},
+           given={Hisashi},
+           giveni={H\bibinitperiod}}}%
+        {{hash=c04caea0ff9a3e58671314898a509b42}{%
+           family={Hotta},
+           familyi={H\bibinitperiod},
+           given={Kinichi},
+           giveni={K\bibinitperiod}}}%
+        {{hash=657aa70e0e37f1117b8c4924381c9212}{%
+           family={Horimatsu},
+           familyi={H\bibinitperiod},
+           given={Takahiro},
+           giveni={T\bibinitperiod}}}%
+        {{hash=93115fa337d75f8c35e1ca7c5cb49dea}{%
+           family={Sakamoto},
+           familyi={S\bibinitperiod},
+           given={Naoto},
+           giveni={N\bibinitperiod}}}%
+        {{hash=a8fab83e7ddca0c7a1e3a7da950f0862}{%
+           family={Fu},
+           familyi={F\bibinitperiod},
+           given={Kuang-I},
+           giveni={K\bibinithyphendelim I\bibinitperiod}}}%
+        {{hash=896b1667daa7212045c8b2f8a3671932}{%
+           family={Tsuruta},
+           familyi={T\bibinitperiod},
+           given={Osamu},
+           giveni={O\bibinitperiod}}}%
+        {{hash=903d25d12682aaac8295bf4383c85d9e}{%
+           family={Kawano},
+           familyi={K\bibinitperiod},
+           given={Hiroshi},
+           giveni={H\bibinitperiod}}}%
+        {{hash=d3d95e34c1cfba60dcbaca8c3eb8b2a3}{%
+           family={Kashida},
+           familyi={K\bibinitperiod},
+           given={Hiroshi},
+           giveni={H\bibinitperiod}}}%
+        {{hash=8f0231e0c1b158b83977d3edacf7b57f}{%
+           family={Takeuchi},
+           familyi={T\bibinitperiod},
+           given={Yoji},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=011b0a11625db7cb68e84ca34d097d85}{%
+           family={Machida},
+           familyi={M\bibinitperiod},
+           given={Hirohisa},
+           giveni={H\bibinitperiod}}}%
+        {{hash=97d891e63c94d5d9bb6dd20e3d00c538}{%
+           family={Kusaka},
+           familyi={K\bibinitperiod},
+           given={Toshihiro},
+           giveni={T\bibinitperiod}}}%
+        {{hash=54fa9435bd8528fce3217c264cacfeeb}{%
+           family={Yoshida},
+           familyi={Y\bibinitperiod},
+           given={Naohisa},
+           giveni={N\bibinitperiod}}}%
+        {{hash=9104061576e263a89e62989619679e62}{%
+           family={Hirata},
+           familyi={H\bibinitperiod},
+           given={Ichiro},
+           giveni={I\bibinitperiod}}}%
+        {{hash=6433a84b23a6ae7a329048e1c3eac817}{%
+           family={Terai},
+           familyi={T\bibinitperiod},
+           given={Takeshi},
+           giveni={T\bibinitperiod}}}%
+        {{hash=30607a94fb8cc9df3953a22b14aa4734}{%
+           family={Yamano},
+           familyi={Y\bibinitperiod},
+           given={Hiro-o},
+           giveni={H\bibinithyphendelim o\bibinitperiod}}}%
+        {{hash=36dc8a328c090cd751b076a6c9b58947}{%
+           family={Kaneko},
+           familyi={K\bibinitperiod},
+           given={Kazuhiro},
+           giveni={K\bibinitperiod}}}%
+        {{hash=e47ce221ec7d13026d51daf64277c4e4}{%
+           family={Nakajima},
+           familyi={N\bibinitperiod},
+           given={Takeshi},
+           giveni={T\bibinitperiod}}}%
+        {{hash=41126b1db34324d5201cadfd8591f111}{%
+           family={Sakamoto},
+           familyi={S\bibinitperiod},
+           given={Taku},
+           giveni={T\bibinitperiod}}}%
+        {{hash=3d7e0e388ec8f8a5f5c08c5ba9ce8b41}{%
+           family={Yamaguchi},
+           familyi={Y\bibinitperiod},
+           given={Yuichiro},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=45f736e2d681e749bde6c0a058c40ff7}{%
+           family={Tamai},
+           familyi={T\bibinitperiod},
+           given={Naoto},
+           giveni={N\bibinitperiod}}}%
+        {{hash=e3668da24004429e537921f9b126a821}{%
+           family={Nakano},
+           familyi={N\bibinitperiod},
+           given={Naoko},
+           giveni={N\bibinitperiod}}}%
+        {{hash=87443bcc11dd9a8be01b6bac3b23ebeb}{%
+           family={Hayashi},
+           familyi={H\bibinitperiod},
+           given={Nana},
+           giveni={N\bibinitperiod}}}%
+        {{hash=f38b11dbe631285c7fd9fa80b05179a5}{%
+           family={Oka},
+           familyi={O\bibinitperiod},
+           given={Shiro},
+           giveni={S\bibinitperiod}}}%
+        {{hash=a10d91d1d7740a9bebe497a890eb4681}{%
+           family={Iwatate},
+           familyi={I\bibinitperiod},
+           given={Mineo},
+           giveni={M\bibinitperiod}}}%
+        {{hash=544ed0e194597bf5945fd58bfc037a83}{%
+           family={Ishikawa},
+           familyi={I\bibinitperiod},
+           given={Hideki},
+           giveni={H\bibinitperiod}}}%
+        {{hash=3b0edf487c5f005e85e57618896c643d}{%
+           family={Murakami},
+           familyi={M\bibinitperiod},
+           given={Yoshitaka},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=c08f83553d1a76704d98d1f903041644}{%
+           family={Yoshida},
+           familyi={Y\bibinitperiod},
+           given={Shigeaki},
+           giveni={S\bibinitperiod}}}%
+        {{hash=71f1509e9af1b5b1c8720a74a22a6cf9}{%
+           family={Saito},
+           familyi={S\bibinitperiod},
+           given={Yutaka},
+           giveni={Y\bibinitperiod}}}%
+      }
+      \strng{namehash}{b9835b1c3fa2ab00cf81bf7300d099d6}
+      \strng{fullhash}{5dda4148f0eae8e40be2fb554210b807}
+      \strng{fullhashraw}{5dda4148f0eae8e40be2fb554210b807}
+      \strng{bibnamehash}{b9835b1c3fa2ab00cf81bf7300d099d6}
+      \strng{authorbibnamehash}{b9835b1c3fa2ab00cf81bf7300d099d6}
+      \strng{authornamehash}{b9835b1c3fa2ab00cf81bf7300d099d6}
+      \strng{authorfullhash}{5dda4148f0eae8e40be2fb554210b807}
+      \strng{authorfullhashraw}{5dda4148f0eae8e40be2fb554210b807}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Many clinical studies on narrow-band imaging (NBI) magnifying endoscopy classifications advocated so far in Japan (Sano, Hiroshima, Showa, and Jikei classifications) have reported the usefulness of NBI magnifying endoscopy for qualitative and quantitative diagnosis of colorectal lesions. However, discussions at professional meetings have raised issues such as: (i) the presence of multiple terms for the same or similar findings; (ii) the necessity of including surface patterns in magnifying endoscopic classifications; and (iii) differences in the NBI findings in elevated and superficial lesions. To resolve these problems, the Japan NBI Expert Team (JNET) was constituted with the aim of establishing a universal NBI magnifying endoscopic classification for colorectal tumors (JNET classification) in 2011. Consensus was reached on this classification using the modified Delphi method, and this classification was proposed in June 2014. The JNET classification consists of four categories of vessel and surface pattern (i.e. Types 1, 2A, 2B, and 3). Types 1, 2A, 2B, and 3 are correlated with the histopathological findings of hyperplastic polyp/sessile serrated polyp (SSP), low-grade intramucosal neoplasia, high-grade intramucosal neoplasia/shallow submucosal invasive cancer, and deep submucosal invasive cancer, respectively.}
+      \field{journaltitle}{Digestive Endoscopy}
+      \field{number}{5}
+      \field{title}{Narrow-band imaging (NBI) magnifying endoscopic classification of colorectal tumors proposed by the Japan NBI Expert Team}
+      \field{volume}{28}
+      \field{year}{2016}
+      \field{pages}{526\bibrangedash 533}
+      \range{pages}{8}
+      \verb{doi}
+      \verb https://doi.org/10.1111/den.12644
+      \endverb
+      \verb{eprint}
+      \verb https://onlinelibrary.wiley.com/doi/pdf/10.1111/den.12644
+      \endverb
+      \verb{urlraw}
+      \verb https://onlinelibrary.wiley.com/doi/abs/10.1111/den.12644
+      \endverb
+      \verb{url}
+      \verb https://onlinelibrary.wiley.com/doi/abs/10.1111/den.12644
+      \endverb
+      \keyw{classification,colorectal neoplasms,magnifying endoscopy,narrow band imaging,the Japan NBI expert team (JNET)}
     \endentry
     \entry{savides2025triaging}{article}{}{}
       \name{author}{13}{}{%
@@ -2111,7 +2738,6 @@
       \strng{authornamehash}{1b9d32916c3c6aea215496716ffab58e}
       \strng{authorfullhash}{2404f7799778c2728d5febdf04de4971}
       \strng{authorfullhashraw}{2404f7799778c2728d5febdf04de4971}
-      \field{labelalpha}{Sav+25}
       \field{sortinit}{S}
       \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
       \field{labelnamesource}{author}
@@ -2174,7 +2800,6 @@
       \strng{authornamehash}{030491355de9998a56c11c0ee08987b7}
       \strng{authorfullhash}{3a74a06b4475af9802704939dd35b000}
       \strng{authorfullhashraw}{3a74a06b4475af9802704939dd35b000}
-      \field{labelalpha}{Seg+15}
       \field{sortinit}{S}
       \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
       \field{labelnamesource}{author}
@@ -2204,7 +2829,6 @@
       \strng{authornamehash}{23b3d3c82f4100239b095adb9b77c7f3}
       \strng{authorfullhash}{23b3d3c82f4100239b095adb9b77c7f3}
       \strng{authorfullhashraw}{23b3d3c82f4100239b095adb9b77c7f3}
-      \field{labelalpha}{Soc24}
       \field{sortinit}{S}
       \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
       \field{labelnamesource}{author}
@@ -2429,7 +3053,6 @@
       \strng{authornamehash}{5bcd58e67d04482839f796aa4d2c3cac}
       \strng{authorfullhash}{34bfec89ed7eace609a4a0aa51f2ee12}
       \strng{authorfullhashraw}{34bfec89ed7eace609a4a0aa51f2ee12}
-      \field{labelalpha}{Spa+23}
       \field{sortinit}{S}
       \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
       \field{labelnamesource}{author}
@@ -2476,7 +3099,6 @@
       \strng{authornamehash}{0e6879ebe0cb1b6a0edf2485a310b234}
       \strng{authorfullhash}{0e6879ebe0cb1b6a0edf2485a310b234}
       \strng{authorfullhashraw}{0e6879ebe0cb1b6a0edf2485a310b234}
-      \field{labelalpha}{Sve13}
       \field{sortinit}{S}
       \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
       \field{labelnamesource}{author}
@@ -2537,7 +3159,6 @@
       \strng{authornamehash}{be3163b53918609473a2b219e919f0c0}
       \strng{authorfullhash}{b3e8b1618aec4baa6fb704bead4f251d}
       \strng{authorfullhashraw}{b3e8b1618aec4baa6fb704bead4f251d}
-      \field{labelalpha}{Tal+22}
       \field{sortinit}{T}
       \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
       \field{labelnamesource}{author}
@@ -2580,7 +3201,6 @@
       \strng{authornamehash}{d029e8131f7a0bef056d7edc726f1529}
       \strng{authorfullhash}{d029e8131f7a0bef056d7edc726f1529}
       \strng{authorfullhashraw}{d029e8131f7a0bef056d7edc726f1529}
-      \field{labelalpha}{TL19}
       \field{sortinit}{T}
       \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
       \field{labelnamesource}{author}
@@ -2685,7 +3305,6 @@
       \strng{editornamehash}{7cffda9a379be8eb9063eee4eb0f58b3}
       \strng{editorfullhash}{1564f811a39f09a7400a11284c987926}
       \strng{editorfullhashraw}{1564f811a39f09a7400a11284c987926}
-      \field{labelalpha}{Vas+17}
       \field{sortinit}{V}
       \field{sortinithash}{afb52128e5b4dc4b843768c0113d673b}
       \field{labelnamesource}{author}
@@ -2752,7 +3371,6 @@
       \strng{authornamehash}{037d89550c76d625b7b98b6f57679231}
       \strng{authorfullhash}{532cd7b83c715968fc56f5fc3736edf5}
       \strng{authorfullhashraw}{532cd7b83c715968fc56f5fc3736edf5}
-      \field{labelalpha}{Vil+22}
       \field{sortinit}{V}
       \field{sortinithash}{afb52128e5b4dc4b843768c0113d673b}
       \field{labelnamesource}{author}
@@ -2791,7 +3409,6 @@
       \strng{authornamehash}{046ea2e13b46093a77a6bd6492ce87bf}
       \strng{authorfullhash}{046ea2e13b46093a77a6bd6492ce87bf}
       \strng{authorfullhashraw}{046ea2e13b46093a77a6bd6492ce87bf}
-      \field{labelalpha}{Vit}
       \field{sortinit}{V}
       \field{sortinithash}{afb52128e5b4dc4b843768c0113d673b}
       \field{labelnamesource}{author}
@@ -2827,7 +3444,6 @@
       \strng{authornamehash}{8d58c345fa882975674c932a96a74396}
       \strng{authorfullhash}{efe863e9ffed63e869d94d8c1e42a90e}
       \strng{authorfullhashraw}{efe863e9ffed63e869d94d8c1e42a90e}
-      \field{labelalpha}{VLC07}
       \field{sortinit}{V}
       \field{sortinithash}{afb52128e5b4dc4b843768c0113d673b}
       \field{labelnamesource}{author}
@@ -2881,7 +3497,6 @@
       \strng{authornamehash}{6aa06f89b5a46f3c02d0ed9233c2f62a}
       \strng{authorfullhash}{ce0ec13619652833c2aae2f484969a03}
       \strng{authorfullhashraw}{ce0ec13619652833c2aae2f484969a03}
-      \field{labelalpha}{Yu+24}
       \field{sortinit}{Y}
       \field{sortinithash}{fd67ad5a9ef0f7456bdd9aab10fe1495}
       \field{labelnamesource}{author}
@@ -2894,6 +3509,8 @@
     \endentry
   \enddatalist
   \missing{kaminski_performance_2017}
+  \missing{mackiewicz2008segmentation}
+  \missing{schmidhuber1990diff}
 \endrefsection
 \endinput
 

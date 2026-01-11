@@ -10,7 +10,7 @@ Die der technischen Implementierung zugrundeliegenden mathematischen Hintergrün
 
 \section{Medizinischer Hintergrund - Steigende Anforderungen an das Gesundheitswesen bei der Darmkrebsprävention}
 Endoskopie ist eine der zentralen Behandlungs- und Diagnosemöglichkeiten in der Therapie von Darmkrebs, 
-einer der häufigsten und tödlichsten Krebsarten.\citep{labianca2010-colon-cancer}\footnotemark{} 
+einer der häufigsten und tödlichsten Krebsarten.\citep{labianca2010-colon-cancer}
 Nicht von der Hand zu weisen ist hierbei die zeitaufwändige Durchführung und 
 Dokumentation der Überwachung des flächigen Gewebes im Darm im Rahmen von Endoskopien. Aus diesem Grund ist es 
 der Gastroenterologie konstant ein Anliegen, die Qualitätssicherung bei Darmspiegelungen zu verbessern. 
@@ -114,7 +114,7 @@ Weitergehend ist die zweite Eigenschaft der Übergangswahrscheinlichkeiten ausge
 \begin{equation}
   \sum_j P_{ij} = 1.
 \end{equation}
-Wobei $P_{ij}$ die Wahrscheinlichkeit beschreibt, dass das System, nachdem der aktuelle Zustands $S_i$ ist, in den nächsten Zustand $S_j$ übergehen wird.\citet{drake88}
+Wobei $P_{ij}$ die Wahrscheinlichkeit beschreibt, dass das System, nachdem der aktuelle Zustands $S_i$ ist, in den nächsten Zustand $S_j$ übergehen wird.\cite{drake88}
 
 Generalisiert kann davon gesprochen werden, dass ein Markovprozess sich aus dem Zustandsraum $\Omega$ zusammensetzt, der alle möglichen Zustände des Systems umfasst. Die einzelnen Zustände $S_i$ oder $\omega$ sind Elemente dieses Zustandsraums $\omega~\Omega$. Genauso gilt für die Wahrscheinlichkeiten $P(X_{n})$ dass Sie Elemente des Wahrscheinlichkeitsraums $\mathcal{P}$ sind. Auch die Zeit $\{n\}$, in der sich die Zustände ändern, kann als Element eines Zeitraums $\mathcal{T}$ betrachtet werden. Somit lässt sich ein Markovprozess als Tripel $(\Omega, \mathcal{P}, \mathcal{T})$ beschreiben.
 
@@ -155,7 +155,7 @@ P(X_{t+2} = j \mid X_t = i) = \newline \sum_k P(X_{t+1} = k \mid X_t = i) \cdot 
 
 Die Übergangswahrscheinlichkeiten können in einer Matrix $P$ zusammengefasst werden, wobei die Einträge $P_{ij}$ die Wahrscheinlichkeit angeben, vom Zustand $i$ in den Zustand $j$ überzugehen. Die Matrix $P$ wird als Übergangsmatrix bezeichnet und hat die Eigenschaft, dass die Summe der Einträge in jeder Zeile gleich 1 ist, da sie die gesamten Übergangswahrscheinlichkeiten von einem Zustand zu allen möglichen Zuständen repräsentiert.
 
-In der Definition nimmt das Modell ein vollständig abgebildetes stochastisches Zufallsexperiment an. Es wird zudem davon ausgegangen, dass die Zustände des Systems vollständig beobachtbar sind. Einer einfachen Definition folgend, müsste so für jedes Label $y_i$ eines Frames $x_i$ die Wahrscheinlichkeit $P(y_i \mid x_i)$ modelliert werden. \citet{drake88}
+In der Definition nimmt das Modell ein vollständig abgebildetes stochastisches Zufallsexperiment an. Es wird zudem davon ausgegangen, dass die Zustände des Systems vollständig beobachtbar sind. Einer einfachen Definition folgend, müsste so für jedes Label $y_i$ eines Frames $x_i$ die Wahrscheinlichkeit $P(y_i \mid x_i)$ modelliert werden. \cite{drake88}
 
 \subsection{Markovketten in diskreter Zeit zur Modellierung von Systemen mit endlichem Zustandsraum.}
 
@@ -223,8 +223,10 @@ Generell handelt es sich bei CRF um diskriminative Modelle: Es wird direkt die b
 der Ausgabevariablen $Y$ gegeben die Eingabevariablen $X$ modelliert, anstatt der gemeinsamen Wahrscheinlichkeit $P(X, Y)$.
 
 Diese Modellklasse kann als Verallgemeinerung von Markov-Modellen aufgefasst werden. 
-Hidden Markov Models beschreiben, wie im vorigen Abschnitt erläutert, die Annahme, dass aufgrund des vorherigen versteckten Zustands das System vorhergesagt werden kann. 
+Hidden Markov Models beinhalten, wie im vorigen Abschnitt erläutert, die Annahme, dass aufgrund des vorherigen versteckten Zustands das System vorhergesagt werden kann. 
 Hierfür müsste das System durch die Menge der versteckten Zustände vollständig beobachtbar und adäquat abbildbar sein.
+Ein Conditional Random Field erlaubt es also, die Annahme der vollständigen Beobachtbarkeit sowie die iid Annahme.
+
 
 \subsection{Kontinuierliche Markov-Prozesse – Kalman-Filter für Approximation linearer dynamischer Systeme}
 
@@ -343,14 +345,15 @@ Definiere $\ell_t(j) = \log \delta_t(j)$. Dann gilt:
   \ell_1(i) = \log \pi_i + \log b_i(o_1), \quad \text{für } i = 1, \ldots, N.
 \end{equation}
 
-\textbf{Rekursion:}
-Für $t = 2, \ldots, T$ und $j = 1, \ldots, N$:
+\textbf{Rekursion (Log-Domain):}
+Für $t = 2, \ldots, T$ und Zustand $j$:
 \begin{equation}
 \begin{aligned}
-  \ell_t(j) &= \max_{i \in \{1, \ldots, N\}} \bigl[\ell_{t-1}(i) + \log a_{ij}\bigr] + \log b_j(o_t), \\
-  \psi_t(j) &= \arg\max_{i \in \{1, \ldots, N\}} \bigl[\ell_{t-1}(i) + \log a_{ij}\bigr].
+  \ell_t(j) &= \max_{i} \bigl[\ell_{t-1}(i) + \log a_{ij}\bigr] + \log b_j(o_t), \\
+  \psi_t(j) &= \arg\max_{i} \bigl[\ell_{t-1}(i) + \log a_{ij}\bigr].
 \end{aligned}
 \end{equation}
+Hierbei ist $a_{ij}$ die Übergangswahrscheinlichkeit und $b_j(o_t)$ die Emissionswahrscheinlichkeit, dass Frame $o_t$ im Zustand $j$ beobachtet wird.
 
 \textbf{Terminierung:}
 \begin{equation}
@@ -369,6 +372,31 @@ Durch den Einsatz des Viterbialgorithmus im logarithmischen Bereich kann also ef
 
 \subsection{Betrachtung stationärer Verteilungen von Markovsystemen anhand von Potenzgesetzen}
 
-Bei der Betrachtung von statistischen Verteilungen gibt es insbesondere bei divergenten Systemen ein häufig aufkommendes Phänomen. Potenzgesetze beschreiben Systeme, denen sich selbst verstärkende Verteilungen zugrundeliegen. Hierbei kommt es oft dazu, dass
-Die Modellierung von Systemen mithilfe von Markovketten obliegt in bestimmten Fällen eines Potenzgesetzes. \cite{10.1098/rsos.220531} Das kann Probleme verursachen, zum Beispiel wenn die Kombination der Wahrscheinlichkeiten zu einer station
+Bei der Betrachtung von statistischen Verteilungen gibt es insbesondere bei divergenten Systemen ein häufig aufkommendes Phänomen. Potenzgesetze beschreiben Systeme, denen sich selbst verstärkende Verteilungen zugrundeliegen. Deshalb kommt es oft dazu, dass
+Die Modellierung von Systemen mithilfe von Markovketten obliegt in bestimmten Fällen eines Potenzgesetzes. \cite{10.1098/rsos.220531} In diesem Fall ist es wahrscheinlich, dass die Systeme keinen kontinuierlichen Zustand erreichen. Das kann Probleme verursachen, zum Beispiel wenn die Kombination der Wahrscheinlichkeiten zu einer stationären Verteilung führen sollte. Beispielsweise wenn durch die Simulation das wahrscheinlichste System verhergesagt werden soll, das
+
+
+\subsection{World Models}
+
+Um zu zeigen, dass ein in der realen Welt existierendes System durch ein prädiktives Modell hinreichend abgedeckt wird, kann es sinnvoll sein, ein simulierendes Modell des Systems zu erstellen. Innerhalb dieses Systems sollten die mit Sensoren messbaren Eigenschaften in interne Zustände und daraus ableitbar in Aktionen oder Vorhersagen überführt werden können.
+
+Jürgen Schmidhuber schlug bereits 1990 vor, die Welt, innerhalb derer ein neuronales Netzwerk operiert, durch zwei interagierende Netzwerke zu modellieren: Ein Modell-Netzwerk, das die Dynamik der Umgebung simuliert und vorhersagt, und ein Controller-Netzwerk, das Aktionen ausführt. Die zentrale Idee war es, die Umgebung durch das Modellnetzwerk \enquote{differenzierbar} zu machen, sodass der Fehler der Vorhersage genutzt werden kann, um das System mittels Gradientenabstieg zu optimieren \cite{schmidhuber1990diff}.
+
+Das Problem der temporalen Analyse von Endoskopievideos kann als ein solches System betrachtet werden. Hierbei sind die Frames des Videos die messbaren, hochdimensionalen Eigenschaften des Systems (Observationen). Diese müssen in kompakte Zustände überführt werden, die den aktuellen Status des Endoskops im Darm abbilden. Daraus können Wahrscheinlichkeiten abgeleitet werden, wie sich das Endoskop im nächsten Zeitschritt verhalten wird oder welcher anatomische Abschnitt als nächstes sichtbar wird.
+
+Modernere Ansätze, wie die von \cite{ha2018worldmodels} vorgestellten \enquote{World Models}, adressieren die Schwierigkeit, hochdimensionale visuellen Daten (wie Videoframes) modellieren. Sie unterteilen das Problem in drei Komponenten, die analog zur kognitiven Verarbeitung des Menschen gesehen werden können:
+
+\begin{enumerate}
+    \item \textbf{Vision Model:} Ein variationaler Autoencoder (VAE), der die hochdimensionalen Eingabebilder $x_t$ in einen niedrigdimensionalen, latenten Vektor $z_t$ komprimiert. Dies abstrahiert die visuellen Details und extrahiert die wesentlichen Merkmale des aktuellen Frames.
+    \item \textbf{Memory Model (M):} Ein rekkurrentes neuronales Netzwerk (RNN), oft implementiert als LSTM oder MDN-RNN (Mixture Density Network), das auf der Basis der vergangenen latenten Zustände und Aktionen den zukünftigen latenten Zustand $z_{t+1}$ vorhersagt. Dies entspricht dem eigentlichen Weltmodell, das die Dynamik und Zeitabhängigkeit lernt.
+    \item \textbf{Controller (C):} Ein einfaches Netzwerk, das basierend auf der aktuellen Sicht ($z_t$) und der Erinnerung ($h_t$ aus dem RNN) Entscheidungen trifft.
+\end{enumerate}
+
+Für die Segmentierung von Endoskopievideos ist insbesondere das Zusammenspiel von V und M relevant. Während das V-Modell die räumlichen Merkmale eines einzelnen Bildes (z.\,B. Textur eines Polypen) lernt, lernt das M-Modell die zeitliche Kohärenz (z.\,B. dass ein Polyp über mehrere Frames hinweg sichtbar bleibt oder dass nach dem Zökum das Colon ascendens folgt).
+
+Eine Weiterentwicklung des Worldmodel Konzepts stellt die Dreamerarchitektur von Hafner et al. \citet{hafner2019dreamer} dar. Anstatt zukünftige Pixel aus den beobachteten Pixeln vorherzusagen (was rechenintensiv und fehleranfällig ist), lernen diese Modelle die Dynamik ausschließlich im latenten Raum. Statt wie bei Schmidhuber Pixelzustände direkt zu propagieren, lernen Dreamer-Modelle eine stochastische Übergangsdynamik $p_\theta(s_t \mid s_{t-1}, a_{t-1})$ im latenten Raum, sodass die zeitliche Entwicklung durch kompakte Zustände und deren rekursive Aktualisierung beschrieben wird. Während die Modellanpassung weiterhin über die Erklärung der Beobachtungen erfolgt (z.\,B. Rekonstruktion/Prädiktion), wird die eigentliche Sequenzplanung und Politikenoptimierung in Dreamer überwiegend im latenten Raum durchgeführt, was Rechenaufwand reduziert und die Optimierung stabilisiert.
+
+
+Eine ähnliche Zielsetzung kann auf das Markov Switch State Modell angewandt werden. Ein Modell, das gelernt hat, wie sich die Anatomie im latenten Raum verändert, ist robuster gegenüber Rauschen (z.\,B. Unschärfe, Spiegelungen oder Verschmutzungen der Linse), da es nicht versucht, jedes Pixel exakt zu rekonstruieren, sondern den semantischen Inhalt der Szene über die Zeit zu verfolgen. Das Endoskopieszenario lässt sich somit als partiell observierbarer Markovprozess beschreiben. Der Arzt (oder der Algorithmus) sieht nie den gesamten Darm (Zustand $S_t$), sondern nur einen Ausschnitt (Beobachtung $O_t$). Ein World Model ermöglicht es, aus der Historie der Beobachtungen eine interne Repräsentation des globalen Zustands aufzubauen und somit die Segmentierung einzelner Frames durch den zeitlichen Kontext zu stabilisieren. Als Merkmal stabiler World Models kann verstanden werden, dass auch das Generieren realistischer Daten möglich wird.
+
 

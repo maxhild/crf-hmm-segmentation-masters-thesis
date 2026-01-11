@@ -1,14 +1,64 @@
+\section{Definition des Markovmodells}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.5]{Images/MarkovmodelEndoscopy-2.jpg}
+\caption{Generelles Markovmodell für die Endoskopie}
+\label{fig:Endoskopiephasen}
+\end{figure}
+
+
 \section{Merkmalsextraktion und Reduktion des Beobachtungsraums}
 \label{sec:feature_extraction}
 
-Um die Echtzeitanforderungen des Systems zu erfüllen, wird auf die Verwendung rechenintensiver Deep-Learning-Features verzichtet. Stattdessen wird jedes Videobild $I_t$ zu einem Zeitpunkt $t$ auf einen kompakten, niederdimensionalen Messvektor $y_t \in \mathbb{R}^6$ reduziert. Dieser Vektor aggregiert globale Informationen über Bewegung, Farbverteilung und Bildstruktur, die als Eingangsgrößen für die Bank der Kalman-Filter dienen.
+Um die Echtzeitanforderungen des Systems zu erfüllen, wird auf die Verwendung rechenintensiver Deep-Learning-Features innerhalb des HMM und CRF verzichtet. Stattdessen wird jedes Videobild $I_t$ zu einem Zeitpunkt $t$ auf einen kompakten, niederdimensionalen Messvektor $y_t \in \mathbb{R}^6$ reduziert. Dieser Vektor aggregiert globale Informationen über Bewegung, Farbverteilung und Bildstruktur, die als Eingangsgrößen für die Bank der Kalman-Filter dienen.
 
 Der Messvektor $y_t$ ist definiert als:
 \begin{equation}
     y_t = \begin{bmatrix} v_{x,t} & v_{y,t} & \mu_{H,t} & \mu_{S,t} & \mu_{V,t} & E_{\text{text},t} \end{bmatrix}^\top
 \end{equation}
 
-Im Folgenden werden die einzelnen Komponenten hergeleitet.
+Im Folgenden werden die einzelnen Komponenten als Vektoren hergeleitet. Im zweiten Schritt wird versucht, eine Optimierungsfunktion zu definieren, die sich der wahren Zustandsfunktion bestmöglich annähert.
+Aus der Lösung der individuellen Featurevektoren wird ein Hidden Markov Model hergeleitet.
+
+\section{Farbraumänderung auf einem Banach-Rechen}
+
+Als Prior für die Hidden-Markov-Model Schätzung soll der Farbraumwechsel auf einem Banach-Rechen herangezogen werden. Hierzu wird der Farbraum des Bildes in jedem Frame $I_t$ in einen geeigneten Banach-Raum $B$ gesampled, der die wesentlichen Farbmerkmale extrahiert.
+Praktisch bedeutet das, dass jedes Pixel $p$ im Bild $I_t$ durch eine Funktion $f: \mathbb{R}^3 \rightarrow B$ in den Banach-Raum transformiert wird, wobei das Farbraummodell die Änderung repräsentiert.
+Jede Kamera besitzt hierbei ein Rauschen. Je kleiner die Auflösung desto stärker ist der Einfluss des Pixelrauschen durch die geringere Auflösung. Kleine Kameras, wie Endoskope, sind aufgrund der geringeren Pixeldichte hiervon betroffen.
+Wenn das Modell "denkt", das Rauschen sei eine schmale Glockenkurve (Gauß), das echte Rauschen aber breiter streut, dann setzt das Modell den Schwellenwert für eine Änderung zu niedrig an. Die Konsequenz: Das System gibt Bewegung zurück, wo eigentlich nur ein bisschen Kamerarauschen war. Wir bekommen False Positives (Fehlalarme).
+
+Die Autoren lösen das, indem sie statt der Gaußkurve ein Generalized Exponential Model (GEM) verwenden. Das ist eine mathematische Formel, die flexibel genug ist, um diese breiten Rauschausläufer genau abzubilden. Damit finden sie den wahrscheinlichsten Schnittpunkt zwischen "Rauschen" und "echter Änderung".
+\cite{hwang2008generalized}
+
+\begin{equation}
+C_t = c_j 
+\end{equation}
+
+Wird hierbei für die Matrix $C_t$ der Farbraum im Banach-Rechen bei Zeit $t$ und $c_j$ der jeweilige Farbraumtyp (z.\,B. RGB, HSV, LAB) definiert.
+Die durch diesen Ansatz errechneten Vektoren bilden zwei Gleichungssysteme, deren Differenz die Zustandsänderung kodiert. Es wird d dessen Differenz
+Die durch diesen Ansatz errechneten Vektoren bilden zwei Gleichungssysteme, deren Differenz die Zustandsänderung kodiert. Es wird daher die Differenz der im Banach-Raum eingebetteten Farbraumrepräsentationen betrachtet:
+\begin{equation}
+\Delta B_t = f(I_t) - f(I_{t-1}),
+\end{equation}
+wobei $f(I_t) \in B$ die Abbildung des Bildes zum Zeitpunkt $t$ in den Banach-Raum darstellt.
+
+Diese Differenz $\Delta B_t$ beschreibt die zeitliche Veränderung der Farbverteilung unabhängig vom ursprünglichen Farbraum und erlaubt eine normbasierte Analyse. Da $B$ ein Banach-Raum ist, existiert eine wohldefinierte Norm $\lVert \cdot \rVert_B$, sodass die Stärke der Änderung durch
+\begin{equation}
+\lVert \Delta B_t \rVert_B
+\end{equation}
+gemessen werden kann. Diese Norm stellt eine skalare Zufallsvariable dar, deren Verteilung direkt durch das Kamerarauschen beeinflusst wird.
+
+Im Idealfall folgt diese Verteilung einer schmalen Gaußverteilung. Empirische Beobachtungen, insbesondere bei optisch kleinen Sensorsystemen wie Endoskopen, zeigen jedoch signifikante Abweichungen mit schweren Verteilungsenden (Heavy Tails). Eine gaußsche Modellannahme unterschätzt in diesem Fall die Varianz des Rauschens und führt zu einer systematischen Überschätzung von Änderungen.
+
+Durch die Verwendung des Generalized Exponential Models (GEM) wird diese Einschränkung aufgehoben. Der zusätzliche Formparameter erlaubt es, sowohl gaußförmige als auch heavy-tailed Rauschmodelle innerhalb eines einheitlichen statistischen Rahmens abzubilden. Der optimale Farbraum $c_j$ wird dabei als jener Raum gewählt, für den die erwartete Fehlklassifikationsrate minimal ist. Formal ergibt sich:
+\begin{equation}
+c_j^\ast = \arg\min_{c_j} \; \mathbb{E}\big[\text{False Positives} \mid C_t = c_j \big].
+\end{equation}
+
+Damit wird der Farbraumwechsel selbst zu einer priorisierten Modellentscheidung, die nicht heuristisch, sondern statistisch motiviert ist. Die resultierende zeitliche Änderungsgröße $\lVert \Delta B_t \rVert_B$ kann somit als robuste Beobachtung für nachgelagerte Zustandsmodelle interpretiert werden.
+
+\section{Featurevektor für statebasierte Kalman-Schätzer}
 
 \subsection{Globale Bewegungsschätzung (Motion)}
 Die relative Bewegung der Endoskopiekamera korreliert stark mit den prozeduralen Phasen (z.\,B. schnelle Bewegung bei Navigation vs. statisches Bild bei Inspektion). Zur Schätzung der globalen Kamerabewegung wird zunächst das dichte optische Flussfeld $F_t$ zwischen dem aktuellen Frame $I_t$ und dem vorherigen Frame $I_{t-1}$ berechnet. Sei $f_t(u,v) = (\delta x, \delta y)$ der Verschiebungsvektor für ein Pixel an der Position $(u,v)$.
@@ -20,24 +70,156 @@ Da endoskopische Aufnahmen oft lokale Störungen enthalten (z.\,B. sich bewegend
 \end{align}
 Dies liefert einen robusten Geschwindigkeitsvektor für die dominante Hintergrundbewegung.
 
-\subsection{Farbstatistik (Color)}
-Die Farbverteilung ist ein kritischer Indikator für den betrachteten Gewebetyp (Mukosa, Blut, Stuhl) oder technische Zustände (NBI-Modus, unzureichende Beleuchtung). Um die Farbinformation von reinen Helligkeitsschwankungen zu entkoppeln, wird das Bild zunächst vom RGB-Farbraum in den HSV-Farbraum (Hue, Saturation, Value) transformiert.
+Zusätzlich muss die z-Achse berücksichtigt werden, da die Navigation in der Endoskopie maßgeblich entlang der optischen Achse erfolgt (Insertion und Retraktion). Diese Tiefenbewegung manifestiert sich im Bild als Divergenz (Expansion) oder Konvergenz (Kontraktion) des optischen Flusses.
 
-Für jeden Kanal $c \in \{H, S, V\}$ wird der globale Mittelwert berechnet:
+Um diese Komponente zu quantifizieren, wird das Flussfeld auf ein normiertes Radialfeld projiziert, das vom Bildmittelpunkt $\mathbf{c} = (c_u, c_v)^T$ ausgeht. Der radiale Einheitsvektor $\mathbf{r}_{u,v}$ an der Pixelposition $(u,v)$ ist definiert als:
 \begin{equation}
-    \mu_{c,t} = \frac{1}{W \cdot H} \sum_{u=1}^{W} \sum_{v=1}^{H} I_t^{(c)}(u,v)
+    \mathbf{r}_{u,v} = \frac{(u - c_u, v - c_v)^T}{\|(u - c_u, v - c_v)^T\|_2}
 \end{equation}
-Hierbei bezeichnen $W$ und $H$ die Breite und Höhe des Videoframes. Der Kanal $\mu_H$ (Farbton) dient hierbei primär der Unterscheidung von Gewebearten, während $\mu_V$ (Helligkeit) zur Detektion von Unterbelichtung oder Outside-Zuständen genutzt wird.
+Das lokale Maß für die radiale Geschwindigkeit $v_{rad}$ ergibt sich aus dem Skalarprodukt des Flussvektors $f_t(u,v)$ mit diesem Richtungsvektor:
+\begin{equation}
+    v_{rad}(u,v) = f_t(u,v) \cdot \mathbf{r}_{u,v}
+\end{equation}
+Ein positiver Wert von $v_{rad}$ indiziert hierbei eine Vorwärtsbewegung (Expansion), während ein negativer Wert ein Zurückziehen der Kamera beschreibt. Analog zu den lateralen Geschwindigkeiten wird der globale Parameter $v_{z,t}$ robust durch den Median über alle Pixel bestimmt:
+\begin{equation}
+    v_{z,t} = \text{median}_{(u,v)} \{ v_{rad}(u,v) \}
+\end{equation}
+Der resultierende Zustandsvektor $\mathbf{v}_t = [v_{x,t}, v_{y,t}, v_{z,t}]^T$ dient anschließend als Eingangsgröße für den Kalmanfilter zur Bewegungsschätzung.
 
-\subsection{Texturenergie und Bildschärfe (Texture)}
-Die Strukturinformation des Bildes gibt Aufschluss darüber, ob die Kamera fokussiert ist oder ob die Sicht durch Rauch, Flüssigkeit oder zu geringen Wandabstand beeinträchtigt ist. Als Maß für die Bildschärfe ("Texturenergie") wird die Varianz des mit einem Laplace-Operator gefilterten Grauwertbildes verwendet.
 
-Sei $L_t$ das Resultat der Faltung des Grauwertbildes $I_t^{\text{gray}}$ mit dem Laplace-Kernel $\nabla^2$:
+\subsection{Optimierung mittels Log-Likelihood}
+
+Um die Zustandsübergänge adäquat zu beurteilen, schlägt diese Arbeit vor, die Analyse der Endoskopievideos auf die Klassifikation diskreter Zustände zurückzuführen. Dieser Ansatz eignet sich besonders für die Optimierung mittels der Log-Likelihood-Methode.
+
+\vspace{0.5em}
+\noindent
+\textbf{Begründung.}
+Da es sich bei der Aufgabenstellung um ein Klassifikationsproblem mit einem diskreten Zustandsraum $S_t \in \{s_1, \dots, s_K\}$ handelt und das Gesamtsystem probabilistisch modelliert ist (basierend auf der Markov-Annahme und Gaußschen Rauschprozessen), stellt die Maximierung der Log-Likelihood das konsistente Optimierungsziel dar. Im Gegensatz zur linearen Regression, die kontinuierliche Zielvariablen voraussetzt und somit für diskrete Zustandswechsel ungeeignet ist, liefert die Log-Likelihood ein direktes Maß für die Güte der Wahrscheinlichkeitsschätzung.
+
+\vspace{0.5em}
+\noindent
+\textbf{Umsetzung.}
+Um eine datengetriebene Optimierung der Zustandsübergänge zu ermöglichen, werden die verschiedenen Eingangsfeatures (z.\,B. aus der Filterbank oder einem CNN) fusioniert und mittels einer Softmax-Funktion (bzw. Sigmoid bei binären Fällen) normalisiert. Dies überführt die Feature-Werte in eine valide Wahrscheinlichkeitsverteilung. Die freien Modellparameter werden anschließend so bestimmt, dass die negative Log-Likelihood (Cross-Entropy) bezüglich der annotierten Trainingsdaten minimiert bzw. die Log-Likelihood maximiert wird.
+
+\section{Modellierung des Farbraumrauschens}
+\label{sec:color_noise_model}
+
+Als Prior für die Hidden-Markov-Model-Schätzung wird die Farbraumänderung in einem normierten Vektorraum (Banach-Raum) herangezogen. Hierzu wird der Farbraum des Bildes in jedem Frame $I_t$ in einen geeigneten Banach-Raum $B$ projiziert, der die wesentlichen Farbmerkmale extrahiert.
+Jedes Pixel $p$ im Bild $I_t$ wird durch eine Funktion $f: \mathbb{R}^3 \rightarrow B$ transformiert.
+
+Endoskopische Kameras weisen aufgrund ihrer geringen Sensorgröße ein signifikantes Pixelrauschen auf. Eine naive Modellierung dieses Rauschens als Gaußverteilung ist oft unzureichend. Wenn das Modell annimmt, das Rauschen sei eine schmale Normalverteilung, das tatsächliche Sensorrauschen jedoch breitere Ränder (Heavy Tails) aufweist, führt dies zu einer zu hohen Sensitivität: Das System detektiert Bewegung oder Zustandswechsel, wo lediglich Sensorrauschen vorliegt (False Positives).
+
+In Anlehnung an Hwang et al. \cite{hwang2008generalized} wird dieses Problem durch die Verwendung eines Generalized Exponential Models (GEM) adressiert. Dieses Modell ist flexibel genug, um die leptokurtischen Verteilungen (breite Ränder) des Rauschens in Niedriglicht-Umgebungen abzubilden.
+Es wird die Differenz der im Banach-Raum eingebetteten Farbraumrepräsentationen betrachtet:
 \begin{equation}
-    L_t(u,v) = (I_t^{\text{gray}} * \nabla^2)(u,v)
+\Delta B_t = f(I_t) - f(I_{t-1})
 \end{equation}
-Die Texturenergie $E_{\text{text},t}$ ist definiert als die Varianz dieses gefilterten Bildes:
+Die Norm dieser Differenz $\lVert \Delta B_t \rVert_B$ stellt eine skalare Zufallsvariable dar, deren Verteilung direkt durch das Kamerarauschen beeinflusst wird. Der optimale Farbraum $c_j$ wird dabei so gewählt, dass die erwartete Fehlklassifikationsrate (False Positives) unter der GEM-Annahme minimiert wird:
 \begin{equation}
-    E_{\text{text},t} = \text{Var}(L_t) = \frac{1}{W \cdot H} \sum_{u,v} (L_t(u,v) - \bar{L}_t)^2
+c_j^\ast = \arg\min_{c_j} \; \mathbb{E}\big[\text{False Positives} \mid C_t = c_j \big].
 \end{equation}
-Hohe Werte von $E_{\text{text},t}$ indizieren scharfe Kanten und strukturreiches Gewebe, während Werte nahe Null auf Unschärfe oder homogene Flächen (z.\,B. Überbelichtung) hinweisen.
+
+\section{Bewegungsschätzung und SIFT-Flow-Analogie}
+\label{sec:motion_estimation}
+
+Die relative Bewegung der Endoskopiekamera korreliert stark mit den prozeduralen Phasen (z.\,B. schnelle Bewegung bei der Navigation vs. statisches Bild bei der Inspektion). Eine robuste Schätzung dieser Bewegung ist jedoch aufgrund von spekularen Reflektionen und Gewebedeformationen anspruchsvoll.
+
+\subsection{Robustheit durch SIFT Flow Prinzipien}
+Standardverfahren zur Berechnung des optischen Flusses basieren oft auf der Annahme der Helligkeitskonstanz (Brightness Constancy). In der Endoskopie wird diese Annahme durch variierende Beleuchtung und feuchte Oberflächen häufig verletzt. Liu et al. \cite{liu2008siftflow} stellten mit SIFT Flow einen Ansatz vor, der statt der Pixelhelligkeit dichte SIFT-Deskriptoren matcht. Dies ermöglicht eine Korrespondenzfindung auch unter variierenden Lichtverhältnissen. Auch Mackiewitz et al. \cite{mackiewicz2008segmentation} zeigten die Effektivität ähnlicher Feature-basierter Ansätze in der Kapselendoskopie.
+
+\subsection{Echtzeitfähige Approximation (Gradientenkonsistenz)}
+Während SIFT Flow eine hohe Robustheit bietet, ist die Berechnung dichter SIFT-Deskriptoren und die globale diskrete Optimierung für die Echtzeitanwendung im Operationssaal zu rechenintensiv.
+Um dennoch die Robustheit gegenüber Beleuchtungsänderungen zu gewährleisten, verwendet dieses System eine auf der Gradientenkonsistenz basierende Variante des optischen Flusses (basierend auf Farneback \cite{farneback2003two}). Anstatt roher Grauwerte wird die Ausschlagsstärke der Gradienten als Eingabe verwendet. Dies approximiert die SIFT-Idee (Struktur statt Helligkeit), bleibt jedoch durch polynomische Expansion effizient berechenbar.
+
+Aus dem berechneten Flussfeld $F_t$ werden statistische Momente extrahiert, die den Zustand des Systems beschreiben:
+
+\begin{enumerate}
+    \item \textbf{Globale Geschwindigkeit ($v_{x,t}, v_{y,t}$):} 
+    Der Median des Flussfeldes wird verwendet, um Ausreißer (z.\,B. sich bewegende Werkzeuge im Vordergrund) zu unterdrücken und die globale Kamerabewegung zu schätzen:
+    \begin{equation}
+        v_{x,t} = \text{median}_{(u,v)} \{ \delta x \mid (\delta x, \delta y) \in F_t \}
+    \end{equation}
+    
+    \item \textbf{Fluss-Varianz (Turbulenz):}
+    Ein hoher globaler Median bei niedriger Varianz deutet auf eine Kamerabewegung hin. Eine hohe Varianz bei niedrigem Median deutet hingegen auf lokale Gewebedeformation oder unabhängige Werkzeugbewegung hin. Dies dient als Indikator für den Zustand „Instrumenteninteraktion“.
+\end{enumerate}
+
+Dieser Ansatz ist ähnlich zu der der in Kapitel 3 vorgestellten 
+
+
+\section{Zustandsoptimierung mittels Log-Likelihood}
+
+Die Entscheidung über den aktuellen Systemzustand $S_t$ erfolgt nicht durch harte Schwellenwerte, sondern durch die Maximierung der Wahrscheinlichkeit innerhalb der Filterbank. Da das Gesamtsystem probabilistisch modelliert ist (basierend auf der Markov-Annahme und Gaußschen Rauschprozessen), stellt die Maximierung der Log-Likelihood das konsistente Optimierungsziel dar.
+
+Jeder Kalman-Filter $K_i$ (korrespondierend zu Zustand $s_i$) liefert eine Innovation (Residuum) $\tilde{y}_{t,i} = y_t - H \hat{x}_{t|t-1}$. Die Likelihood $L_i$ für Zustand $i$ berechnet sich aus der Normalverteilung dieses Residuums:
+\begin{equation}
+    \mathcal{L}_i(y_t) = \frac{1}{\sqrt{(2\pi)^k |\Sigma_i|}} \exp\left( -\frac{1}{2} \tilde{y}_{t,i}^\top \Sigma_i^{-1} \tilde{y}_{t,i} \right)
+\end{equation}
+Das System wechselt (unter Berücksichtigung der Markov-Übergangsmatrix) in jenen Zustand, der die beobachteten Feature-Daten $y_t$ am besten erklärt.
+
+
+\section{Definition des Conditional Random Fields} \label{sec:crf_definition}
+
+Während die in Abschnitt \ref{sec:feature_extraction} definierten Kalman-Filter und das Hidden-Markov-Modell (HMM) einen generativen Ansatz verfolgen (Modellierung der gemeinsamen Wahrscheinlichkeit $P(X,Y)$), stößt dieser Ansatz bei komplexen, überlappenden Merkmalen an Grenzen. Insbesondere die Unterscheidung von Zuständen mit ähnlichen Bewegungsmustern (z.\,B. fließendes Blut vs. bewegtes Instrument) erfordert ein Modell, das die bedingte Wahrscheinlichkeit der Label-Sequenz direkt optimiert.
+
+Hierzu wird ein Conditional Random Field (CRF) eingesetzt. Im Gegensatz zum HMM verzichtet das CRF auf strenge Unabhängigkeitsannahmen der Beobachtungen und erlaubt die Nutzung der globalen Feature-Vektoren $y_t$ als korrelierte Eingabegrößen über den gesamten Zeitverlauf.
+
+Sei $X=(y_1, y_2, \dots, y_T)$ die Sequenz der beobachteten Feature-Vektoren und $Y=(s_1, s_2, \dots, s_T)$ die zugehörige Sequenz der Zustands-Labels. Ein lineares Chain-CRF definiert die bedingte Wahrscheinlichkeit $P(Y \mid X)$ als
+\begin{equation}
+    P(Y \mid X) = \frac{1}{Z(X)} \exp \left( \sum_{t=1}^{T} \sum_{k} \lambda_k f_k(s_{t-1}, s_t, X, t) \right),
+\end{equation}
+wobei $Z(X)$ die Normalisierungskonstante (Partition Function) ist. Die Feature-Funktionen $f_k$ fungieren hierbei als handentworfene "Templates", deren Gewichtung $\lambda_k$ datengetrieben gelernt wird. Im vorliegenden Anwendungsfall werden folgende Feature-Logiken definiert:
+
+\begin{itemize}
+    \item \textbf{Bewegungsdynamik:} Das Produkt aus Bewegungsmagnitude ($v_{x,t}, v_{y,t}$) und Zustandsindikator. Starke Bewegungen erhöhen das Potential (positive $\lambda$) für $s_t=\text{Navigation}$, während statische Momente $s_t=\text{Inspektion}$ favorisieren.
+    \item \textbf{Instrument-Signatur:} Eine Kombination aus hoher lokaler Bewegungsvarianz (Objekt vs. Hintergrund) und niedriger Sättigung $\mu_{S,t}$ (Grauwert/Metall). Dies diskriminiert Instrumente von organischem Gewebe.
+    \item \textbf{Blutungssignatur:} Die Koinzidenz von hoher lokaler Bewegung und hoher Sättigung $\mu_{S,t}$ im roten Spektralbereich. Dies ermöglicht die Abgrenzung von Instrumentenbewegung.
+    \item \textbf{Textur-Indikator:} Zur Vorbereitung der hybriden Strategie wird ein Textur-Energiewert $T_{freq}$ (Laplace-Varianz) integriert, der auf hochfrequente Bildinhalte (Zottenstruktur) reagiert.
+\end{itemize}
+
+Das CRF wirkt damit als diskriminativer Filter. Während die Kalman-Filter die physikalische Dynamik glätten, entscheidet das CRF anhand der gelernten Gewichte $\lambda$, ob eine beobachtete Bewegung semantisch als "Blutung" oder "Instrument" zu bewerten ist.
+
+Die Parameter $\Lambda = \{\lambda_k\}$ werden durch Maximierung der Log-Likelihood auf annotierten Trainingsdaten gelernt:
+\begin{equation}
+    \mathcal{L}(\Lambda) = \sum_{i} \log P(Y^{(i)} \mid X^{(i)}) - \frac{\lambda_{\text{reg}}}{2} \lVert \Lambda \rVert_2^2.
+\end{equation}
+
+\section{Hybride Inferenzstrategie: Kaskadierte Klassifikation} \label{sec:hybrid_inference}
+
+Um die Echtzeitfähigkeit des Systems zu gewährleisten und gleichzeitig die hohe Texturvarianz des Terminalen Ileums (TI) präzise zu erfassen, wird eine hybride Kaskaden-Architektur implementiert. Das System operiert standardmäßig im ressourceneffizienten CRF-Modus. 
+
+Nur wenn die Wahrscheinlichkeit für den Zustand "Zäkum/TI-Übergang" einen definierten Schwellenwert überschreitet oder die Texturmerkmale ($T_{freq}$) ambig sind, wird dynamisch ein spezialisiertes CNN (\textit{Deep Texture Expert}) für den aktuellen Frame $I_t$ hinzugeschaltet. Diese Fusion aus logikbasiertem CRF und textursensitivem Deep Learning erlaubt eine präzise Dokumentation bei minimaler Rechenlast.
+\subsection{Definition der Trigger-Funktion}
+
+Die Aktivierung des CNN erfolgt über eine Trigger-Funktion $\tau(y_t, S_{t-1})$. Sie markiert Kandidatenframes, an denen das CRF den Eintritt in das terminale Ileum oder das Vorliegen eines Polypen vermutet. Diese Frames werden zur Feinklassifikation an das CNN weitergereicht. Die Trigger-Logik basiert auf zwei Indikatoren:
+\begin{enumerate}
+    \item \textbf{Anatomische Plausibilität:} Das CRF befindet sich im Zustand $s_{t-1}=\text{TI}$ oder in einer Transitionsphase mit erhöhter Wahrscheinlichkeit für TI/Polyp.
+    \item \textbf{Textur-Energie:} Der in Abschnitt \ref{sec:feature_extraction} eingeführte Textur-Parameter $T_{\text{freq}}$ (Laplace-Varianz) weicht signifikant von der glatten Kolon-Schleimhaut ab.
+\end{enumerate}
+
+Die bedingte Entscheidung für den CNN-Einsatz ist definiert als:
+\begin{equation}
+    \tau(y_t) =
+    \begin{cases}
+        1 \; (\text{Active}) & \text{wenn } P(s_t \in \{\text{TI}, \text{Polyp}\} \mid \text{CRF}) > \delta_{\text{Recall}} \\
+        0 \; (\text{Passive}) & \text{sonst}
+    \end{cases}
+\end{equation}
+
+Der Schwellenwert $\delta_{\text{Recall}}$ wird bewusst niedrig gewählt (High-Recall-Strategie), um potenzielle TI-Passagen oder Polypen nicht zu übersehen.
+
+\subsection{Fusion der Experten} Falls τ(y 
+t
+​	
+ )=1, wird das Bild I 
+t
+​	
+  durch das CNN prozessiert, welches eine Wahrscheinlichkeitsverteilung P 
+CNN
+​	
+ (Y∣I 
+t
+​	
+ ) ausgibt. Die finale Entscheidung ergibt sich aus der gewichteten Fusion der CRF-Vorhersage (Kontext) und der CNN-Vorhersage (Textur):
+
+\begin{equation} P_{\text{final}}(s_t) = (1 - \alpha) \cdot P_{\text{CRF}}(s_t | X) + \alpha \cdot P_{\text{CNN}}(s_t | I_t) \end{equation}
