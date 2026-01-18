@@ -1,3 +1,33 @@
+\section{Systemarchitektur und Überblick}
+\label{sec:system_architecture_overview}
+
+Dieses Kapitel ergänzt die zuvor beschriebenen Modelle um den konkreten Systemzuschnitt der Implementierung. Die Architektur ist als Hybrid aus klassischer Computer Vision, Deep Learning und probabilistischer Zeitreihenanalyse ausgelegt. Ziel ist es, die Frame-zu-Frame-Instabilität reiner CNN-Ausgaben zu reduzieren, indem physikalische Kontinuität (optischer Fluss) und zeitliche Kohärenz (HMM/CRF) explizit erzwungen werden.
+
+\subsection{Von Regeln zur Probabilistik}
+Der Zustandsschätzer ist historisch aus einem regelbasierten Expertensystem hervorgegangen. Harte Schwellenwerte sind in der biologischen Realität jedoch unzuverlässig, da Gewebe- und Beleuchtungsvariabilität nicht konstant sind. Die aktuelle Lösung ersetzt starre Heuristiken durch datengetriebene Wahrscheinlichkeitsmodelle, deren Parameter über Maximum-Likelihood-Schätzung (MLE) adaptiert werden.
+
+\subsection{Komponentenkarte}
+Die Implementierung gliedert sich in fünf Schichten:
+
+\textbf{(1) Perception Layer.}
+Der Datenstrom wird durch \texttt{inference\_runner/video\_streamer.py} bereitgestellt. Die klassischen Merkmale entstehen in \texttt{features/classical/feature\_vector.py} und liefern den kompakten Messvektor $y_t \in \mathbb{R}^6$. Parallel dazu erzeugt das CNN-Modul \texttt{features/cnn/gastronet.py} semantische Klassenwahrscheinlichkeiten.
+
+\textbf{(2) Stability \& Change Detection.}
+Der \texttt{KalmanChangeDetector} in \texttt{features/classical/kalman.py} berechnet eine Mahalanobis-basierte Änderungswahrscheinlichkeit $p_\text{change}$. Hohe Werte markieren Szenenwechsel oder starke Kamerabewegung.
+
+\textbf{(3) Inference \& Decision Layer.}
+Die Zustandsdefinitionen liegen in \texttt{devisions/state.py} und \texttt{devisions/state\_registry.py} und verknüpfen klassische Features mit CNN-Ausgaben zu einem Likelihood-Vektor. Der zeitliche Filter \texttt{markov\_wrapper.py} implementiert den Bayes-Filter
+\begin{equation}
+    Belief_t \propto Likelihood \cdot (Belief_{t-1} \cdot Transition)
+\end{equation}
+und erweitert ihn um eine Diffusion: Bei hohem $p_\text{change}$ wird der Zustand unsicherer gemacht, um an Übergängen nicht zu verharren.
+
+\textbf{(4) Learning Layer.}
+Die \texttt{MarkovFeatureMatrix} in \texttt{markov\_feature\_matrix.py} speichert Prototypen, wenn das System hohe Konfidenz erreicht. Diese Speicherbasis dient der späteren Online-Verfeinerung der Zustandsmodelle (MLE-Update).
+
+\textbf{(5) Runner.}
+Die Ausführung verbindet alle Komponenten in \texttt{inference\_runner/hmm\_runner.py} (HMM mit Diffusion) oder alternativ in \texttt{inference\_runner/crf\_runner.py} (CRF/Viterbi ohne Diffusion).
+
 \section{Definition des Markovmodells}
 
 \begin{figure}[h]
@@ -21,9 +51,9 @@ Der Messvektor $y_t$ ist definiert als:
 Im Folgenden werden die einzelnen Komponenten als Vektoren hergeleitet. Im zweiten Schritt wird versucht, eine Optimierungsfunktion zu definieren, die sich der wahren Zustandsfunktion bestmöglich annähert.
 Aus der Lösung der individuellen Featurevektoren wird ein Hidden Markov Model hergeleitet.
 
-\section{Farbraumänderung auf einem Banach-Rechen}
+\section{Farbraumänderung auf einem Banach-Raum}
 
-Als Prior für die Hidden-Markov-Model Schätzung soll der Farbraumwechsel auf einem Banach-Rechen herangezogen werden. Hierzu wird der Farbraum des Bildes in jedem Frame $I_t$ in einen geeigneten Banach-Raum $B$ gesampled, der die wesentlichen Farbmerkmale extrahiert.
+Als Prior für die Hidden-Markov-Model Schätzung soll der Farbraumwechsel auf einem Banach-Raum herangezogen werden. Hierzu wird der Farbraum des Bildes in jedem Frame $I_t$ in einen geeigneten Banach-Raum $B$ gesampled, der die wesentlichen Farbmerkmale extrahiert.
 Praktisch bedeutet das, dass jedes Pixel $p$ im Bild $I_t$ durch eine Funktion $f: \mathbb{R}^3 \rightarrow B$ in den Banach-Raum transformiert wird, wobei das Farbraummodell die Änderung repräsentiert.
 Jede Kamera besitzt hierbei ein Rauschen. Je kleiner die Auflösung desto stärker ist der Einfluss des Pixelrauschen durch die geringere Auflösung. Kleine Kameras, wie Endoskope, sind aufgrund der geringeren Pixeldichte hiervon betroffen.
 Wenn das Modell "denkt", das Rauschen sei eine schmale Glockenkurve (Gauß), das echte Rauschen aber breiter streut, dann setzt das Modell den Schwellenwert für eine Änderung zu niedrig an. Die Konsequenz: Das System gibt Bewegung zurück, wo eigentlich nur ein bisschen Kamerarauschen war. Wir bekommen False Positives (Fehlalarme).
@@ -35,8 +65,7 @@ Die Autoren lösen das, indem sie statt der Gaußkurve ein Generalized Exponenti
 C_t = c_j 
 \end{equation}
 
-Wird hierbei für die Matrix $C_t$ der Farbraum im Banach-Rechen bei Zeit $t$ und $c_j$ der jeweilige Farbraumtyp (z.\,B. RGB, HSV, LAB) definiert.
-Die durch diesen Ansatz errechneten Vektoren bilden zwei Gleichungssysteme, deren Differenz die Zustandsänderung kodiert. Es wird d dessen Differenz
+Wird hierbei für die Matrix $C_t$ der Farbraum im Banach-Raum bei Zeit $t$ und $c_j$ der jeweilige Farbraumtyp (z.\,B. RGB, HSV, LAB) definiert.
 Die durch diesen Ansatz errechneten Vektoren bilden zwei Gleichungssysteme, deren Differenz die Zustandsänderung kodiert. Es wird daher die Differenz der im Banach-Raum eingebetteten Farbraumrepräsentationen betrachtet:
 \begin{equation}
 \Delta B_t = f(I_t) - f(I_{t-1}),
@@ -144,7 +173,7 @@ Aus dem berechneten Flussfeld $F_t$ werden statistische Momente extrahiert, die 
     Ein hoher globaler Median bei niedriger Varianz deutet auf eine Kamerabewegung hin. Eine hohe Varianz bei niedrigem Median deutet hingegen auf lokale Gewebedeformation oder unabhängige Werkzeugbewegung hin. Dies dient als Indikator für den Zustand „Instrumenteninteraktion“.
 \end{enumerate}
 
-Dieser Ansatz ist ähnlich zu der der in Kapitel 3 vorgestellten 
+Dieser Ansatz ist ähnlich zu dem in Kapitel 3 vorgestellten Verfahren.
 
 
 \section{Zustandsoptimierung mittels Log-Likelihood}
@@ -184,11 +213,70 @@ Die Parameter $\Lambda = \{\lambda_k\}$ werden durch Maximierung der Log-Likelih
     \mathcal{L}(\Lambda) = \sum_{i} \log P(Y^{(i)} \mid X^{(i)}) - \frac{\lambda_{\text{reg}}}{2} \lVert \Lambda \rVert_2^2.
 \end{equation}
 
+Die Übergangsparameter des CRF werden durch einen Maximum-a-Posteriori (MAP) Ansatz bestimmt. Hierbei dient eine diagonal-dominante Matrix als Prior (\textit{Sticky Prior}), um die Trägheit des Systems zu modellieren. Dieser Prior wird durch die empirischen Übergangshäufigkeiten aus den annotierten Trainingsdaten aktualisiert. Dies stellt sicher, dass das Modell auch bei limitierter Datenmenge stabile Zustandswechsel vorhersagt
+
+\section{Spezifische Featurefunktionen im CRF - Statistische Featureauswahl} \label{sec:crf_feature_functions}
+
+\subsection{Blutungsdetektion}
+\label{sec:bleeding_detection}
+
+Für die Blutungsdetektion innerhalb des CRF wird der \textit{Color Spectrum Transformation} (CST) Index nach Jung et al. \cite{jung2008active} als Featurefunktion adaptiert. Während der ursprüngliche Ansatz einen pixelbasierten Schwellenwert verwendet, wird für das CRF ein globaler Indikator benötigt, der mit dem Zustandslabel korreliert.
+
+Die Basis bildet der normierte Rotanteil eines Pixels $p$ an der Position $(u,v)$:
+\begin{equation}
+    \text{CST}(u,v) = \frac{R(u,v)}{R(u,v) + G(u,v) + B(u,v)}
+\end{equation}
+
+Um dies als Kriterium für den CRF-Vektor $y_t$ nutzbar zu machen, wird der Durchschnittswert dieser Transformation über das gesamte Bild $I_t$ als Feature $h_{\text{blood}}(I_t)$ definiert. Dies dient als Eingabe für eine Zustandsfunktion $f_k$, die das Label $s_t = \text{Blutung}$ favorisiert:
+
+\begin{equation}
+    f_{\text{blood}}(s_t, I_t) = 
+    \begin{cases} 
+        \frac{1}{N} \sum_{(u,v) \in I_t} \text{CST}(u,v) & \text{wenn } s_t = \text{Blutung} \\
+        0 & \text{sonst}
+    \end{cases}
+\end{equation}
+
+Innerhalb des CRF-Modells lernt der Trainingsprozess ein positives Gewicht $\lambda_{\text{blood}}$, sodass eine hohe durchschnittliche Sättigung im roten Spektrum die Wahrscheinlichkeit für den Zustand "Blutung" maximiert. Dies ist robuster als ein harter Schwellenwert, da der CST-Wert in Relation zu anderen Merkmalen (wie der Bewegungsvarianz) gewichtet wird.
+
+\section{Farbcodierung des Zustands Außerhalb des Körpers}
+
+Der Zustand außerhalb des Körpers (Outside Body, OB) ist durch eine charakteristische Farbverteilung geprägt, die sich deutlich von den inneren Gewebefarben unterscheidet. Typischerweise dominieren helle, bläuliche und gräuliche Töne, die auf die Umgebung außerhalb des Körpers hinweisen. Um dieses Merkmal im CRF-Modell zu integrieren, wird ein Farbhistogramm im LAB-Farbraum berechnet.
+
+\subsubsection{Retraktionsindikator}
+
+Basierend auf der medizinischen Prozedur erfolgt das Erreichen des Zäkums und der Eintritt in das terminale Ileum (TI) typischerweise nach einer Inversion der Bewegungsrichtung (Wechsel von Insertion zu Retraktion). 
+
+Um die Validität dieses Merkmals für das CRF zu prüfen, wurde eine statistische Analyse auf dem Trainingsdatensatz durchgeführt. Es wurde die akkumulierte Richtungskonsistenz des Bewegungsvektors $v_{z,t}$ über ein gleitendes Fenster von $w=300$ Frames (ca. 10 Sekunden) betrachtet.
+
+Wir definieren das Feature \textit{RetractionScore} $\mathcal{R}_t$ als:
+\begin{equation}
+    \mathcal{R}_t = \left| \sum_{k=0}^{w} \text{sgn}(v_{z, t-k}) \right|
+\end{equation}
+Ein Vorzeichenwechsel in der globalen Bewegung führt zu einer Minimierung dieses Scores.
+
+\begin{figure}[h]
+    \centering
+    % Platzhalter für den Boxplot
+    % \includegraphics[width=0.8\textwidth]{Images/Boxplot_Retraction.png}
+    \caption{Statistische Verteilung des RetractionScores. Die Klasse "Terminales Ileum" (rechts) zeigt signifikant niedrigere Werte (hohe Varianz der Bewegungsrichtung) im Vergleich zur stetigen Navigation (links).}
+    \label{fig:retraction_stats}
+\end{figure}
+
+Da der statistische t-Test einen signifikanten Unterschied der Mittelwerte zwischen den Klassen "Navigation" und "TI-Eintritt" zeigte ($p < 0.001$), wurde $\mathcal{R}_t$ als gewichtetes Feature in das CRF aufgenommen:
+\begin{equation}
+    f_{\text{TI}}(s_t, X) = \mathbf{1}_{\{s_t = \text{TI}\}} \cdot \exp(-\mathcal{R}_t)
+\end{equation}
+Dies erlaubt dem Modell, Zustandsübergänge in das terminale Ileum bevorzugt dann vorherzusagen, wenn eine dominante Richtungsumkehr (Retraktion) in den Daten statistisch belegt ist.
+
 \section{Hybride Inferenzstrategie: Kaskadierte Klassifikation} \label{sec:hybrid_inference}
+
+Da die Ergebnisse der Featureextraktion für die Unterscheidung bestimmter Zustände (z.\,B. Zäkum/TI-Übergang, Polypen) aufgrund der mangelnden Präsenz von Texturmerkmalen nicht ausreichend sein wird, kann das System im Rahmen einer hybriden Inferenzstrategie erweitert werden.
 
 Um die Echtzeitfähigkeit des Systems zu gewährleisten und gleichzeitig die hohe Texturvarianz des Terminalen Ileums (TI) präzise zu erfassen, wird eine hybride Kaskaden-Architektur implementiert. Das System operiert standardmäßig im ressourceneffizienten CRF-Modus. 
 
-Nur wenn die Wahrscheinlichkeit für den Zustand "Zäkum/TI-Übergang" einen definierten Schwellenwert überschreitet oder die Texturmerkmale ($T_{freq}$) ambig sind, wird dynamisch ein spezialisiertes CNN (\textit{Deep Texture Expert}) für den aktuellen Frame $I_t$ hinzugeschaltet. Diese Fusion aus logikbasiertem CRF und textursensitivem Deep Learning erlaubt eine präzise Dokumentation bei minimaler Rechenlast.
+Nur wenn die Wahrscheinlichkeit für den Zustand "Zäkum/TI-Übergang" einen definierten Schwellenwert überschreitet oder die Texturmerkmale ($T_{freq}$) ambig sind, wird dynamisch ein CNN für den aktuellen Frame $I_t$ hinzugeschaltet. Diese Fusion aus logikbasiertem CRF und textursensitivem Deep Learning erlaubt eine präzise Dokumentation bei minimaler Rechenlast.
+
 \subsection{Definition der Trigger-Funktion}
 
 Die Aktivierung des CNN erfolgt über eine Trigger-Funktion $\tau(y_t, S_{t-1})$. Sie markiert Kandidatenframes, an denen das CRF den Eintritt in das terminale Ileum oder das Vorliegen eines Polypen vermutet. Diese Frames werden zur Feinklassifikation an das CNN weitergereicht. Die Trigger-Logik basiert auf zwei Indikatoren:
@@ -208,18 +296,9 @@ Die bedingte Entscheidung für den CNN-Einsatz ist definiert als:
 
 Der Schwellenwert $\delta_{\text{Recall}}$ wird bewusst niedrig gewählt (High-Recall-Strategie), um potenzielle TI-Passagen oder Polypen nicht zu übersehen.
 
-\subsection{Fusion der Experten} Falls τ(y 
-t
-​	
- )=1, wird das Bild I 
-t
-​	
-  durch das CNN prozessiert, welches eine Wahrscheinlichkeitsverteilung P 
-CNN
-​	
- (Y∣I 
-t
-​	
- ) ausgibt. Die finale Entscheidung ergibt sich aus der gewichteten Fusion der CRF-Vorhersage (Kontext) und der CNN-Vorhersage (Textur):
+\subsection{Fusion der Experten}
 
-\begin{equation} P_{\text{final}}(s_t) = (1 - \alpha) \cdot P_{\text{CRF}}(s_t | X) + \alpha \cdot P_{\text{CNN}}(s_t | I_t) \end{equation}
+Falls $\tau(y_t)=1$, wird das Bild $I_t$ durch das CNN verarbeitet, welches eine Wahrscheinlichkeitsverteilung $P_{\text{CNN}}(Y \mid I_t)$ ausgibt. Die finale Entscheidung ergibt sich aus der gewichteten Fusion der CRF-Vorhersage (Kontext) und der CNN-Vorhersage (Textur):
+\begin{equation}
+    P_{\text{final}}(s_t) = (1 - \alpha) \cdot P_{\text{CRF}}(s_t \mid X) + \alpha \cdot P_{\text{CNN}}(s_t \mid I_t)
+\end{equation}
