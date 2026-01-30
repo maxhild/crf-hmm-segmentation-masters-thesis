@@ -36,8 +36,9 @@ Die aktuelle Implementierung der Videosegmentierung für Endoskopieaufnahmen wei
 
 Konkret sollen in dieser Arbeit folgende aus dem Einsatz der Multilabelklassifikation bekannten Probleme betrachtet werden:
 
+\begin{itemize}
 \item \textbf{Problem P1: Fehlende Berücksichtigung visueller Merkmale} \\
-ENachbearbeitung berücksichtigt keine zusätzlichen visuellen Informationen (wie Farbinformationen) aus den Bildern, die zur Verbesserung der Segmentierungsgenauigkeit von CNN-Vorhersagen beitragen könnten.
+Viele Methoden zur Nachbearbeitung berücksichtigen keine zusätzlichen visuellen Informationen (wie Farbinformationen), die zur Verbesserung der Segmentierungsgenauigkeit von CNN-Vorhersagen beitragen könnten.
 
 \item \textbf{Problem P2: Mangelnde Robustheit gegenüber durch  Störungen ausgelöste falsch positive Ergebnisse} \\
 Systeme zur Endoskopiesegmentierung sind anfällig für Störungen durch Lichtreflexionen und Wasserartefakte, die zu Segmentierungsunterbrechungen und falsch positive Ergebnisse bei der Detektion relevanter Merkmale, wie Adenome führen.
@@ -49,11 +50,10 @@ Diese Probleme stehen im engen Zusammenhang mit den in \cref{sec:zielsetzung} be
 
 Die Lösung der beschriebenen Probleme ist aus folgenden Gründen von hoher Relevanz:
 
+\begin{itemize}
+\item \textbf{Effizienzsteigerung in der Endoskopie:} Es wird vermutet, dass die automatisierte und zuverlässige Segmentierung sowohl Ärzte bei der Dokumentation entlasten kann als auch die Frameklassifikation durch eine Reduktion des Suchraums beschleunigt werden kann.
 
-\item \textbf{Effizienzsteigerung in der Endoskopie:} Automatisierte und zuverlässige Segmentierung kann Ärzte bei der Dokumentation entlasten und die Durchführung von Qualitätskontrollen beschleunigen.
-
-\item \textbf{Datenschutz und Anonymisierung:} Präzise Segmentierung der \enquote{Outside}-Bereiche ist wichtig für die Anonymisierung von Endoskopievideos, da diese Bereiche oft Personen zeigen.
-
+\item \textbf{Datenschutz und Anonymisierung:} Präzise Segmentierung der Bereiche außerhalb des Körpers ist wichtig für die Anonymisierung von Endoskopievideos. Da diese Bereiche oft Personen zeigen, sind diese Datenschutzrechtlich relevant und stehen einer Veröffentlichung im Weg.
 \end{itemize}
 
 \textbf{Nutznießer dieser Arbeit:}
