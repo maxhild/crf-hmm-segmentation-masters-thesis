@@ -9,14 +9,12 @@ Dabei werden Markovmodelle mit Methoden der Signal und Bildverarbeitung kombinie
 Die der technischen Implementierung zugrundeliegenden mathematischen Hintergründe und Theoreme werden ebenfalls vorgestellt, um die theoretische Basis der Arbeit zu untermauern.
 
 \section{Medizinischer Hintergrund: Steigende Anforderungen an das Gesundheitswesen bei der Darmkrebsprävention}
-Endoskopie ist eine der zentralen Möglichkeiten zur Behandlung und Diagnose in der Therapie von Darmkrebs, einer der häufigsten und tödlichsten Krebsarten. \citep{labianca2010-colon-cancer}
-Nicht von der Hand zu weisen sind dabei die zeitaufwändige Durchführung und Dokumentation der Überwachung des flächigen Gewebes im Darm im Rahmen von Endoskopien. Aus diesem Grund ist es der Gastroenterologie ein ständiges Anliegen, die Qualitätssicherung bei Darmspiegelungen zu verbessern.
-Wie in der Einleitung erwähnt, ist die Zökumrückzugszeit ein Beispiel für ein mögliches Qualitätsmerkmal. Diese Metrik ist relevant, weil eine ausreichend lange Darmspiegelung die Chance auf eine vollständige Detektion aller möglichen Adenome erhöht.
-Dadurch steigt die Wahrscheinlichkeit, dass die Darmspiegelung sorgfältig durchgeführt wurde, was nachweislich zu einer erhöhten Anzahl früher Diagnosen durch Adenomdetektion führen kann. \cite{vilmann-2022} Das liegt daran, dass die Durchführung von Darmspiegelungen sorgfältiger wird, wenn Zeitvorgaben eingehalten werden.
-Dieses Beispiel zeigt, dass die Einhaltung sinnvoller Qualitätskriterien die Behandlungsqualität steigern kann.
-Die Europäische Gesellschaft für Gastroenterologie (ESGE) hat zur Verbesserung der Qualität von Kolonoskopien einige Forschungsfragen herausgegeben. Hierbei gibt es einige Punkte, speziell während der Endoskopie sowie in der Nachbereitung des Videomaterials, als auch weitergehend deren Umsetzung durch Nutzung eines KI gestützten Systems zur Qualitätssicherung bei Darmspiegelungen profitieren könnten:
+Endoskopie ist eine der zentralen Möglichkeiten zur Behandlung und Diagnose in der Therapie von Darmkrebs, einer der häufigsten und tödlichsten Krebsarten. \cite{labianca2010-colon-cancer}
+Nicht von der Hand zu weisen sind dabei die zeitaufwändige Durchführung und Dokumentation rund um die Durchführung von Endoskopien. Aus diesem Grund ist es der Gastroenterologie ein ständiges Anliegen, die Qualitätssicherung bei Darmspiegelungen zu verbessern.
+Ein Beispiel für einen Qualitätsindikator ist die Zökumrückzugszeit. Klinische Studien konnten eine Korrelation der Rückzugszeit mit der Adenomdetektionsrate und das Risiko übersehener Läsionen steigt mit kürzerer Rückzugszeit. Es wird vermutet, dass die Darmschleimhaut bei kürzerheit häufiger nicht vollständig eingesehen wird \cite{vilmann-2022}. 
+Dieses Beispiel zeigt, dass die Einhaltung sinnvoller Qualitätskriterien die Behandlungsqualität steigern kann. Hierbei muss jedoch bei jeder Maßnahme abgewägt werden, ob der Mehraufwand tatsächlich ausreichend nützlich für die Behandlungsqualität ist. Die Europäische Gesellschaft für Gastroenterologie (ESGE) hat zu diesem Thema und zur Verbesserung der Qualität von Kolonoskopien einige Forschungsanstöße herausgegeben.
 
-\begin{enumerate}
+\enquote{\begin{enumerate}
   \item \textbf{Vorbereitung der Prozedur}
     \begin{itemize}
       \item Welche Art von Intervention verbessert die Rate einer adäquaten Darmvorbereitung?
@@ -25,20 +23,20 @@ Die Europäische Gesellschaft für Gastroenterologie (ESGE) hat zur Verbesserung
 
   \item \textbf{Vollständigkeit der Prozedur}
     \begin{itemize}
-      \item Wie verhalten sich diagnostische Ausbeute (und Intervallkarzinomrate) in Abhängigkeit von einer steigenden Zökumintubationsrate?
-      \item Welchen Nutzen hat die Dokumentation der Zökumintubation nur im schriftlichen Bericht im Vergleich zu einem schriftlichen und fotografischen Bericht?
+      \item Welchen Nutzen hat die Dokumentation der Zökumintubation nur im schriftlichen Bericht im Vergleich zu einem schriftlichen \emph{und} fotografischen Bericht?
     \end{itemize}
-
-  \item \textbf{Identifikation von Pathologien}
+    
+    \item \textbf{Identifikation von Pathologien}
     \begin{itemize}
       \item Welcher Zielwert gilt für die Adenomdetektionsrate?
-      \item Welches Leistungsmaß spiegelt die Identifikation von Pathologien außerhalb des CRC Screenings und der Überwachung wider?
+      \item Welches Leistungsmaß spiegelt die Identifikation von Pathologien außerhalb des CRC-Screening-/Überwachungssettings wider?
     \end{itemize}
+    \item Wie verhalten sich diagnostische Ausbeute (und Intervallkarzinomrate) in Abhängigkeit von einer steigenden Zökumintubationsrate?
 
   \item \textbf{Management von Pathologien}
     \begin{itemize}
       \item Was ist die verlässlichste und praktikabelste Methode, um die Vollständigkeit der Polypentfernung zu messen?
-      \item Wie wirksam sind Zusatztechniken und Skalen wie Chromendoskopie, Paris Klassifikation oder Tätowierung von Resektionsstellen im Management von Pathologien?
+      \item Wie wirksam sind Zusatztechniken/-skalen (Chromendoskopie, Paris-Klassifikation, Tätowierung von Resektionsstellen) im Management von Pathologien?
     \end{itemize}
 
   \item \textbf{Komplikationen}
@@ -46,13 +44,13 @@ Die Europäische Gesellschaft für Gastroenterologie (ESGE) hat zur Verbesserung
       \item Was ist die verlässlichste und praktikabelste Methode, um Komplikationsraten zu überwachen?
       \item Trägt die Überwachung dazu bei, Komplikationsraten zu senken?
     \end{itemize}
-\end{enumerate}
+\end{enumerate}}
 \citep{kaminski-performance-2017}
 
 Im Rahmen der Qualitätssicherung sollen Merkmale der Kolonoskopie videodokumentiert werden: \enquote{Eine Bilddokumentation 
 der Bauhin‘schen Klappe (Übergang des Dünndarms in 
-den Dickdarm) sowie des Coecumbodens (Abgang des Appendix) ist im Rahmen der Qualitätssicherung notwendig. Auch Polypen werden vor und nach der Abtragungen videodokumentiert.} \cite{Beyer2022}. 
-Die zuverlässige Erkennung von Organteilen des Darms im Video ist Teil der medizinischen Forschung mit künstlicher Intelligenz. Insbesondere ist die Erkennung von Polypen von besonderem Interesse.
+den Dickdarm) sowie des Coecumbodens (Abgang des Appendix) ist im Rahmen der Qualitätssicherung notwendig. Auch Polypen werden vor und nach der Abtragungen videodokumentiert.} \cite{Beyer2022}. Diese Qualitätsanforderungen sind aufgrund der hohen Zahl der Kolonoskopien mit viel Aufwand verbunden.
+Die zuverlässige Erkennung dieser  im Video ist Teil der medizinischen Forschung mit künstlicher Intelligenz. Insbesondere ist die Erkennung von Polypen von besonderem Interesse.
 Diese wachsen als Vorstufe von potenziell bösartigen Tumoren an der Darminnenwand. Sie können aus verschiedenen Gründen und in verschiedenen Darmteilen auftreten, 
 sind jedoch besonders als Frühmerkmal einer möglichen Diagnose von Darmkrebs interessant und deshalb wenn möglich vollständig zu erkennen. \citep{doi:10.7326/0003-4819-157-4-201208210-00002}
 Weiter kompliziert wird die Erkennung und Einschätzung von Polypen dadurch, dass es verschiedene Stufen ihrer Ausprägung sowie verschiedene genetische Ursachen für sie gibt. \cite{PickhardtColonPolyps}
@@ -93,7 +91,7 @@ Seine Arbeit hat bis heute großen Einfluss und begründete die Klasse der Marko
 
 In seinem Einführungswerk beschreibt A. W. Drake Markovprozesse in diskreter Zeit und mit diskreter Zustandsmenge. Er definiert sie allgemein als Kette von Zuständen $S$, deren zukünftige Entwicklung nur vom aktuellen Zustand abhängt und deren Übergänge durch Übergangswahrscheinlichkeiten bestimmt werden. Eine Bedingung für das Vorliegen eines Markovprozesses wird so definiert als \begin{equation}
 P(X_{n+1} = x_{n+1} \mid X_n = x_n, X_{n-1} = x_{n-1}, \dots, X_0 = x_0)
-= P(X_{n+1} = x_{n+1} \mid X_n = x_n)
+= \\ P(X_{n+1} = x_{n+1} \mid X_n = x_n)
 \label{eq:markov_property}
 \end{equation}.
 Weitergehend gilt als zweite Eigenschaft der Übergangswahrscheinlichkeiten, dass die ausgehenden Wahrscheinlichkeiten eines Zustands sich zu eins addieren, damit es sich um eine vollständige Abbildung aller möglichen Zustände handelt.

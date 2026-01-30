@@ -17,13 +17,6 @@ Die Endoskopie wird seit ihrer flächendeckenden Einführung in vielen Industrie
 
 Viele Publikationen argumentieren, dass mit KI-basierter Segmentierung eine Verbesserung der Qualität und Geschwindigkeit in der Endoskopie erfolgen könnte. \cite{ELKarazle2023} In der Methodologie gab es hier mehrere Durchbrüche, die gute Ergebnisse bei der Erkennung von Kolonpolypen aufzeigten. \cite{Fan2020}\cite{Dong2021} Hier haben auch Lux et. al. framebasierte Klassifikation demonstriert. Sie schlagen  eine regelbasierte Erweiterung durch post-processing zur Segmentierung vor. Ihre Pipeline basiert beispielsweise auf einer Multilabel-KI, die die Wahrscheinlichkeit der für die aktuelle Endoskopie relevanten Klassen vorhersagt. Ein feinabgestimmtes RegNetX800MF-Modell sagt diese Wahrscheinlichkeiten Bild für Bild voraus; daraus entsteht eine zeitliche Segmentierung des Videos. \cite{lux-2023} Einsatz solcher Systeme zur Entscheidungsunterstützung wurde von Hann et al. evaluiert, wobei diese die Vorteile nennen, jedoch in ihrer Untersuchung Hinweise auf negative Effekte wie eine mögliche Abnahme der Konzentration der Untersucher finden, die dazu führen kann, dass die Anzahl der gefundenen Darmpolypen sinkt. \cite{hann_entscheidungsunterstutzung_2025}
 
-\subsection{Die Bedeutung der Zökumrückzugszeit}
-
-Ein kritisches Segment, das vom Modell ausgegeben wird, verdient besondere Aufmerksamkeit und war die initiale Motivation für die Konstruktion des in dieser Arbeit verwendeten Modells. Die \enquote{Outside}-Vorhersage entspricht der Zökumrückzugszeit. Diese Messung ist ein wichtiger Qualitätsindikator für die Qualität der Koloskopie. Sie wird verwendet, um die Zeit zu messen, die das Endoskop benötigt, um den Körper zu verlassen, wobei die Messung am Zökum beginnt. 
-
-Das Zökum ist als erster Teil des Dickdarms der vorgesehene Ausgangspunkt für Koloskopien. Vom Zökum aus sollte die Zeit, die das Koloskop benötigt, um den Körper zu verlassen, mehr als 6 Minuten betragen \citep{profanter-2020,leung-2019}. Um diesen Indikator zu berechnen, können genaue Messungen der Zeit verwendet werden, die das Endoskop benötigt, um den Körper zu verlassen.
-
-Dieser Ansatz wurde in mehreren Studien getestet, wie der von Vilmann et. al.\cite{vilmann-2022} durchgeführten Studie, die zeigte, dass die Zökumrückzugszeit mit der Adenomdetektionsrate verbunden ist \citep{vilmann-2022}. Durch die korrekte Bestimmung des terminalen Ileums sowie des ersten Frames außerhalb des Körpers soll in Zukunft ein Richtwert für die Erkennung der Zökumrückzugszeit als Qualitätsindikator nutzbar gemacht werden.
 
 \subsection{Herausforderungen bei der KI basierten Segmentierung von Endoskopievideos}
 
@@ -37,22 +30,17 @@ Die aktuelle Implementierung der Videosegmentierung für Endoskopieaufnahmen wei
 
 \begin{itemize}
 \item Die derzeitige Glättungsfunktion zur Nachbearbeitung der Framebasierten Vorhersagen ist unzureichend für eine präzise Bestimmung der Segmentgrenzen
-\item Unterbrechungen in der \enquote{Outside}-Labelerkennung führen zu ungenauen Messungen der Zökumrückzugszeit
 \item Die Anonymität der Patienten wird durch unpräzise Segmentierung gefährdet, da \enquote{Outside}-Frames oft Personen zeigen
-\item Lichtreflexionen und Wasserartefakte verursachen fehlerhafte Segmentierungen, unter anderem falsch positive Ergebnisse sowie falsch Negative.
+\item Die Durchführung KI-gestützter Klassifizierung auf Frames mit niedriger Bildqualität durch Spülung oder Lichtreflexionen führt zu falsch positiven und falsch negativen Ergebnissen und verbraucht Rechenzeit.
 \end{itemize}
 
-Konkret sollen in dieser Arbeit folgende im Einsatz der Multilabelklassifikation aufgetretenen Probleme betrachtet werden:
+Konkret sollen in dieser Arbeit folgende aus dem Einsatz der Multilabelklassifikation bekannten Probleme betrachtet werden:
 
-\begin{itemize}
-\item \textbf{Problem P1: Unzuverlässige Segmentgrenzbestimmung} \\
-Die aktuelle Methode zur Glättung der Framebasierten Vorhersagen mittels gleitendem Durchschnitt führt zu ungenauen Start- und Endzeitstempeln für die \enquote{Outside}-Segmente, was die Berechnung der Zökumrückzugszeit sowie den Datenschutz innerhalb des Datensatzes von prospektiven Studien beeinträchtigt.
+\item \textbf{Problem P1: Fehlende Berücksichtigung visueller Merkmale} \\
+ENachbearbeitung berücksichtigt keine zusätzlichen visuellen Informationen (wie Farbinformationen) aus den Bildern, die zur Verbesserung der Segmentierungsgenauigkeit von CNN-Vorhersagen beitragen könnten.
 
-\item \textbf{Problem P2: Fehlende Berücksichtigung visueller Merkmale} \\
-Die derzeitige Nachbearbeitung berücksichtigt keine zusätzlichen visuellen Informationen (wie Farbinformationen) aus den Bildern, die zur Verbesserung der Segmentierungsgenauigkeit von CNN-Vorhersagen beitragen könnten.
-
-\item \textbf{Problem P3: Mangelnde Robustheit gegenüber Störungen} \\
-Das aktuelle System ist anfällig für Störungen durch Lichtreflexionen und Wasserartefakte, die zu Segmentierungsunterbrechungen führen.
+\item \textbf{Problem P2: Mangelnde Robustheit gegenüber durch  Störungen ausgelöste falsch positive Ergebnisse} \\
+Systeme zur Endoskopiesegmentierung sind anfällig für Störungen durch Lichtreflexionen und Wasserartefakte, die zu Segmentierungsunterbrechungen und falsch positive Ergebnisse bei der Detektion relevanter Merkmale, wie Adenome führen.
 \end{itemize}
 
 Diese Probleme stehen im engen Zusammenhang mit den in \cref{sec:zielsetzung} beschriebenen Zielen.
@@ -61,8 +49,6 @@ Diese Probleme stehen im engen Zusammenhang mit den in \cref{sec:zielsetzung} be
 
 Die Lösung der beschriebenen Probleme ist aus folgenden Gründen von hoher Relevanz:
 
-\begin{itemize}
-\item \textbf{Medizinische Qualitätssicherung:} Eine präzise Analyse von Qualitätsindikatoren der Endoskopie wie der Zökumrückzugszeit und der Adenomdetektionsrate ist wichtig für die Qualitätsbewertung von Koloskopien und kann rückwirkend zur Verbesserung der Patientenversorgung beitragen.
 
 \item \textbf{Effizienzsteigerung in der Endoskopie:} Automatisierte und zuverlässige Segmentierung kann Ärzte bei der Dokumentation entlasten und die Durchführung von Qualitätskontrollen beschleunigen.
 
@@ -72,7 +58,7 @@ Die Lösung der beschriebenen Probleme ist aus folgenden Gründen von hoher Rele
 
 \textbf{Nutznießer dieser Arbeit:}
 \begin{itemize}
-\item Gastroenterologen und Endoskopiepersonal profitieren von verbesserten Qualitätsmetriken
+\item Gastroenterologen und Endoskopiepersonal profitieren von einer reduzierten Videolänge bei der
 \item Patienten erhalten durch bessere Qualitätskontrolle eine sicherere Behandlung  
 \item Die Forschungsgruppe ColoReg erhält optimierte Algorithmen für ihre Segmentierungspipeline
 \item Die medizinische Informatik profitiert von methodischen Erkenntnissen zum kombinierten Einsatz von statistischen Modellen mit Deep Learning Modellen
@@ -82,33 +68,26 @@ Die steigenden Zahlen von Darmkrebserkrankungen \citep{acs-2024,ferlay-2024} und
 
 \section{Zielsetzung}\label{sec:zielsetzung}
 
-Die Hauptziele dieser Masterarbeit sind die Entwicklung und Evaluation verbesserter Nachbearbeitungsverfahren für die bildbasierte Segmentierung von Endoskopievideos. Im Idealfall kann das System die Nutzung des CNN-Segmentationsmodells teilweise oder vollständig ersetzen oder ergänzen. Die Minimalanforderung an ein erfolgreiches System ist die zuverlässige Klassifizierung insbesondere des Eintretens des Endoskops in den Körper. Aus Datenschutzgründen muss diese Region des Videos sicher entfernt werden. Zudem ist der Informationsgehalt aus dieser Region des Videos gleich null. Weiterhin kann ein Anhaltspunkt für die Erkennung des tiefsten Eintretens in den Körper wichtig sein, um die Zökumrückzugszeit zu bestimmen ($\delta(Z_1, Z_2)$, wobei $Z_1$ das Erreichen des terminalen Ileums und $Z_2$ der Zeitpunkt des Austritts aus dem Körper ist). Auch die Erkennung von Regionen eines operativen Eingriffs kann die Dokumentation direkt nach dem Eingriff beschleunigen.
-
+Das Ziel dieser Masterarbeit ist die Entwicklung und Evaluation verbesserter Nachbearbeitungsverfahren für die framebasierte Segmentierung von Endoskopievideos. Im Idealfall kann das System die Nutzung von Frameklassifizierung ergänzen. Die Minimalanforderung an ein erfolgreiches System ist die zuverlässige Klassifizierung der Videosegmente außerhalb und vor dem Eintretens des Endoskops in den Körper. Aus Datenschutzgründen muss diese Region des Videos sicher entfernt werden. Auch die Erkennung von Regionen niedriger Bildqualität soll mittels des Modells möglich werden. Zudem ist der Informationsgehalt aus dieser Region des Videos gleich null. So kann die Dokumentation und Klassifikation der interessanten Regionen durch eine Reduktion des Suchraums beschleunigt werden.
 
 Im folgenden werden detailliert die Ziele der Arbeit ausgeführt
 
 \textbf{Ziele zur Lösung von Problem P1 (Unzuverlässige Segmentgrenzbestimmung):}
 \begin{itemize}
-\item \textbf{Ziel Z1.1:} Implementierung eines Hidden Markov Model (HMM) Ansatzes zur Ersetzung der aktuellen Glättungsfunktion
-\item \textbf{Ziel Z1.2:} Implementierung eines Conditional Random Field (CRF) Ansatzes als alternative Klassifikation von uninterressanten sowie interessanten Regionen. 
-\item \textbf{Ziel Z1.3:} Quantitative Evaluation der Segmentierungsgenauigkeit durch Vergleich mit manuell annotierten Start- und Endzeiten bei Endoskopievideos der ColoReg Studie
+\item \textbf{Ziel Z1.1:} Implementierung eines Hidden Markov Model (HMM) und eines Conditional Random Field (CRF) Ansatzes als alternative Klassifikation von uninterressanten sowie interessanten Regionen. 
 \end{itemize}
 
-\textbf{Ziele zur Lösung von Problem P2 (Fehlende Berücksichtigung visueller Merkmale):}
+\textbf{Ziel zur Lösung von Problem P2 (Fehlende Berücksichtigung visueller Merkmale):}
 \begin{itemize}
-\item \textbf{Ziel Z2.1:} Integration von Farbinformationen als zusätzliche Eingabe in die statistischen Modelle
-\item \textbf{Ziel Z2.2:} Entwicklung eines Bayesschen Ansatzes zur Kombination von framebasierten Vorhersagen und visuellen Merkmalen
-\end{itemize}
+\item \textbf{Ziel Z2.1:} Verbesserung der Robustheit gegenüber Lichtreflexionen und Wasserartefakten
 
-\textbf{Ziele zur Lösung von Problem P3 (Mangelnde Robustheit gegenüber Störungen):}
-\begin{itemize}
-\item \textbf{Ziel Z3.1:} Verbesserung der Robustheit gegenüber Lichtreflexionen und Wasserartefakten
-\item \textbf{Ziel Z3.2:} Bewahrung der Funktionalität der ursprünglichen Glättungsfunktion bei gleichzeitiger Verbesserung der Genauigkeit
+\textbf{Ziel zur Lösung von Problem P3 (Fehlende Berücksichtigung visueller Merkmale):}
+\item \textbf{Ziel Z3.1:} Bewahrung der Funktionalität der ursprünglichen Glättungsfunktion bei gleichzeitiger Verbesserung der Genauigkeit
 \end{itemize}
 
 \textbf{Übergeordnetes Ziel:}
 \begin{itemize}
-\item \textbf{Ziel Z4.1:} Systematischer Vergleich von HMM und CRF Ansätzen hinsichtlich Genauigkeit, Robustheit und Recheneffizienz für die Vorbereitung der Endoskopiesegmentierung
+\item \textbf{Ziel Z3.1:} Systematischer Vergleich von HMM und CRF Ansätzen hinsichtlich Genauigkeit, Robustheit und Recheneffizienz für die Vorbereitung der Endoskopiesegmentierung
 \end{itemize}
 
 \section{Hypothesen}
