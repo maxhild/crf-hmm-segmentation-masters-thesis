@@ -4,19 +4,12 @@
 \pdfbookmark[1]{Zusammenfassung}{summary}
 \chapter*{Zusammenfassung}
 \addcontentsline{toc}{chapter}{Zusammenfassung}
-In der Zusammenfassung wird vor allem zusammenfassend dargestellt, welche Ergebnisse zu den formulierten Zielen erreicht wurden.
-Bei der Formulierung sollten wichtige Schlüsselbegriffe verwendet werden.
-Wurden Fragen formuliert, können auch diese hier beantwortet werden.
-So soll es möglich sein, dass ein Leser von der Arbeit lediglich die Einleitung und die Zusammenfassung lesen und doch die Ergebnisse der Arbeit erfassen kann.
+Diese Arbeit untersucht, inwieweit die Nachbearbeitung framebasierter Segmentierungen von Endoskopievideos durch probabilistische Sequenzmodelle verbessert werden kann. Ziel ist eine robuste Vorselektion nicht relevanter Bildbereiche, um rechenintensive Deep-Learning-Modelle zu entlasten und die Analysepipeline zu stabilisieren. Im Fokus stehen die Klassen \enquote{outside} und \enquote{low\_quality}, die für Anonymisierung und Qualitätskontrolle entscheidend sind.
 
-Checkliste:
-\begin{enumerate}
-\item Kurze, klare Darstellung zu Gegenstand, Fragestellung und Zielsetzung der Arbeit
-\item Angewandte Methodik
-\item Vorstellung der wesentlichen Ergebnisse und daraus resultierende Schlussfolgerungen.
-\end{enumerate}
-Für wissenschaftliche Abschlussarbeiten sind etwa 200 bis 250 Wörter ausreichend.
+Methodisch werden ein Hidden Markov Model und ein Conditional Random Field auf denselben regelbasierten Feature-Satz angewandt. Die Merkmale umfassen Farbstatistiken, Bewegungsinformationen und Texturgrößen, die vorab statistisch kalibriert und zu deterministischen Emissionsregeln verdichtet werden. Zur Erhöhung der Robustheit wird der ursprüngliche Labelraum auf eine reduzierte Menge semantischer Klassen abgebildet.
 
-Während der Corona-Pandemie wurden die Vorlesungen des Masterstudiengangs Medizininformatik online gehalten. Die Aufnahmen dieser Vorlesungen stehen auch heute noch zur Verfügung sind allerdings schlecht zugänglich. Zum einen kann man sie nicht gezielt nach Inhalten durchsuchen und zum anderen ist die Veröffentlichung 
+Die Ergebnisse zeigen, dass das CRF insgesamt konsistenter als das HMM arbeitet und in der Gesamtleistung höhere Werte erreicht. Beide Modelle sind besonders stark in der Erkennung von \enquote{outside} und \enquote{low\_quality}, während die Erkennung pathologischer Befunde wie Polypen nicht möglich ist. Die Laufzeitanalyse bestätigt zudem eine Echtzeitfähigkeit im Millisekundenbereich pro Frame.
+
+Damit liefert die Arbeit einen praktikablen Filter für die Endoskopiesegmentierung, der Datenströme zuverlässig bereinigen kann und die Grundlage für eine nachgelagerte, präzisere Befunddetektion schafft.
 
 \vfill

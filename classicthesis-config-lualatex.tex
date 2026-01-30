@@ -22,7 +22,7 @@
 % 1. Configure classicthesis for your needs here
 % ****************************************************************************************************
 \PassOptionsToPackage{
-  drafting=true,    % print version information on the bottom of the pages
+  drafting=false,    % print version information on the bottom of the pages
   tocaligned=false, % the left column of the toc will be aligned (no indentation)
   dottedtoc=false,  % page numbers in ToC flushed right
   eulerchapternumbers=false, % use AMS Euler for chapter font (nur für pdfLaTeX)
@@ -95,24 +95,27 @@
 \setmathfont{TeX Gyre Pagella Math} % passend zu Pagella
 
 % ********************************************************************
+% Mikrotypografie zur Reduktion von overfull hbox
+% ********************************************************************
+\usepackage{microtype}
+
+% ********************************************************************
 % Bibliography mit Biber (empfohlen)
 % ********************************************************************
 \PassOptionsToPackage{
   backend=biber,        % Biber statt BibTeX
-  bibstyle=numeric-comp,  % oder numeric, authoryear je nach Präferenz
-  citestyle=numeric-comp,
-  sorting=none, 
+  style=numeric-comp,   % numerisch, kompakt
+  sorting=none,         % Reihenfolge des Auftauchens
   natbib=true,          % Kompatibilität mit natbib Befehlen (\citep, \citet)
   giveninits=true,      % Vornamen abkürzen
   bibencoding=utf8,     % UTF-8 für Bib-Dateien
-  sorting=nyt,          % Name-Jahr-Titel Sortierung
   maxbibnames=10,       % mehr Autorennamen anzeigen
   maxcitenames=2,       % in Zitaten max 2 Namen
   hyperref=true,        % Links in PDF
   backref=true,         % Rückverweise auf Seiten
   isbn=false,           % ISBN ausblenden
   url=false,            % URLs ausblenden (außer für @online)
-  doi=true,             % DOI anzeigen
+  doi=true,
   eprint=false          % arXiv etc. ausblenden
 }{biblatex}
 \usepackage{biblatex}
@@ -128,6 +131,7 @@
 \usepackage{longtable}
 \usepackage{ltxtable}
 \usepackage{booktabs}
+\usepackage{graphicx}
 
 % Für bessere Mikrotypografie (funktioniert sehr gut mit LuaLaTeX)
 \PassOptionsToPackage{

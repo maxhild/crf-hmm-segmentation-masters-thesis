@@ -1,108 +1,105 @@
 %************************************************
 \chapter{Einleitung}\label{ch:introduction}
 %************************************************
-Die Durchführung von Endoskopien ist ein wesentlicher Bestandteil der modernen medizinischen Diagnostik. Mit dem Aufkommen von Künstlicher Intelligenz (KI) und maschinellem Lernen (ML)eröffneten sich in den letzten Jahren neue Möglichkeiten zur Automatisierung und Verbesserung der Analyse von Endoskopie-Videos. Durch konvolutionale neuronale Netze zum Beispiel ist eine framebasierte Segmentierung von Endoskopie-Videos durch das Training immer besser möglich. Speziell im Bereich der Adenomdetektionsrate gab es hier große Fortschritte. 
-%#TODO Quellen einfügen
- Diese Arbeit konzentriert sich auf die Optimierung der Vorhersagen verschiedener Regionen von Endoskopievideos durch den Einsatz von Markov Models und Conditional Random Fields als Wrapperfunktion.
+Die Endoskopie ist ein wesentlicher Bestandteil der modernen medizinischen Diagnostik und hat sich durch Glasfasertechnik und digitale Kameras zu einem sicheren und bewährten Verfahren in der Gastroenterologie entwickelt. \cite{berci2000history} Mit dem Aufkommen von Künstlicher Intelligenz und maschinellem Lernen eröffnen sich in den letzten Jahrzehnten neue Möglichkeiten zur Automatisierung und Verbesserung der Analyse von Endoskopievideos. Insbesondere die bildbasierte Segmentierung profitiert von annotierten Datensätzen und leistungsfähigeren Modellen. Im Bereich der Adenomdetektionsrate wurden deutliche Fortschritte erzielt, etwa bei der Erkennung kolorektaler Polypen, Ösophaguskarzinomen und gastrischem Krebs. Am weitesten fortgeschritten ist die Detektion kolorektaler Polypen. Dabei wird zwischen computergestützter Detektion (Auffinden) und computergestützter Diagnose (Klassifikation) unterschieden. \cite{okagawa2022artificial}
 
-\section{Gegenstand}
+Während diese Probleme bei Polypen teilweise bereits lösbar sind, bleiben Endoskopievideos aufgrund von Rauschen, Reflexionen und der Vielfalt an Ereignissen eine Herausforderung. \cite{giordano2025integration} Für den klinischen Alltag sind robuste Vorhersagen und stabile Segmentgrenzen entscheidend. Aus diesem Grund soll die Möglichkeit eines hybriden Ansatzes erarbeitet werden. Diese Arbeit fokussiert sich daher auf die Optimierung der Vorhersagen durch Vorselektion und Glättung in kolorektalen Endoskopievideos. Dazu werden Hidden Markov Modelle und CRF als Filter für rechenintensive neuronale Netze eingesetzt. Ziel ist eine Reduktion des Suchraums, um die Polypendetektion effizienter und zuverlässiger zu gestalten.
 
-\subsection{Endoskopie als diagnostisches Werkzeug - Vielfältige Methoden bei der Bildgebung}
+\section{Gegenstand der Forschung}
 
-Endoskopie ist ein weit verbreitetes diagnostisches Werkzeug in der Medizin. Die Untersuchung verschiedener Organe mit einer Kamera hat in der minimalinvasiven Untersuchung sowie der Chirurgie erhebliche Vorteile, sodass ihr Einsatz omnipräsent ist. Da mit steigendem Einsatz von besserer Bildgebung Krankheiten wie Darmkrebs im Schnitt schneller erkannt werden, sinkt das Darmkrebsrisiko sowie die Mortalität auf lange Sicht in Gruppen, die sich einer Vorsorgekoloskopie unterziehen. \cite{doi:10.1056/NEJMoa2208375}\cite{Doubeni291}\cite{doi:10.7326/M17-0723} Aus diesem Grund veröffentlichen Verbände wie die Deutsche Gesellschaft für Viszeralmedizin regelmäßige Richtlinien zur Anzahl der durchgeführten Endoskopien. Um sich als Exzellenzzentrum zu qualifizieren, muss ein Krankenhaus in Deutschland beispielsweise mindestens 2500 endoluminale Endoskopien durchführen \citep{dgav-ev-2015}. Das ist ein erheblicher Aufwand. In Anbetracht des aktuellen Ärztemangels wird ohnehin die Delegation ärztlicher Aufgaben durch Digitalisierung als wichtiges Thema aufgegriffen, wie 2025 eine Umfrage unter 400 angehenden Ärztinnen und Ärzten zeigte. \cite{Junghanns2025Ärztebarometer}. Von diesen Maßnahmen erhofft man sich eine Reduktion der Arbeitslast. Speziell in der Gastroenterologie fallen durch die Größe des untersuchten Gewebes im Darm und der Notwendigkeit für Vorsorgekoloskopien große Datenmengen an. Eine häufig durchgeführte gastroenterologische Anwendung ist die Koloskopie (Endoskopie im Dickdarm). Sie dient der Vorsorgeuntersuchungen und zur Kontrolle von Adenomen und ihrem Wachstum. Wenn Patienten zur Erkennung von Polypen erscheinen, ist die Chance tödliche Darmkrebsverläufe im Kolon zu verhindern erwiesenermaßen höher. Polypen, die als Vorstufe von Darmkrebs gelten, können während der Kolonoskopie so im Kolon, bis zum Ileum, direkt in der Vorsorgeuntersuchungen routinemäßig erkannt und entfernt werden. Das ist auch relevant für die Behandlung von Patienten mit bekannten Risikofaktoren wie entzündlichen Darmerkrankungen \citep{vleggaar-2007}. Diese Patienten sollten besonders präventiv in Routineuntersuchungen gescreent. \citep{arnold-2020}.
+\subsection{Endoskopie als diagnostisches Werkzeug und zur Vorsorge}
 
-Die Endoskopie wird seit ihrer flächendeckenden Einführung in vielen Industrieländern weiterentwickelt. Die Geräte machen beispielsweise in der Auflösung sowie bei bildgebenden Verfahren Forschritte. Die Nutzung von NBI wird mittlerweile an vielen Standorten zur Hervorhebung von Polypen genutzt \cite{yasushi2016nbi}. Auch die Kapselendoskopie bietet als minimalinvasives Verfahren viele Vorteile. Durch den Durchlauf einer Kapsel im Körper kann sie bei Verdacht auf Vorliegen einer Blutungsquelle im Darm sowie bei Verdacht auf Dünndarmpolypen oder Morbus Crohn im Dünndarm hervorragend genutzt werden. Mit dem Aufkommen kostengünstigerer Methoden wie der Kapsel-Endoskopie wird erwartet, dass die Anzahl der zu analysierenden Videos steigen wird \citep{koulaouzidis-2021}\citep{8903282}. Diese Zahlen, kombiniert mit der drohenden Gefahr verschiedener kolorektaler Krebsarten in steigenden Zahlen \citep{acs-2024,ferlay-2024}, unterstreichen die Notwendigkeit weiterer Forschung zur Verbesserung des Screening-Prozesses in Vorbereitung, Durchführung und Nachbearbeitung\citep{kaminski_performance_2017}.
+Endoskopie ist ein weit verbreitetes diagnostisches Werkzeug in der Medizin. Die Untersuchung verschiedener Organe mit einer Kamera bietet erhebliche Vorteile für Patienten und Untersucher und kann große chirurgische Eingriffe vermeiden. Mit verbesserter Bildgebung werden Krankheiten wie Darmkrebs im Mittel früher erkannt, wodurch Risiko und Mortalität in Populationen mit Vorsorgekoloskopie sinken. \cite{doi:10.1056/NEJMoa2208375}\cite{Doubeni291}\cite{doi:10.7326/M17-0723} Verbände wie die Deutsche Gesellschaft für Viszeralmedizin veröffentlichen regelmäßige Richtlinien zur Anzahl durchgeführter Endoskopien. Um sich als Exzellenzzentrum zu qualifizieren, muss ein Krankenhaus in Deutschland beispielsweise mindestens 2500 endoluminale Endoskopien durchführen. \citep{dgav-ev-2015} Dies ist ein erheblicher Aufwand. Angesichts des Ärztemangels wird die Delegation ärztlicher Aufgaben durch Digitalisierung als wichtiges Thema diskutiert, wie eine Umfrage unter 400 angehenden Ärztinnen und Ärzten zeigt. \cite{Junghanns2025Ärztebarometer} In der Gastroenterologie fallen durch die Größe des untersuchten Gewebes und die Notwendigkeit regelmäßiger Vorsorgekoloskopien große Datenmengen an. Eine häufig durchgeführte Anwendung ist die Koloskopie als Endoskopie des Dickdarms. Sie dient der Vorsorge und der Kontrolle von Adenomen und deren Wachstum. Wenn Patienten zur Erkennung von Polypen erscheinen, ist die Chance, tödliche Darmkrebsverläufe im Kolon zu verhindern, erwiesenermaßen höher. Polypen als Vorstufe von Darmkrebs können während der Koloskopie im Kolon bis zum Ileum routinemäßig erkannt und entfernt werden. Das ist auch für Patienten mit bekannten Risikofaktoren wie entzündlichen Darmerkrankungen relevant. \citep{vleggaar-2007} Diese Patienten sollten besonders präventiv in Routineuntersuchungen gescreent werden. \citep{arnold-2020}
+
+Die Endoskopie wird seit ihrer flächendeckenden Einführung in vielen Industrieländern weiterentwickelt. Geräte verbessern sich in Auflösung und bildgebenden Verfahren. Die Nutzung von NBI wird inzwischen an vielen Standorten zur Hervorhebung von Polypen eingesetzt. \cite{yasushi2016nbi} Auch die Kapselendoskopie bietet als minimalinvasives Verfahren Vorteile. Durch den Durchlauf einer Kapsel im Körper kann sie bei Verdacht auf Blutungsquellen, Dünndarmpolypen oder Morbus Crohn im Dünndarm genutzt werden. Mit dem Aufkommen kostengünstigerer Methoden wie der Kapselendoskopie wird erwartet, dass die Anzahl der zu analysierenden Videos steigt. \citep{koulaouzidis-2021}\citep{8903282} Diese Entwicklung, kombiniert mit steigenden Zahlen kolorektaler Krebsarten, unterstreicht die Notwendigkeit weiterer Forschung zur Verbesserung des Screeningprozesses in Vorbereitung, Durchführung und Nachbearbeitung. \citep{acs-2024,ferlay-2024,kaminski_performance_2017}
 
 \subsection{KI-gestützte Segmentierung in der Endoskopie}
 
-Die Verbesserung des Endoskopie-Workflows könnte in Zukunft durch KI-basierte Segmentierung für schnelleres Screening und Dokumentation erfolgen. Hier haben Lux et.al. in einer früheren Publikation eine nutzbare Segmentierungspipeline demonstriert, die in dieser Masterarbeit aufgegriffen und verwendet werden soll \cite{lux-2023}.
+Viele Publikationen argumentieren, dass eine Verbesserung der Qualität und Geschwindigkeit des Screenings für Adenome in der Endoskopie durch KI-basierte Segmentierung erfolgen. \cite{ELKarazle2023} In der Methodologie gab es hier mehrere Durchbrüche, die gute Ergebnisse bei der Erkennung von Kolonpolypen aufzeigten. \cite{Fan2020}\cite{Dong2021} Hier haben auch Lux et. al. eine nutzbare Segmentierungspipeline demonstriert, die in dieser Masterarbeit aufgegriffen und verwendet werden soll \cite{lux-2023}.
 
-Die Pipeline basiert auf einer Multi-Label-KI, die die Wahrscheinlichkeit von für die aktuelle Endoskopie wichtigen Labels vorhersagt. Die Labels werden verwendet, um das Video in Kategorien zu segmentieren. Ein finetuned RegNetX800MF-Modell sagt die Wahrscheinlichkeit von für den aktuellen Endoskopie-Frame wichtigen Labels Frame für Frame voraus. Die Labels werden verwendet, um das Video in Kategorien zu segmentieren. Die Segmentierung kann bei ausreichender Genauigkeit dazu verwendet werden, dem Arzt eine Zusammenfassung des Videos zu liefern. Auch der Einsatz solcher Systeme bei der Entscheidungsunterstützung wurde bereits evaluiert, hierbei kann es jedoch dazu kommen, dass die Konzentration der Untersucher nachlässt \cite{hann_entscheidungsunterstutzung_2025}.
+Die Pipeline basiert auf einer Multilabel-KI, die die Wahrscheinlichkeit der für die aktuelle Endoskopie relevanten Klassen vorhersagt. Ein feinabgestimmtes RegNetX800MF-Modell sagt diese Wahrscheinlichkeiten Bild für Bild voraus; daraus entsteht eine zeitliche Segmentierung des Videos. Bei ausreichender Genauigkeit kann diese Segmentierung Ärzten eine kompakte Zusammenfassung liefern. Der Einsatz solcher Systeme zur Entscheidungsunterstützung wurde bereits evaluiert, wobei auch Effekte wie eine mögliche Abnahme der Konzentration der Untersucher diskutiert werden. \cite{hann_entscheidungsunterstutzung_2025}
 
-\subsection{Die Bedeutung der Zökum-Rückzugszeit}
+\subsection{Die Bedeutung der Zökumrückzugszeit}
 
-Ein kritisches Segment, das vom Modell ausgegeben wird, verdient besondere Aufmerksamkeit und war die initiale Motivation für die Konstruktion des in dieser Arbeit verwendeten Modells. Die \enquote{Outside}-Vorhersage entspricht der Zökum-Rückzugszeit. Diese Messung ist ein wichtiger Qualitätsindikator für die Qualität der Koloskopie. Sie wird verwendet, um die Zeit zu messen, die das Endoskop benötigt, um den Körper zu verlassen, wobei die Messung am Zökum beginnt. 
+Ein kritisches Segment, das vom Modell ausgegeben wird, verdient besondere Aufmerksamkeit und war die initiale Motivation für die Konstruktion des in dieser Arbeit verwendeten Modells. Die \enquote{Outside}-Vorhersage entspricht der Zökumrückzugszeit. Diese Messung ist ein wichtiger Qualitätsindikator für die Qualität der Koloskopie. Sie wird verwendet, um die Zeit zu messen, die das Endoskop benötigt, um den Körper zu verlassen, wobei die Messung am Zökum beginnt. 
 
 Das Zökum ist als erster Teil des Dickdarms der vorgesehene Ausgangspunkt für Koloskopien. Vom Zökum aus sollte die Zeit, die das Koloskop benötigt, um den Körper zu verlassen, mehr als 6 Minuten betragen \citep{profanter-2020,leung-2019}. Um diesen Indikator zu berechnen, können genaue Messungen der Zeit verwendet werden, die das Endoskop benötigt, um den Körper zu verlassen.
 
-Dieser Ansatz wurde in mehreren Studien getestet, wie der von Vilmann et. al.\cite{vilmann-2022} durchgeführten Studie, die zeigte, dass die Zökum-Rückzugszeit mit der Adenom-Detektionsrate verbunden ist \citep{vilmann-2022}.
+Dieser Ansatz wurde in mehreren Studien getestet, wie der von Vilmann et. al.\cite{vilmann-2022} durchgeführten Studie, die zeigte, dass die Zökumrückzugszeit mit der Adenomdetektionsrate verbunden ist \citep{vilmann-2022}. Durch die korrekte Bestimmung des terminalen Ileums sowie des ersten Frames außerhalb des Körpers soll in Zukunft ein Richtwert für die Erkennung der Zökumrückzugszeit als Qualitätsindikator nutzbar gemacht werden.
 
-\subsection{Aktuelle Herausforderungen}
+\subsection{Herausforderungen bei der KI basierten Segmentierung von Endoskopievideos}
 
-Die derzeitige Segmentierungspipeline verwendet eine Glättungsfunktion zur Nachbearbeitung der Frame-basierten Vorhersagen. Der Hauptgrund für die Einführung einer Glättungsfunktion ist, dass die Segmente falsch unterbrochen werden können. Dies kann beispielsweise passieren, wenn Lichtreflexionen im Video sichtbar sind oder wenn der Wasserjet des Endoskops im Bild für Reflexionen sorgt.
-Diese Probleme treten insbesondere bei Ein- und Austritt des Endoskops in den Körper auf, da sich hier die Lichtverhältnisse rapide ändern.
-
-In der aktuellen Theorie bringen diese Ereignisse im Video das Segmentierungsmodell aufgrund eines nicht erkannten visuellen Elements im Frame durcheinander. Aus diesem Grund sind die Farbinformationen aus dem Bild ein möglicher Kandidat als zusätzliche Eingabe für ein Bayessches statistisches Modell zur Glättung der Vorhersagen.
+Die derzeitige Segmentierungspipeline verwendet eine Glättungsfunktion zur Nachbearbeitung der bildbasierten Vorhersagen. Der Hauptgrund ist, dass Segmente falsch unterbrochen werden können. Dies kann beispielsweise passieren, wenn Lichtreflexionen im Video sichtbar sind oder wenn der Wasserstrahl des Endoskops im Bild Reflexionen verursacht. Auch Artefakte durch mangelnde Spülung der Patienten können als Störfaktoren auftreten. 
+Probleme treten insbesondere bei Ein- und Austritt des Endoskops in den Körper oder bei der Spülung des Kolons nicht korrekt abgeführet Patienten auf, da sich hier die Lichtverhältnisse rapide ändern. In ihrer Analyse der eingereichten Methoden zur Lösung der Detektion von Artefakten, nannten Ali et. al. die \enquote{(i) Konsistenz, (ii) Genauigkeit der Vorhersage, und die (iii)
+komputationale Effizienz} als Voraussetzungen für den klinischen Einsatz. \cite{Ali2020}
 
 \section{Problemstellung}
 
-Die aktuelle Implementierung der Video-Segmentierung für Endoskopie-Aufnahmen weist mehrere kritische Probleme auf, die eine zuverlässige Qualitätsmessung behindern:
+Die aktuelle Implementierung der Videosegmentierung für Endoskopieaufnahmen weist bei Inbetrachtnahme eines klinischen Einsatzes mehrere kritische Probleme auf, die eine zuverlässige Qualitätsmessung behindern:
 
 \begin{itemize}
-\item Die derzeitige Glättungsfunktion zur Nachbearbeitung der Frame-basierten Vorhersagen ist unzureichend für eine präzise Bestimmung der Segment-Grenzen
-\item Unterbrechungen in der \enquote{Outside}-Label-Erkennung führen zu ungenauen Messungen der Zökum-Rückzugszeit
+\item Die derzeitige Glättungsfunktion zur Nachbearbeitung der Framebasierten Vorhersagen ist unzureichend für eine präzise Bestimmung der Segmentgrenzen
+\item Unterbrechungen in der \enquote{Outside}-Labelerkennung führen zu ungenauen Messungen der Zökumrückzugszeit
 \item Die Anonymität der Patienten wird durch unpräzise Segmentierung gefährdet, da \enquote{Outside}-Frames oft Personen zeigen
-\item Lichtreflexionen und Wasserartefakte verursachen fehlerhafte Segmentierungen
+\item Lichtreflexionen und Wasserartefakte verursachen fehlerhafte Segmentierungen, unter anderem falsch positive Ergebnisse sowie falsch Negative.
 \end{itemize}
 
-Konkret werden in dieser Arbeit folgende Probleme gelöst:
+Konkret sollen in dieser Arbeit folgende im Einsatz der Multilabelklassifikation aufgetretenen Probleme betrachtet werden:
 
 \begin{itemize}
-\item \textbf{Problem P1: Unzuverlässige Segment-Grenzbestimmung} \\
-Die aktuelle Methode zur Glättung der Frame-basierten Vorhersagen mittels gleitendem Durchschnitt führt zu ungenauen Start- und Endzeit-Stempeln für die \enquote{Outside}-Segmente, was die Berechnung der Zökum-Rückzugszeit beeinträchtigt.
+\item \textbf{Problem P1: Unzuverlässige Segmentgrenzbestimmung} \\
+Die aktuelle Methode zur Glättung der Framebasierten Vorhersagen mittels gleitendem Durchschnitt führt zu ungenauen Start- und Endzeitstempeln für die \enquote{Outside}-Segmente, was die Berechnung der Zökumrückzugszeit sowie den Datenschutz innerhalb des Datensatzes von prospektiven Studien beeinträchtigt.
 
 \item \textbf{Problem P2: Fehlende Berücksichtigung visueller Merkmale} \\
-Die derzeitige Nachbearbeitung berücksichtigt keine zusätzlichen visuellen Informationen (wie Farbinformationen) aus den Bildern, die zur Verbesserung der Segmentierungsgenauigkeit beitragen könnten.
+Die derzeitige Nachbearbeitung berücksichtigt keine zusätzlichen visuellen Informationen (wie Farbinformationen) aus den Bildern, die zur Verbesserung der Segmentierungsgenauigkeit von CNN-Vorhersagen beitragen könnten.
 
 \item \textbf{Problem P3: Mangelnde Robustheit gegenüber Störungen} \\
-Das aktuelle System ist anfällig für Störungen durch Lichtreflexionen und Wasserartefakte, die zu falschen Segmentierungsunterbrechungen führen.
+Das aktuelle System ist anfällig für Störungen durch Lichtreflexionen und Wasserartefakte, die zu Segmentierungsunterbrechungen führen.
 \end{itemize}
 
 Diese Probleme stehen im engen Zusammenhang mit den in \cref{sec:zielsetzung} beschriebenen Zielen.
 
 \section{Motivation}
 
-Die Lösung der beschriebenen Probleme ist aus mehreren Gründen von hoher Relevanz:
+Die Lösung der beschriebenen Probleme ist aus folgenden Gründen von hoher Relevanz:
 
 \begin{itemize}
-\item \textbf{Medizinische Qualitätssicherung:} Eine präzise Messung der Zökum-Rückzugszeit ist essentiell für die Qualitätsbewertung von Koloskopien und kann direkt zur Verbesserung der Patientenversorgung beitragen.
+\item \textbf{Medizinische Qualitätssicherung:} Eine präzise Analyse von Qualitätsindikatoren der Endoskopie wie der Zökumrückzugszeit und der Adenomdetektionsrate ist wichtig für die Qualitätsbewertung von Koloskopien und kann rückwirkend zur Verbesserung der Patientenversorgung beitragen.
 
 \item \textbf{Effizienzsteigerung in der Endoskopie:} Automatisierte und zuverlässige Segmentierung kann Ärzte bei der Dokumentation entlasten und die Durchführung von Qualitätskontrollen beschleunigen.
 
-\item \textbf{Datenschutz und Anonymisierung:} Präzise Segmentierung der \enquote{Outside}-Bereiche ist wichtig für die Anonymisierung von Endoskopie-Videos, da diese Bereiche oft Personen zeigen.
+\item \textbf{Datenschutz und Anonymisierung:} Präzise Segmentierung der \enquote{Outside}-Bereiche ist wichtig für die Anonymisierung von Endoskopievideos, da diese Bereiche oft Personen zeigen.
 
-\item \textbf{Wissenschaftlicher Fortschritt:} Der Vergleich von Hidden Markov Models und Conditional Random Fields für die Endoskopie-Segmentierung stellt einen wichtigen Beitrag zur medizinischen Informatik dar.
 \end{itemize}
 
 \textbf{Nutznießer dieser Arbeit:}
 \begin{itemize}
-\item Gastroenterologen und Endoskopie-Personal profitieren von verbesserten Qualitätsmetriken
+\item Gastroenterologen und Endoskopiepersonal profitieren von verbesserten Qualitätsmetriken
 \item Patienten erhalten durch bessere Qualitätskontrolle eine sicherere Behandlung  
 \item Die Forschungsgruppe ColoReg erhält optimierte Algorithmen für ihre Segmentierungspipeline
-\item Die medizinische Informatik-Community profitiert von methodischen Erkenntnissen zu statistischen Nachbearbeitungsverfahren
+\item Die medizinische Informatik profitiert von methodischen Erkenntnissen zum kombinierten Einsatz von statistischen Modellen mit Deep Learning Modellen
 \end{itemize}
 
-Die steigenden Zahlen von Darmkrebs-Erkrankungen \citep{acs-2024,ferlay-2024} und die zunehmende Anzahl von Endoskopie-Videos durch neue Methoden wie die Kapsel-Endoskopie \citep{koulaouzidis-2021} unterstreichen die Dringlichkeit, automatisierte Qualitätskontrollsysteme zu verbessern.
+Die steigenden Zahlen von Darmkrebserkrankungen \citep{acs-2024,ferlay-2024} und die zunehmende Anzahl von Endoskopievideos durch neue Methoden wie die Kapselendoskopie \citep{koulaouzidis-2021} unterstreichen die Dringlichkeit, automatisierte Analysesysteme kontinuierlich zu verbessern.
 
 \section{Zielsetzung}\label{sec:zielsetzung}
 
-Die Hauptziele dieser Masterarbeit sind die Entwicklung und Evaluation verbesserter Nachbearbeitungsverfahren für die Frame-basierte Endoskopie-Video-Segmentierung.
-Als optimaler Ausgang kann das System die Verwendung des CNN Segmentationsmodell teilweise oder vollständig ersetzen.
-Die Minimalanforderung an ein erfolgreiches System wäre die zuverlässige Klassifizierung insbesondere des Eintretens in den Körper sowie die Erkennung des terminalen Ileums zur Berechnung der Zökum-Rückzugsszeit. ($\delta(Z_1, Z_2)$, wobei Zeitpunkt $Z_1$ das Erreichen des terminalen Ileums und $Z_2$ der Zeitpunkt des Austritts aus dem Körper ist.)
-Diese Werte können in der Qualitätssicherung einer Endoskopie sowie zur Qualitätssicherung eingesetzt werden.
+Die Hauptziele dieser Masterarbeit sind die Entwicklung und Evaluation verbesserter Nachbearbeitungsverfahren für die bildbasierte Segmentierung von Endoskopievideos. Im Idealfall kann das System die Nutzung des CNN-Segmentationsmodells teilweise oder vollständig ersetzen oder ergänzen. Die Minimalanforderung an ein erfolgreiches System ist die zuverlässige Klassifizierung insbesondere des Eintretens des Endoskops in den Körper. Aus Datenschutzgründen muss diese Region des Videos sicher entfernt werden. Zudem ist der Informationsgehalt aus dieser Region des Videos gleich null. Weiterhin kann ein Anhaltspunkt für die Erkennung des tiefsten Eintretens in den Körper wichtig sein, um die Zökumrückzugszeit zu bestimmen ($\delta(Z_1, Z_2)$, wobei $Z_1$ das Erreichen des terminalen Ileums und $Z_2$ der Zeitpunkt des Austritts aus dem Körper ist). Auch die Erkennung von Regionen eines operativen Eingriffs kann die Dokumentation direkt nach dem Eingriff beschleunigen.
+
+
 Im folgenden werden detailliert die Ziele der Arbeit ausgeführt
 
-\textbf{Ziele zur Lösung von Problem P1 (Unzuverlässige Segment-Grenzbestimmung):}
+\textbf{Ziele zur Lösung von Problem P1 (Unzuverlässige Segmentgrenzbestimmung):}
 \begin{itemize}
 \item \textbf{Ziel Z1.1:} Implementierung eines Hidden Markov Model (HMM) Ansatzes zur Ersetzung der aktuellen Glättungsfunktion
-\item \textbf{Ziel Z1.2:} Implementierung eines Conditional Random Field (CRF) Ansatzes als alternative Nachbearbeitungsmethode
-\item \textbf{Ziel Z1.3:} Quantitative Evaluation der Segmentierungsgenauigkeit durch Vergleich mit manuell annotierten Start- und Endzeiten
+\item \textbf{Ziel Z1.2:} Implementierung eines Conditional Random Field (CRF) Ansatzes als alternative Klassifikation von uninterressanten sowie interessanten Regionen. 
+\item \textbf{Ziel Z1.3:} Quantitative Evaluation der Segmentierungsgenauigkeit durch Vergleich mit manuell annotierten Start- und Endzeiten bei Endoskopievideos der ColoReg Studie
 \end{itemize}
 
 \textbf{Ziele zur Lösung von Problem P2 (Fehlende Berücksichtigung visueller Merkmale):}
 \begin{itemize}
 \item \textbf{Ziel Z2.1:} Integration von Farbinformationen als zusätzliche Eingabe in die statistischen Modelle
-\item \textbf{Ziel Z2.2:} Entwicklung eines Bayesschen Ansatzes zur Kombination von Frame-basierten Vorhersagen und visuellen Merkmalen
+\item \textbf{Ziel Z2.2:} Entwicklung eines Bayesschen Ansatzes zur Kombination von framebasierten Vorhersagen und visuellen Merkmalen
 \end{itemize}
 
 \textbf{Ziele zur Lösung von Problem P3 (Mangelnde Robustheit gegenüber Störungen):}
@@ -113,13 +110,13 @@ Im folgenden werden detailliert die Ziele der Arbeit ausgeführt
 
 \textbf{Übergeordnetes Ziel:}
 \begin{itemize}
-\item \textbf{Ziel Z4.1:} Systematischer Vergleich von HMM und CRF Ansätzen hinsichtlich Genauigkeit, Robustheit und Recheneffizienz für die Endoskopie-Segmentierung
+\item \textbf{Ziel Z4.1:} Systematischer Vergleich von HMM und CRF Ansätzen hinsichtlich Genauigkeit, Robustheit und Recheneffizienz für die Vorbereitung der Endoskopiesegmentierung
 \end{itemize}
 
 \section{Aufgabenstellung}
 
-Die Forschungsfrage dieser Arbeit ist daher zu untersuchen, ob die Einführung von Nachbearbeitungsschritten die Qualität der \enquote{Outside}-Vorhersage verbessert. In diesem Fall wäre die Methode, die aktuelle Glättungsfunktion in der Nachbearbeitung durch einen dieser statistischen Ansätze zu ersetzen.
-Der Vollständigkeit halber sollen auch die anderen Labels (wie \enquote{Esophagus}, \enquote{Stomach}, \enquote{Duodenum}, \enquote{Ileum}, \enquote{Colon}, \enquote{Rectum}) in die Analyse einbezogen werden, um die allgemeine Leistungsfähigkeit der Segmentierungspipeline zu bewerten.
+Die Forschungsfrage dieser Arbeit lautet, ob die Einführung von Nachbearbeitungsschritten die Qualität der \enquote{Außerhalb}-Vorhersage verbessert. Daraus ergibt sich als methodischer Kern, die verwendeten Frames für die Segmentation zu filtern.
+Der Vollständigkeit halber sollen auch die anderen farbrelevanten Labels (wie \enquote{Blut}, \enquote{Instrument}, \enquote{Narrow Band Imaging} und \enquote{Niedrige Bildqualität}) in die Analyse einbezogen werden, um die allgemeine Leistungsfähigkeit der Segmentierung zu vergleichen.
 
 \textbf{Aufgaben zur Erreichung der Ziele:}
 
@@ -132,14 +129,14 @@ Der Vollständigkeit halber sollen auch die anderen Labels (wie \enquote{Esophag
 
 \textbf{Aufgaben zu Ziel Z1.2 (CRF-Implementierung):}
 \begin{itemize}
-\item \textbf{Aufgabe A1.2.1:} Konzeption eines CRF-Modells für die Endoskopie-Segmentierung
+\item \textbf{Aufgabe A1.2.1:} Konzeption eines CRF-Modells für die Endoskopiesegmentierung
 \item \textbf{Aufgabe A1.2.2:} Implementierung und Training des CRF-Ansatzes
-\item \textbf{Aufgabe A1.2.3:} Optimierung der CRF-Parameter für die Endoskopie-Domäne
+\item \textbf{Aufgabe A1.2.3:} Optimierung der CRF-Parameter für die Endoskopiedomäne
 \end{itemize}
 
 \textbf{Aufgaben zu Ziel Z2.1 (Integration visueller Merkmale):}
 \begin{itemize}
-\item \textbf{Aufgabe A2.1.1:} Extraktion und Analyse von Farbmerkmalen aus Endoskopie-Frames
+\item \textbf{Aufgabe A2.1.1:} Extraktion und Analyse von Farbmerkmalen aus Endoskopieframes
 \item \textbf{Aufgabe A2.1.2:} Integration der Farbinformationen in die HMM- und CRF-Modelle
 \end{itemize}
 
@@ -155,4 +152,4 @@ Der Vollständigkeit halber sollen auch die anderen Labels (wie \enquote{Esophag
 \item \textbf{Aufgabe A4.1.2:} Bewertung der Recheneffizienz und praktischen Anwendbarkeit
 \end{itemize}
 
-Idealerweise würde das Ergebnis darin bestehen, die Start- und Endzeit-Stempel der Segmente zuverlässiger zu setzen. Bei Messungen sollte dies zu Änderungen beim Vergleich der Vorhersage des Modells mit annotierten Start- und Endzeiten sowie mit der ursprünglichen Glättungsfunktion unter Verwendung des gleitenden Durchschnitts der Vorhersagen führen.
+Idealerweise würde das Ergebnis darin bestehen, die Start- und Endzeitstempel der Segmente zuverlässiger zu setzen. Bei Messungen sollte dies zu positiven Änderungen beim Vergleich der Vorhersage des Modells mit annotierten Start- und Endzeiten sowie mit der ursprünglichen Glättungsfunktion unter Verwendung des gleitenden Durchschnitts der Vorhersagen führen.

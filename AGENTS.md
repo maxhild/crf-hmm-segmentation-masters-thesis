@@ -1,31 +1,7 @@
-\begin{acronym}[SPARQL]
-% A
-% B
-% C
-% D
-% E
-% F
-% G
-% H
-% I
-% J
-% K
-% L
-% M
-% N
-% O
-% P
-% Q
-% R
-% S
-% T
-% U
-% V
-% W
-% X
-% Y
-% Z
-% Variablen
+# Verwendete Akronyme und Variabelnnamen
+
+Bei der Bearbeitung soll die folgende Liste ergänzt werden:
+
 \acro{X}[$X$]{Zustandssequenz}
 \acro{O}[$O$]{Beobachtungssequenz}
 \acro{S}[$S$]{Zustandsraum}
@@ -41,5 +17,4 @@
 \acro{V}[$V$]{Value-Matrix im Attention-Mechanismus}
 \acro{d}[$d$]{Skalierungsfaktor der Attention-Berechnung}
 
-\end{acronym}
-\acused{URL}% Has its own paragraph in the preliminaries.
+Die Variabeln sollen in ~/Masterarbeit/imise-classicthesis/FrontBackmatter/Acronym.tex gesammelt werden.

@@ -1,11 +1,17 @@
 %*****************************************
 \chapter{Diskussion}\label{ch:discussion}
 %*****************************************
-Die Datenerhebung innerhalb der ColoReg Studie, die Grundlage für die Erhebung der hier vorgestellten Ergebnisse bildete, erfolgte unter klinischen Bedingungen.
+Innerhalb dieser Arbeit wurde gezeigt, dass der Einsatz markovbasierter Modelle grundsätzlich möglich ist. Vorteile bieten hier die schnelle Laufzeit, die Erweiterbarkeit sowie die schnelle Anpassungsfähigkeit an neue Daten. Die Datenerhebung innerhalb der ColoReg Studie, die Grundlage für die Erhebung der hier vorgestellten Ergebnisse bildete, erfolgte unter klinischen Bedingungen.
 Daher sind die erhobenen Daten naturgemäß mit Störeinflüssen behaftet, die in einem realen klinischen Umfeld auftreten können.
-Diese Störeinflüsse haben sich negativ auf die Qualität der erfassten Daten ausgewirkt und somit die Aussagekraft der Ergebnisse eingeschränkt.
+Diese Störeinflüsse haben sich auf die Qualität der erfassten Daten ausgewirkt und somit die Aussagekraft der Ergebnisse eingeschränkt.
 Beispielsweise traten bei einigen Patienten Bewegungsartefakte auf, die die Genauigkeit der Messungen beeinträchtigten.
 Zudem gab es Fälle von unvollständigen Datensätzen aufgrund technischer Probleme während der Datenerfassung.
 Diese Faktoren führten dazu, dass bei der Evaulierung die vollständige Datenbasis nicht genutzt werden konnte, was die statistische Signifikanz der Ergebnisse reduzierte.
 Trotz dieser Einschränkungen konnten jedoch wertvolle Erkenntnisse gewonnen werden, die als Grundlage für zukünftige Studien dienen können.
 Zukünftige Untersuchungen sollten darauf abzielen, die Datenerhebung unter kontrollierteren Bedingungen durchzuführen, um die Qualität der Daten zu verbessern und die Aussagekraft der Ergebnisse zu erhöhen.
+
+Im Hinblick auf die Ergebnisse zeigt der Vergleich über alle Videos, dass das CRF in der Summe konsistenter als das HMM arbeitet. Das spiegelt sich insbesondere in der höheren Micro-F1 und Macro-F1 wider, was auf eine robustere Gesamtleistung bei unterschiedlichen Klassen hinweist. Gleichzeitig bleibt die Polypenerkennung auch im CRF deutlich hinter den Anforderungen zurück, da die Recall-Werte niedrig sind und damit viele relevante Ereignisse unentdeckt bleiben. Dies unterstreicht die Grenze der rein regelbasierten Merkmalsbildung für Befunde, die nicht ausreichend von den gewählten Features abgebildet werden.
+
+Demgegenüber ist die Klasse Außerhalb mit sehr hoher Trefferquote erkennbar, was den Einsatz der Modelle als Vorfilter stützt. Diese Leistung ist für die angestrebte Anonymisierung und die automatische Segmentierung relevant, da hier verlässliche Entscheidungen getroffen werden können. Die Laufzeitanalyse zeigt zudem, dass beide Verfahren im Millisekundenbereich pro Frame arbeiten und damit als Echtzeitkomponenten geeignet sind.
+
+Zusammenfassend lässt sich festhalten, dass die Modelle für die robuste Trennung irrelevanter Videosegmente geeignet sind, während die präzise Erkennung pathologischer Befunde weiterhin auf stärkere visuelle Modelle angewiesen bleibt. Eine vielversprechende Perspektive ist daher die Kombination mit lernbasierten Verfahren, die die Erkennung von texturellen Features verbessern, während die Markovmodelle die zeitliche Stabilität und Vorselektion gewährleisten.

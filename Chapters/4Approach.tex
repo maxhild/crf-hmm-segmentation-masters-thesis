@@ -1,67 +1,72 @@
 %*****************************************
 \chapter{Lösungsansatz}\label{ch:approach}
 %*****************************************
-Wie in den vorangegangenen Kapiteln dargelegt, besteht ein valides und belegbares Interesse daran, die Durchführung von Endoskopien durch den Einsatz von künstlicher Intelligenz und Informationssystemen effizienter zu gestalten. Dabei ist es jedoch, wie Hann et al. \cite{hann_entscheidungsunterstutzung_2025} darlegten, sinnvoll zu evaluieren wo sich die erweiterten Methoden tatsächlich positiv auf den Arbeitsaufwand auswirken. Um automatisiert assistierte Dokumentation von Endoskopievideos im Arbeitsalltag zu integrieren, sollte die Verarbeitung der Videodaten mit möglichst geringem Rechenaufwand erfolgen. Daher ist es reizvoll, effiziente Algorithmen zu entwickeln, die eine schnelle Segmentierung von Videoframes in Kategorien zu ermöglichen. Wenn diese Kategorien nach der Untersuchung bereits gesichert analysiert wurden, könnten Statistiken zur Endoskopie sowie vorgefertigte Dokumentationsskelette zur verfügung gestellt werden.
-Um eine robuste Segmentierung eines Endoskopievideos zu gewährleisten, sollte das Verfahren in der Lage sein, sowohl lokale Bildinformationen als auch den globalen Kontext der Videoaufnahme zu berücksichtigen.
-\noindent
-Das Ziel der Untersuchung ist es, ein System zu entwickeln, das diese Anforderungen erfüllt und eine präzise sowie effiziente Analyse von Endoskopievideos ermöglicht.
-Am Ende soll vermieden werden, das die Berechnungen des Systems zu komplex für eine praxisrelevante Nutzung werden. Aus diesem Grund verwendet das System den Ansatz der Teilung entlang der temporalen Achse direkt in der Architektur.
-Die Intuition hierbei ist die folgende: Wenn das Ziel die Bewertung des Videos in einzelnen Segmenten ist, dann ist es sinnvoll, auch die Kriterien für die Segmente nicht universell sondern segmentiert anzuwenden.
 
-Hierfür wird die folgende Hypothese aufgestellt: \enquote{Mit dem Einsatz eines HMM oder CRF zur Vorverarbeitung des Videos kann der Einsatz von CNN reduziert werden um ein effizienteres System zu erhalten. Dabei soll erprobt werden, ob für die weitere Verarbeitung irrelevante Zustände sowie Regionen von erhöhtem Interesse unter zuhilfenahme eines diskriminativen (CRF mit logistischer Regression) oder generativen Modells (HMM mit naiver Bayes klassifikation) schneller und zuverlässiger identifiziert werden können als mit einem CNN alleine.}
+Wie in den vorangegangenen Kapiteln dargelegt, besteht ein valides Interesse daran, die Durchführung und Dokumentation von Endoskopien durch den Einsatz von künstlicher Intelligenz und Informationssystemen effizienter zu gestalten. Dabei ist es jedoch, wie Hann et al. \cite{hann_entscheidungsunterstutzung_2025} betonen, essenziell zu evaluieren, an welchen Stellen sich erweiterte Methoden tatsächlich positiv auf den Arbeitsaufwand auswirken. Die Akzeptanz im klinischen Alltag hängt, wie Ali et. al. betonen, neben der diagnostischen Genauigkeit maßgeblich von der rechnerischen Effizienz sowie der Verlässlichkeit der Vorhersagen ab. \cite{Ali2020} Außerdem sollte laut Rafner et. al. evaluiert werden, ob es zu deskilling durch das vollständige Ersetzen der Tätigkeiten der handelnden Personen kommen kann. \cite{rafner_2025_deskilling}
 
-\section{Konzeptionelles Modell zur Zustandsabschätzung in endoskopischen Videosequenzen}
+Um eine automatisiert assistierte Dokumentation zu integrieren, muss die Verarbeitung der Videodaten unter geringer Latenz und mit moderatem Ressourcenverbrauch erfolgen. Das Ziel ist daher die Entwicklung effizienter Algorithmen, die eine schnelle Segmentierung von Videoframes in semantische Kategorien ermöglichen. Eine valide Segmentierung bildet die Grundlage für nachgelagerte Prozesse, wie die automatisierte Erstellung von Befundberichten, statistische Auswertungen der Untersuchungsqualität sowie die gezielte Anonymisierung patientenbezogener Daten.
 
-Die Analyse endoskopischer Videos stellt eine besondere Herausforderung dar, da die Bildfolgen sowohl kontinuierliche visuelle Dynamiken (Beleuchtung, Bewegung, Farbspektrum) als auch diskrete prozedurale Phasen (Eintritt, Navigation, Filterwechsel, Rückzug) aufweisen. Ein reines kontinuierliches Modell erfasst die abrupten Übergänge zwischen diesen Phasen nur unzureichend, während ein ausschließlich diskretes Modell die innerhalb einer Phase auftretenden Messrauschprozesse und langsamen Veränderungen nicht adäquat beschreibt. Aus diesem Grund wird in dieser Arbeit ein hybrides probabilistisches Modell vorgeschlagen, das diskrete und kontinuierliche Zustandsdynamiken in einem gemeinsamen formalen  Rahmen kombiniert.
+Um eine robuste Segmentierung zu gewährleisten, muss das Verfahren sowohl lokale Bildinformationen (Textur, Farbe) als auch den globalen zeitlichen Kontext der Videoaufnahme berücksichtigen. Das Ziel dieser Arbeit ist die Entwicklung eines Systems, das diese Anforderungen erfüllt, ohne dabei eine Komplexität zu erreichen, die einer praxisrelevanten Nutzung (z.\,B. auf Studienlaptops neben dem Endoskopieturm oder kleinen Rechnern) entgegensteht.
+Aus diesem Grund implementiert das System den Ansatz der temporalen Partitionierung direkt in der Modellarchitektur. Die Intuition hierbei ist folgende: Wenn das Ziel die Bewertung des Videos in diskreten Segmenten ist, sollten auch die Entscheidungskriterien (Features) nicht global uniform, sondern segmentspezifisch und zustandsabhängig evaluiert werden.
+
+Hierfür wird die folgende Hypothese aufgestellt: 
+\begin{quote}
+\textit{Durch den Einsatz eines Hidden Markov Models (HMM) oder Conditional Random Fields (CRF) zur Vorverarbeitung des Videostroms kann die Anzahl der Frames, auf denen der Einsatz rechenintensiver Deep-Learning-Modelle (wie CNN oder ViT) notwendig ist, signifikant reduziert werden. Es soll erprobt werden, ob irrelevante Zustände sowie Regionen von erhöhtem Interesse unter Zuhilfenahme diskriminativer (CRF) oder generativer Modelle (HMM) schneller und zuverlässiger identifiziert werden können als durch die alleinige Anwendung eines CNNs.}
+\end{quote}
+\section{Konzeptionelles Modell zur Zustandsabschätzung}
+
+Die Analyse endoskopischer Videos stellt eine besondere Herausforderung dar, da die Bildfolgen sowohl kontinuierliche visuelle Dynamiken (Beleuchtung, Bewegung, Farbspektrum) als auch diskrete prozedurale Phasen aufweisen. Ein rein kontinuierliches Modell erfasst die abrupten Übergänge zwischen diesen Phasen oft nur unzureichend, während ein rein diskretes Modell das innerhalb einer Phase auftretende Messrauschen und graduelle Veränderungen vernachlässigt. 
+
+Aus diesem Grund wird ein hybrides probabilistisches Modell vorgeschlagen, das diskrete Zustandsdynamiken und kontinuierliche Merkmalsextraktion in einem gemeinsamen formalen Rahmen kombiniert und die Stärken der sequenziellen markovbasierten Modelle bei der Sequenzierung und Recheneffizienz mit den Stärken neuronaler Netze bei der Erkennung von Texturmerkmalen kombiniert.
 
 \vspace{0.5em}
 \noindent
 \textbf{Grundidee.}  
-Das vorgeschlagene System basiert auf einer hierarchischen Struktur, in der eine \emph{Markov-Kette} als übergeordneter Prozess die semantischen Phasen des Videos beschreibt, während innerhalb jeder Phase verschiedene Klassifikationsmodelle, wie ein CNN oder ein binäres Zustandsbasiertes Switchmodell, aus kontinuierlichen visuellen Messgrößen Wahrscheinlichkeiten schätzt. Dafür soll im folgenden ein Modell konzipiert werden, das die Zustandsvariable $S_t$ schätzt. Darüber soll modelliert werden, welcher Zustand $s_i$ aktuell vorliegt.
-
-
+Das System basiert auf einer hierarchischen Struktur. Eine Markov-Kette fungiert als übergeordneter Prozess, der die semantischen Phasen des Videos beschreibt ($S_t$), während lokale Beobachtungsmodelle (basierend auf Feature-Statistiken oder Kalman-Filtern) die Wahrscheinlichkeiten aus den visuellen Messgrößen ($y_t$) schätzen.
+Es sei $S_t$ die diskrete Zufallsvariable zum Zeitpunkt $t$, die den aktuellen Zustand $s_i$ aus einem Zustandsraum $\{1, \dots, K\}$ annimmt:
 \begin{equation}
 S_t = s_i
 \end{equation}
-
-Da es sich um ein stochastisches Modell handelt, wird das Gesetz der totalen Wahrscheinlichkeit als Grundlage für die Schätzung einer Zufallsvariable angenommen. 
-
-
+Die Wahrscheinlichkeit für das Vorliegen eines Zustands ergibt sich unter Anwendung des Satzes der totalen Wahrscheinlichkeit und der Markov-Annahme erster Ordnung:
 \begin{equation}
-P(S_t) = \sum_{i=1}^{K} P(S_t = s_i) P(y_t \mid S_t = s_i)
+P(S_t) = \sum_{j=1}^{K} P(S_t = s_i \mid S_{t-1} = s_j) \cdot P(y_t \mid S_t = s_i)
 \end{equation}
 
+Innerhalb einer diskreten Phase $s_i$ werden die Messwerte $y_t \in \mathbb{R}^m$ (z.\,B. Farbe, Textur, einfache Bewegungsmaße) als skalare Featuregrößen erfasst. In der vorliegenden Implementierung werden die Beobachtungswahrscheinlichkeiten nicht durch eine parametrisierte Dichte gelernt, sondern deterministisch aus statistischen Featureregeln berechnet, die aus Trainingsdaten abgeleitet wurden. Ein diskriminatives Modell (CRF) kann diese Emissionswahrscheinlichkeiten als Eingabe nutzen und die Zustandsdynamik direkt über $P(S_t \mid y_t, S_{t-1})$ modellieren.
 
-Jede diskrete Phase \(s_t \in \{1,\dots,K\}\) besitzt somit ein eigenes lokales Zustandsraummodell:
-\begin{align}
-x_t &= F_{s_t} x_{t-1} + w_t, \quad w_t \sim \mathcal{N}(0,Q_{s_t}),\\
-y_t &= H_{s_t} x_t + v_t, \quad v_t \sim \mathcal{N}(0,R_{s_t}),
-\end{align}
-wobei \(x_t \in \mathbb{R}^n\) den latenten Systemzustand (z.\,B. Bewegungsenergie, Farbverteilung, Beleuchtungsintensität) und \(y_t \in \mathbb{R}^m\) die beobachteten Merkmale eines Videoframes beschreibt. Die Übergänge zwischen den Phasen werden durch eine diskrete Übergangsmatrix \(A = [A_{ij}]\) bestimmt:
-\[
-P(s_t = j \mid s_{t-1} = i) = A_{ij}.
-\]
-Dieses übergeordnete Markov-Modell bestimmt, welcher Kalman-Filter zur jeweiligen Zeit wie stark aktiv ist und welche Systemdynamik angenommen wird.
+\begin{figure}[htbp]
+    \centering
+    % width=0.9\textwidth passt das Bild an die Seitenbreite an (sicherer als scale)
+    \includegraphics[width=0.9\textwidth]{Images/feature_regeln_final.pdf}
+\caption{Visualisierung der statistischen Entscheidungsregeln, die die Likelihood-Funktion des HMM definieren.}
+\label{fig:Featureentscheidung}
+\end{figure}
 
+Die in Abbildung~\ref{fig:Featureentscheidung} gezeigten statistischen Regeln bilden die direkte Berechnungsgrundlage für die Beobachtungswahrscheinlichkeiten (Likelihoods) des HMMs.
+
+Das System implementiert hierbei eine klare Trennung zwischen Entscheidung (Inferenz) und Adaption (Lernen):
+
+\begin{enumerate}
+    \item \textbf{Regelbasierte Likelihood (Aktive Inferenz):} Die statischen Regeln (aus \texttt{color\_feature\_states.json}) fungieren als festes Expertenwissen. Für jeden Frame $t$ wird geprüft, ob die extrahierten skalaren Merkmale (z.\,B. Farbsättigung) die konfigurierten Schwellenwerte (typischerweise One-Sided \textit{greater-than}/\textit{less-than}, optional Between-Range) erfüllen. Diese Auswertung wird deterministisch in den Likelihood-Vektor $P(y_t \mid S_t)$ übersetzt, welcher den HMM-Filter treibt.
+    
+    \item \textbf{Adaptives Prototyping (Passives Lernen):} Parallel zur Inferenz existiert ein Speichermodul (\texttt{MarkovFeatureMatrix}), das Zustands-Prototypen zur Laufzeit aufbaut. Diese Prototypen werden initial bei null gestartet und nur in Momenten sehr hoher Modellkonfidenz ($> 95\%$) mit den aktuellen Feature-Vektoren aktualisiert. In der aktuellen Konfiguration dient dieser Prozess der Kalibrierung und der Erfassung patientenspezifischer Merkmalsausprägungen, fließt jedoch nicht aktiv in die Zustandsentscheidung des aktuellen HMM-Runners ein.
+\end{enumerate}
+
+Somit basiert die Klassifikationsentscheidung in dieser Arbeit vollständig auf den robusten, statistisch hergeleiteten Featureregeln, während individuell während der Erstellung eines Prototypen eine latente Erweiterung zur Laufzeitanalyse existiert.
 
 
 \vspace{0.5em}
 \noindent
 \textbf{Beziehung zu bestehenden Arbeiten.}  
-Das Grundprinzip weist eine formale Dualität zu dem Ansatz von \textcite{odhner2010kalman} auf, die einen \emph{Kalman-Filter für inhomogene Populations-Markov-Ketten} entwickelten. In deren Arbeit wurde eine Markov-Kette als zugrunde liegendes System betrachtet, während der Kalman-Filter als Beobachter zur Schätzung der Populationsverteilung fungierte. Die vorliegende Arbeit kehrt diese Struktur um: Hier dient der Kalman-Filter als lokaler kontinuierlicher Schätzer, und die Markov-Kette bildet die diskrete Steuerungsebene, welche die Phasenwechsel des endoskopischen Prozesses modelliert. Diese Umkehrung erlaubt es, die Stärken beider Verfahren zu kombinieren – die lokale Glättung und Rauschunterdrückung des Kalman-Filters sowie die sequenzielle Zustandslogik der Markov-Kette.
+Das Grundprinzip weist eine formale Dualität zu dem Ansatz von Odhner et.al. \cite{odhner2010kalman} auf. Während Odhner et al. eine Markov-Kette als zugrunde liegendes System betrachteten und einen Kalman-Filter zur Schätzung der Populationsverteilung nutzten, kehrt die vorliegende Arbeit diese Struktur um: Hier dienen statistische Filter (wie Kalman-Change-Detectors oder Running-Stats) als lokale Schätzer für die Feature-Dynamik, während die Markov-Kette (oder das CRF) die diskrete Steuerungsebene bildet, welche die Phasenwechsel des endoskopischen Prozesses modelliert. Dies erlaubt die Kombination von lokaler Rauschunterdrückung und globaler Prozesslogik.
 
 \vspace{0.5em}
 \noindent
 \textbf{Kopplung der Schichten.}  
-Die Kopplung zwischen kontinuierlicher und diskreter Ebene erfolgt über die \emph{Innovationsgröße} des Kalman-Filters:
-\[
-\epsilon_t = y_t - H_{s_t}\hat{x}_{t|t-1},
-\]
-welche die Abweichung zwischen vorhergesagtem und gemessenem Signal beschreibt. Große Innovationswerte deuten auf eine Abnahme der Modellgüte hin und erhöhen somit die Wahrscheinlichkeit eines Zustandswechsels. Formal lässt sich diese Idee durch eine modifizierte Übergangswahrscheinlichkeit ausdrücken:
-\[
-P(s_t = j \mid s_{t-1} = i, \epsilon_t) \propto A_{ij}\,\exp\!\left(-\tfrac{1}{2}\epsilon_t^\top W_{ij}^{-1}\epsilon_t\right),
-\]
-wobei \(W_{ij}\) eine skalierende Gewichtungsmatrix darstellt. Dadurch wird der Zustandsübergang datengetrieben und adaptiv: Das System „lernt“, wann das aktuell aktive Modell nicht mehr zur beobachteten Dynamik passt.
+Die Kopplung erfolgt über die Emissionswahrscheinlichkeiten (im HMM) bzw. die Featurefunktionen (im CRF). Ein hoher Innovationswert (Abweichung der Messung vom erwarteten Zustand) senkt die Wahrscheinlichkeit für das Verbleiben im aktuellen Zustand und löst über die Übergangsmatrix $A_{ij}$ einen Phasenwechsel aus.
+Das System „lernt“ somit datengetrieben, wann das aktuell aktive Modell (z.\,B. für saubere Mukosa) nicht mehr zur beobachteten Dynamik (z.\,B. Blutung) passt.
+\vspace{0.5em}
+\noindent
 
 \vspace{0.5em}
 \noindent
@@ -72,20 +77,60 @@ wobei \(W_{ij}\) eine skalierende Gewichtungsmatrix darstellt. Dadurch wird der 
 P(s_t \mid y_{1:t-1}) = \sum_{i=1}^{K} P(s_t \mid s_{t-1}=i) P(s_{t-1}=i \mid y_{1:t-1})
 \end{equation}
 
-Da bei Endoskopievideos stellenweise vorhersehbarer, zeitlicher Zusammenhang zwischen den Zuständen vorliegen kann, soll die diskrete Zustandsfolge zusätzlich als \emph{Diskretes Random Field (DRF)} über die Zeit modelliert werden:
+Da bei Endoskopievideos stellenweise vorhersehbarer, zeitlicher Zusammenhang zwischen den Zuständen vorliegen kann, wird die Sequenzmodellierung in der vorliegenden Implementierung über eine lineare Kette realisiert. Für das HMM entspricht dies der Markov-Faktorisierung:
 \[
-P(s_{1:T}) = \prod_{t=1}^{T} P(s_t \mid s_{t-1}),
+P(s_{1:T}) = \prod_{t=1}^{T} P(s_t \mid s_{t-1}).
 \]
-Hier sollen Dauerwahrscheinlichkeiten für typische Phasenlängen in die Regularisierung eingehen. Diese Formulierung erlaubt es, das Verfahren nicht nur als rekursiven Filter, sondern auch als sequentielles Optimierungsproblem (z.\,B. mittels Viterbi-Dekodierung) zu interpretieren. 
+Für das CRF wird hingegen die bedingte Verteilung modelliert,
+\[
+P(s_{1:T}\mid O)=\frac{1}{Z(O)}\exp\Big(\sum_{t=1}^{T}\sum_k \lambda_k f_k(s_{t-1},s_t,O,t)\Big),
+\]
+wobei die Beobachtungen \(O\) in der Implementierung über regelbasierte Emissionswahrscheinlichkeiten eingehen.
 
-\subsection{CRF - ähnliches Verhalten einer Bank von Kalman Filtern}
 
-In der Umsetzung sollen für jeden Zustandsübergang Kalmanfilter auf einem Featurevektor trainiert werden. Die Reihenfolge der Auswertung des Kalmanfilters wird durch die Zustandsübergangswahrscheinlichkeiten der Markovkette bestimmt. Da die Kalmanfilter vorher auf allen Frames, die mit dem gegebenen Zustand annotiert sind, trainiert werden um eine individuelle Binäre Klassifikation durchzuführen, erfüllen Sie das Markovkriterium nur teilweise.
-Sie nutzen die Informationen der vorherigen Frames nicht direkt sondern über das Training. Deshalb bewerten Sie den Übergang anhand des gelernten Durchschnittsmodell. Dieser Wert wird für die Wahrscheinlikeitsberechnung des nächsten Zustandsübergangs aufgenommen. Der aktuelle Zustand wird mit dem Wissen aus der Vergangenheit bestimmt. Das Gesamtsystem nutzt den Output des Kalmanfilters zur Bewegungsabschätzung im Conditional Random Field (CRF), sowie die Nutzung verschiedener Farbwerte innerhalb von definierten Regeln, deren Bedeutung später evaluiert werden können. Das CRF leitet .
 \noindent
 \textbf{Anwendung auf endoskopische Videos.}  
-Für die konkrete Anwendung werden die Zustände der Markov-Kette semantisch interpretiert, etwa als \emph{Eintritt in das Lumen}, \emph{stabile Navigation}, \emph{NBI-Modus}, \emph{Nahaufnahme der Mukosa} oder \emph{Austritt}. Jeder dieser Zustände besitzt eine spezifische Dynamik visueller Merkmale, welche durch ein Kalman-Modell mit angepassten Rauschparametern \(Q_{s_t}, R_{s_t}\) beschrieben wird. Diese Parameter können durch Domänenwissen vorinitialisiert werden – etwa durch die erwartete Kamerabewegung oder typische Helligkeitsschwankungen in einem bestimmten Abschnitt – und anschließend datengetrieben verfeinert werden. 
+Für die konkrete Anwendung werden die Zustände der Markov-Kette semantisch interpretiert, etwa als \emph{Außerhalb des Körpers},  \emph{NBI-Modus}, \emph{Nahaufnahme der Mukosa}, \emph{Polyp}, \emph{Instrument}, \emph{Blut} oder \emph{Niedrige Bildqualität}. Jeder dieser Zustände müsste eine spezifische Dynamik visueller Merkmale besitzen, um durch ein Kalman-Modell mit angepassten Rauschparametern \(Q_{s_t}, R_{s_t}\) beschrieben werden zu können. Diese Parameter können weiterhin durch Domänenwissen vorinitialisiert werden – etwa durch die erwartete Kamerabewegung oder typische Helligkeitsschwankungen in einem bestimmten Abschnitt – und anschließend datengetrieben verfeinert werden. 
 
 \noindent
 \textbf{Zusammenfassung.}  
-Das resultierende Modell kann als \emph{hybrides Markov–Kalman-System} verstanden werden, in dem kontinuierliche Zustände die lokalen visuellen Eigenschaften schätzen und diskrete Zustände den prozeduralen Kontext erfassen. Diese duale Architektur erlaubt eine interpretierbare, probabilistisch fundierte Beschreibung endoskopischer Prozesse, die sowohl abrupten Zustandswechseln als auch stochastischen Messrauschen gerecht wird. Im Gegensatz zu rein datengetriebenen neuronalen Ansätzen basiert das hier entwickelte Verfahren auf explizitem Domänenwissen, was eine robuste und nachvollziehbare Zustandsabschätzung ermöglicht.
+Das resultierende Modell kann als hybrides Markov–Kalman-System verstanden werden, in dem kontinuierliche Zustände die lokalen visuellen Eigenschaften schätzen und diskrete Zustände den prozeduralen Kontext erfassen. Diese duale Architektur erlaubt eine interpretierbare, probabilistisch fundierte Beschreibung endoskopischer Prozesse, die sowohl abrupten Zustandswechseln als auch stochastischen Messrauschen gerecht werden soll.
+
+
+\section{Definition des Conditional Random Fields}
+\label{sec:crf_definition}
+
+Wie eingangs erwähnt, bietet das Conditional Random Field (CRF) als diskriminatives Modell den Vorteil, dass es keine strengen Unabhängigkeitsannahmen an die beobachteten Features stellt. Das CRF modelliert direkt die bedingte Wahrscheinlichkeit der Zustandssequenz $X = (s_1, \dots, s_T)$ gegeben die Beobachtungssequenz $O = (y_1, \dots, y_T)$:
+
+\begin{equation}
+P(X \mid O) = \frac{1}{Z(O)} \exp\left( \sum_{t=1}^T \sum_{k} \lambda_k f_k(s_{t-1}, s_t, O, t) \right)
+\end{equation}
+
+Hierbei ist $Z(X)$ die Partitionierungsfunktion zur Normalisierung. Vor dem Training wurde unter Benutzung des Welford Algorithmus aus den Farbrauminformationen sowie den Texturinformationen sequenzunabhängig Schwellenwerte als Features extrahiert. In der  Implementierung werden die Beobachtungsinformationen nicht als frei trainierbare Feature-Funktionen gelernt, sondern als Emissionswahrscheinlichkeiten aus den regelbasierten Likelihoods berechnet und dem CRF als Eingabe übergeben. Optional werden die Übergangsgewichte während des Trainings mit sequenziellen gelabelten Frames aktualisiert.
+
+\subsection{Statistische Herleitung der Featureregeln}
+Um robuste Entscheidungsgrenzen für die Regeln zu finden, wird ein datengetriebener Ansatz gewählt, der auf der Analyse der Feature-Verteilungen (Mittelwert $\mu_c$, Standardabweichung $\sigma_c$) pro Klasse $c$ basiert. Die Berechnung dieser Momente erfolgt offline über den numerisch stabilen Online-Algorithmus nach Welford \cite{welford1962note}, um auch bei großen Videodatenmengen Präzision zu gewährleisten und um Auslöschungseffekte zu vermeiden, wie sie bei der naiven Berechnung der Varianz auftreten kann. \cite{chan1983algorithms}.
+
+Basierend auf diesen Statistiken werden Featureregeln $\mathcal{R}$ definiert, die als deterministische Prüffunktionen in die Emissionsberechnung eingehen. Eine Regel $r \in \mathcal{R}$ für ein Feature $x$ (z.\,B. Farbsättigung oder LBP-Komplexität) und einen Zustand $s$ ist definiert als:
+
+\begin{equation}
+f_r(s_t, y_t) = \mathbb{1}_{\{s_t = s\}} \cdot w_r \cdot \text{sat}_r(y_t)
+\end{equation}
+
+Die Erfüllungsfunktion $\text{sat}_r(y_t)$ prüft, ob der Messwert innerhalb eines statistisch signifikanten Intervalls liegt. Hierbei unterscheiden wir zwei Typen von Regeln, die die Topologie des Feature-Raums abbilden:
+
+\begin{enumerate}
+    \item \textbf{Diskriminative Grenzwerte:} Wenn der Mittelwert einer Klasse signifikant (definiert durch ein relatives $\delta$) vom globalen Mittelwert abweicht, wird eine harte Grenze gesetzt.
+    \[
+    \text{sat}_{\text{gt}}(y) = \begin{cases} 1 & \text{wenn } y > \mu_s - 0.5\sigma_s \\ 0 & \text{sonst} \end{cases}
+    \]
+    Dies wird typischerweise für auffällige Merkmale wie \textit{hohe Rötung} (Blutung) oder \textit{hohe Texturkomplexität} (Artefakte) verwendet.
+    
+    \item \textbf{Topologische Akzeptanzbereiche:} Für Zustände, die durch einen spezifischen Wertebereich charakterisiert sind (z.\,B. Stuhl mit mittlerer Sättigung), wird ein Toleranzintervall definiert:
+    \[
+    \text{sat}_{\text{btwn}}(y) = \begin{cases} 1 & \text{wenn } \mu_s - 2\sigma_s \leq y \leq \mu_s + 2\sigma_s \\ 0 & \text{sonst} \end{cases}
+    \]
+\end{enumerate}
+
+Die Gewichtung $w_r$ ist in den Zustandsdefinitionen fixiert. Das CRF-Training aktualisiert ausschließlich die Übergangsgewichte, nicht jedoch die Regeln selbst, da diese bereits während der Kalibrierung entschieden wurden.
+

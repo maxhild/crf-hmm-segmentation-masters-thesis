@@ -3,23 +3,18 @@
 %*****************************************
 
 In diesem Kapitel werden die medizinischen und technischen Grundlagen erläutert, die für das Verständnis der Arbeit notwendig sind.
-Dabei wird zuerst auf die medizinischen Hintergründe des behandelten Problems eingegangen.
+Zunächst werden die medizinischen Hintergründe des behandelten Problems eingeordnet.
 Anschließend werden das technische Fundament der Segmentierung sowie gängige Bildgebungsverfahren behandelt, die zur Lösung des Problems eingesetzt werden können.
-Dabei sollen Markov Modelle mit Methoden aus der Signal- und Bildverarbeitung kombiniert werden, um eine robuste Segmentierung von Endoskopievideos zu ermöglichen.
-Die der technischen Implementierung zugrundeliegenden mathematischen Hintergründe und Theoreme werden ebenfalls in diesem Kapitel vorgestellt, um die theoretische Basis der Arbeit zu untermauern.
+Dabei werden Markovmodelle mit Methoden der Signal und Bildverarbeitung kombiniert, um eine robuste Segmentierung von Endoskopievideos zu ermöglichen.
+Die der technischen Implementierung zugrundeliegenden mathematischen Hintergründe und Theoreme werden ebenfalls vorgestellt, um die theoretische Basis der Arbeit zu untermauern.
 
-\section{Medizinischer Hintergrund - Steigende Anforderungen an das Gesundheitswesen bei der Darmkrebsprävention}
-Endoskopie ist eine der zentralen Behandlungs- und Diagnosemöglichkeiten in der Therapie von Darmkrebs, 
-einer der häufigsten und tödlichsten Krebsarten.\citep{labianca2010-colon-cancer}
-Nicht von der Hand zu weisen ist hierbei die zeitaufwändige Durchführung und 
-Dokumentation der Überwachung des flächigen Gewebes im Darm im Rahmen von Endoskopien. Aus diesem Grund ist es 
-der Gastroenterologie konstant ein Anliegen, die Qualitätssicherung bei Darmspiegelungen zu verbessern. 
-Wie in der Einleitung erwähnt, ist die Zökum-Rückzugszeit ein Beispiel für ein zuverlässiges Qualitätsmerkmal.  Hierbei ist es wichtig, dass die Darmspiegelung eine vorgeschriebene Zeit dauert, um die Chance auf eine vollständige Detektion aller möglichen Adenome zu erhöhen. 
-Dadurch steigt die Wahrscheinlichkeit, dass die Darmspiegelung sorgfältig durchgeführt wurde, was nachweislich zu einer 
-erhöhten Anzahl frührer Diagnosen führt und somit Todesfälle verhindern kann. Das liegt daran, dass die Durchführung von Darmspiegelungen sorgfältiger wird, wenn 
-die Zeitvorgaben eingehalten werden.
-Dieses Beispiel zeigt, dass wenn Qualitätskriterien eingehalten werden die Behandlungsqualität steigen kann. 
-Die Europäische Gesellschaft für Gastroenterologie (ESGE) hat hierzu einige Forschungsfragen herausgegeben. Hierbei gibt es einige Punkte, speziell während der Endoskopie sowie in der Nachbereitung des Videomaterials, als auch weitergehend deren Umsetzung durch Nutzung eines KI-gestützten Systems zur Qualitätssicherung bei Darmspiegelungen profitieren könnten:
+\section{Medizinischer Hintergrund: Steigende Anforderungen an das Gesundheitswesen bei der Darmkrebsprävention}
+Endoskopie ist eine der zentralen Möglichkeiten zur Behandlung und Diagnose in der Therapie von Darmkrebs, einer der häufigsten und tödlichsten Krebsarten. \citep{labianca2010-colon-cancer}
+Nicht von der Hand zu weisen sind dabei die zeitaufwändige Durchführung und Dokumentation der Überwachung des flächigen Gewebes im Darm im Rahmen von Endoskopien. Aus diesem Grund ist es der Gastroenterologie ein ständiges Anliegen, die Qualitätssicherung bei Darmspiegelungen zu verbessern.
+Wie in der Einleitung erwähnt, ist die Zökumrückzugszeit ein Beispiel für ein mögliches Qualitätsmerkmal. Diese Metrik ist relevant, weil eine ausreichend lange Darmspiegelung die Chance auf eine vollständige Detektion aller möglichen Adenome erhöht.
+Dadurch steigt die Wahrscheinlichkeit, dass die Darmspiegelung sorgfältig durchgeführt wurde, was nachweislich zu einer erhöhten Anzahl früher Diagnosen durch Adenomdetektion führen kann. \cite{vilmann-2022} Das liegt daran, dass die Durchführung von Darmspiegelungen sorgfältiger wird, wenn Zeitvorgaben eingehalten werden.
+Dieses Beispiel zeigt, dass die Einhaltung sinnvoller Qualitätskriterien die Behandlungsqualität steigern kann.
+Die Europäische Gesellschaft für Gastroenterologie (ESGE) hat zur Verbesserung der Qualität von Kolonoskopien einige Forschungsfragen herausgegeben. Hierbei gibt es einige Punkte, speziell während der Endoskopie sowie in der Nachbereitung des Videomaterials, als auch weitergehend deren Umsetzung durch Nutzung eines KI gestützten Systems zur Qualitätssicherung bei Darmspiegelungen profitieren könnten:
 
 \begin{enumerate}
   \item \textbf{Vorbereitung der Prozedur}
@@ -31,19 +26,19 @@ Die Europäische Gesellschaft für Gastroenterologie (ESGE) hat hierzu einige Fo
   \item \textbf{Vollständigkeit der Prozedur}
     \begin{itemize}
       \item Wie verhalten sich diagnostische Ausbeute (und Intervallkarzinomrate) in Abhängigkeit von einer steigenden Zökumintubationsrate?
-      \item Welchen Nutzen hat die Dokumentation der Zökumintubation nur im schriftlichen Bericht im Vergleich zu einem schriftlichen \emph{und} fotografischen Bericht?
+      \item Welchen Nutzen hat die Dokumentation der Zökumintubation nur im schriftlichen Bericht im Vergleich zu einem schriftlichen und fotografischen Bericht?
     \end{itemize}
 
   \item \textbf{Identifikation von Pathologien}
     \begin{itemize}
       \item Welcher Zielwert gilt für die Adenomdetektionsrate?
-      \item Welches Leistungsmaß spiegelt die Identifikation von Pathologien außerhalb des CRC-Screening-/Überwachungssettings wider?
+      \item Welches Leistungsmaß spiegelt die Identifikation von Pathologien außerhalb des CRC Screenings und der Überwachung wider?
     \end{itemize}
 
   \item \textbf{Management von Pathologien}
     \begin{itemize}
       \item Was ist die verlässlichste und praktikabelste Methode, um die Vollständigkeit der Polypentfernung zu messen?
-      \item Wie wirksam sind Zusatztechniken/-skalen (Chromendoskopie, Paris-Klassifikation, Tätowierung von Resektionsstellen) im Management von Pathologien?
+      \item Wie wirksam sind Zusatztechniken und Skalen wie Chromendoskopie, Paris Klassifikation oder Tätowierung von Resektionsstellen im Management von Pathologien?
     \end{itemize}
 
   \item \textbf{Komplikationen}
@@ -54,45 +49,34 @@ Die Europäische Gesellschaft für Gastroenterologie (ESGE) hat hierzu einige Fo
 \end{enumerate}
 \citep{kaminski-performance-2017}
 
-Eine Motivation für ein zuverlässiges Segmentationsmodell für Endoskopievideos ist es, 
-dass die Zökum-Rückzugszeit automatisch berechnet werden könnte. Wenn anhand der Vorhersage des letzten Frames, 
-der innerhalb des Körpers gefunden wird, festgestellt ist, ist die untere Schranke für den der Berechnung zugrundeliegenden Abschnitt des 
-Videos bereits gegeben. Für die Berechnung der Zäkum-Rückzugszeit würde sich das so errechnete Upper Bound bei den Frames in dem Moment eignen, 
-in dem auch das Zäkum vertrauenswürdig erkannt wird. Die zuverlässige Erkennung von Organteilen des Darms im Video ist 
-Teil der endoskopischen Forschung mit künstlicher Intelligenz. Im speziellen die Erkennung von Polypen ist von besonderem Interesse. 
-Diese Geschwulste wachsen als Vorstufe von potenziell bösartigen Tumoren an der Darminnenwand. Sie können aus verschiedenen Gründen und in verschiedenen Darmteilen auftreten, 
+Eine Motivation für ein zuverlässiges Segmentationsmodell für Endoskopievideos ist, dass die Zökumrückzugszeit automatisch berechnet werden könnte. Wenn anhand der Vorhersage des letzten Bildes, das innerhalb des Körpers gefunden wird, festgestellt ist, ist die untere Schranke für den der Berechnung zugrundeliegenden Abschnitt des Videos bereits gegeben. Für die Berechnung der Zökumrückzugszeit eignet sich die so ermittelte obere Schranke in dem Moment, in dem auch das Zökum vertrauenswürdig erkannt wird. Die zuverlässige Erkennung von Organteilen des Darms im Video ist Teil der endoskopischen Forschung mit künstlicher Intelligenz. Insbesondere ist die Erkennung von Polypen von besonderem Interesse.
+Diese wachsen als Vorstufe von potenziell bösartigen Tumoren an der Darminnenwand. Sie können aus verschiedenen Gründen und in verschiedenen Darmteilen auftreten, 
 sind jedoch besonders als Frühmerkmal einer möglichen Diagnose von Darmkrebs interessant und deshalb wenn möglich vollständig zu erkennen. \citep{doi:10.7326/0003-4819-157-4-201208210-00002}
-Weiter kompliziert wird die Erkennung und Einschätzung von Polypen dadurch, dass es verschiedene Stufen gibt.
+Weiter kompliziert wird die Erkennung und Einschätzung von Polypen dadurch, dass es verschiedene Stufen ihrer Ausprägung sowie verschiedene genetische Ursachen für sie gibt. \cite{PickhardtColonPolyps}
 Während bei einigen kolorektalen Polypen eine Darmblutung als Symptom auftritt, die zumeist eine schnelle Diagnose ermöglicht, sind andere Polypen asymptomatisch und werden nur zufällig bei einer routinemäßigen Darmspiegelung entdeckt.
 Besonders bei diesen Fällen kann das Risiko bestehen, dass Polypen übersehen werden.
 Unterschieden wird hierbei zwischen hochgradigen und niedergradigen Dysplasien. Diese Stufen bezeichnen den Grad der Zellveränderung in der Region des Polypen.
 Besonders bei höhergradigen Dysplasien besteht das Risiko, dass ein maligner Polyp vorliegt.
 Definitiv kann dies durch den Nachweis karzinogener Zellen innerhalb eines Polypen festgestellt werden. Hierbei handelt es sich um eine Aufgabe für die Pathologie,
 die nach vollständiger Entfernung des betroffenen Gewebes erfolgen kann. \citep{Colucci261}
-Auch bei der Zökum-Rückzugszeit ist das zentrale Kriterium, dass möglichst wenige Polypen übersehen werden sollen. 
-Da durch den Einsatz von automatischer Erkennung dieser Vorkommnisse innerhalb des Darms eine erhebliche Beschleunigung dieses 
-Prozesses möglich wäre, wird in diesem Bereich bereits seit Jahren geforscht. \citep{talukder-2022} 
-
-Die Inferenz mit CNN basierten Modellen wie ResNet50 oder EfficientNetB0 hat sich in den letzten Jahren als sehr erfolgreich erwiesen.
-Diese Modelle sind in der Lage, Bilddaten zu klassifizieren und können auch für die Segmentierung von Videos als Frames genutzt werden.
-Die Ergebnisse dieser Klassifikation sind bei ausreichendem Training in einer kontinuierlichen Pipeline nutzbar.
-
-\subsection{Assistierte Dokumentation von Endoskopievideos}
-
+Auch bei der Zökumrückzugszeit ist die Motivation für den Einsatz bei der Qualitätssicherung, dass möglichst wenige Polypen übersehen werden sollen.
+Da durch den Einsatz automatischer Erkennung dieser Vorkommnisse innerhalb des Darms eine erhebliche Beschleunigung dieses Prozesses möglich wäre, wird in diesem Bereich bereits seit Jahren geforscht. \citep{talukder-2022}
+\\
+Um die Anwendung von automatisierter Dokumentation erfolgreich in den Arbeitsalltag zu integrieren, soll im folgenden erläutert werden welche technischen und mathematischen Prinzipien in die Lösung der Optimierung der Vorverarbeitung von Endoskopievideos verwendet wurden. Aufgrund der sequenziellen Natur der Frames von Endoskopievideos ist die Wahl der Methodik auf zwei auf Markovketten basierenden Modellklassen gefallen. Diese sind das CRF und HMM.
 \section{Technische und mathematische Grundlagen}
 
 Dieses Kapitel wird die Herangehensweise an die mathematische Modellierung der Segmentierung von Endoskopievideos erläutern.
-In diesem Kontext soll später im Kapitel Methodik herausgearbeitet werden, welche Modelle sich für eine statistisch haltbare Bewertung von Frameregionen eignen. Da es sich bei einer Endoskopie, wie in Lux et al. demonstriert, um eine Intervention handelt, die sich in Phasen, beziehungsweise Zustände einteilen lässt, wurde der Fokus auf Zustandsbasierte Modelle wie Markovmodelle gelegt.
+In diesem Kontext soll später im Kapitel Methodik herausgearbeitet werden, welche Modelle sich für eine statistisch haltbare Bewertung von Frameregionen eignen. Da es sich bei einer Endoskopie, wie in Lux et al. demonstriert, um eine Intervention handelt, die sich in Phasen beziehungsweise Zustände einteilen lässt, wurde der Fokus auf zustandsbasierte Modelle wie Markovmodelle gelegt.
 
-\subsubsection{Markovprozesse - Eine Methode um abhängige Variablen probabilistisch zu quantisieren.}
+\subsubsection{Markovprozesse: Eine Methode, um abhängige Variablen probabilistisch zu quantisieren}
 
-\enquote{Wir betrachten ein zufälliges dynamisches System. Sei $S : \mathbb{R} \to \mathbb{R}$ ein dynamisches System und definieren einen stochastischen Prozess $\{X_n\}_{n \ge 0}$ durch $X_{n+1} = S(X_n) + Y_n$, wobei $Y_0, Y_1, \dots$ unabhängige Zufallsvariablen mit Werten in $\mathbb{R}$ sind, die jeweils die gleiche Dichte $g$ haben, und $X_0$ und $\{Y_n\}_{n \ge 0}$ unabhängig sind. Dann ist der stochastische Prozess $\{X_n\}$ ein Markov-Prozess.} \citep[S.~13]{KhalilGhaffari2023}
-Markov Prozesse sind laut dieser Definition Systeme aus Zuständen, die sich über die Zeit verändern.
+\enquote{Wir betrachten ein zufälliges dynamisches System. Sei $S : \mathbb{R} \to \mathbb{R}$ ein dynamisches System und definieren einen stochastischen Prozess $\{X_n\}_{n \ge 0}$ durch $X_{n+1} = S(X_n) + Y_n$, wobei $Y_0, Y_1, \dots$ unabhängige Zufallsvariablen mit Werten in $\mathbb{R}$ sind, die jeweils die gleiche Dichte $g$ haben, und $X_0$ und $\{Y_n\}_{n \ge 0}$ unabhängig sind. Dann ist der stochastische Prozess $\{X_n\}$ ein Markovprozess.} \citep[S.~13]{KhalilGhaffari2023}
+Markovprozesse sind laut dieser Definition Systeme aus Zuständen, die sich über die Zeit verändern.
 Sie dürfen dabei nur von dem aktuellen Zustand abhängen und nicht von den vorherigen Zuständen.
 Die Definition bezieht sich auf ein Stochastisches System und sieht deshalb eine Normierung der Werte im Bereich 0 bis 1 vor.
 Die Zustände des Systems werden durch die Zufallsvariablen $X_n$ beschrieben.
 \newline
-Der Name der Markov-Prozesse stammt aus der Arbeit von A. A. Markov. Insbesondere interessant ist hier die Publikation \enquote{Beispiel von statistischer Forschung auf einem Text von \enquote{Eugene Onegin}, der interkonnektivität abhängiger Versuche in einer Kette klassifiziert.} \citep{markov1913onegin}.
+Der Name der Markovprozesse stammt aus der Arbeit von A. A. Markov. Insbesondere interessant ist hier die Publikation \enquote{Beispiel von statistischer Forschung auf einem Text von \enquote{Eugene Onegin}, der die Interkonnektivität abhängiger Versuche in einer Kette klassifiziert.} \citep{markov1913onegin}.
 Anhand eines Gedichts und der Verteilung der Konsonanten und Vokale untersuchte Markov hier, ob durch vielfache Wiederholung eines Zufallsexperiments, bei dem die Versuche voneinander abhängig sind, eine statistische Vorhersage getroffen werden kann. Dieser empirische Beweis greift eine frühere Publikation seinerseits auf, die theoretisch darlegt, dass das Gesetz der großen Zahlen auch auf abhängige
 Zufallsvariablen anwendbar ist. Durch empirisches Messen der Häufigkeiten der Variablen erfasste Markov eine Übergangswahrscheinlichkeit. 
 \begin{equation}
@@ -100,64 +84,63 @@ p_{ij} = P(X_{n+1} = j \mid X_n = i),
 \quad \text{mit} \quad \sum_j p_{ij} = 1.
 \label{eq:transition_prob}
 \end{equation}
-Diese konnte er im Nachgang einsetzen, um über diese Wahrscheinlichkeiten wiederum eine Buchstabenfolge zu generieren, bei der die Anzahl der Konsonanten und Vokale wieder auf einem Niveau einpendelten, das mit dem russischen Originaltext vergleichbar war.
-Ausgang für diese Untersuchung war die These von Pawel Nekrasov. Dieser hatte in seiner „Theorie der Wahrscheinlichkeit“ angezweifelt, dass probabilistische Modelle in Untersuchungen von abhängigen Variablen wie sozialen Zusammenhängen angewandt werden könnten, weil abhängige Größen nur durch den freien Willen und nicht durch Naturgesetze beeinflusst sind. Ilona Svetlikova beschreibt in der Sekundäranalyse von Nekrasov die philosophisch-theologische Haltung hinter Nekrasovs Argumentation.
-Laut Svetlikova argumentiert Nekrasov, dass Wahrscheinlichkeitsgesetze Ausdruck des göttlichen Willens seien und daher nicht auf abhängige oder soziale Prozesse angewandt werden dürften - da diese den freien Willen der Menschen widerspiegeln.\citep{svetlikova2013nekrasov} Diese These stützte Nekrasov auf Beobachtungen, dass bei sozialen Statistiken wie der Rate der Hochzeiten in einer Gesellschaft in aufeinanderfolgenden Jahren oft ähnliche Hochzeitsraten auftreten obwohl sich die gesellschaftlichen Bedingungen ändern. \citep{nekrasov1912} Durch Markovs empiririschen Beweis seiner theoretischen Grundlagenpublikation \citep{markov1906extension} zeigte er, dass auch abhängige Variablen in oft wiederholten Zufallsexperimenten messbare Gesetzmäßigkeiten aufzeigen können.  Diese Idee wurde weiterentwickelt, um durch passende Modelle effiziente Vorhersagen über zukünftige Ereignisse treffen zu können.
-Seine Arbeit hat bis heute großen Einfluss und begründete die Klasse der Markovprozesse. Diese sind und findet sich auch in aktuellen Entwicklungen wie Recurrent Neural Networks wieder.
+Diese konnte er im Nachgang einsetzen, um über diese Wahrscheinlichkeiten wiederum eine Buchstabenfolge zu generieren, bei der die Anzahl der Konsonanten und Vokale wieder auf einem Niveau einpendelte, das mit dem russischen Originaltext vergleichbar war.
+Ausgang für diese Untersuchung war die These von Pawel Nekrasov. Dieser hatte in seiner „Theorie der Wahrscheinlichkeit“ angezweifelt, dass probabilistische Modelle in Untersuchungen von abhängigen Variablen wie sozialen Zusammenhängen angewandt werden könnten, weil abhängige Größen nur durch den freien Willen und nicht durch Naturgesetze beeinflusst sind. Ilona Svetlikova beschreibt in der Sekundäranalyse von Nekrasov die philosophischtheologische Haltung hinter Nekrasovs Argumentation.
+Laut Svetlikova argumentiert Nekrasov, dass Wahrscheinlichkeitsgesetze Ausdruck des göttlichen Willens seien und daher nicht auf abhängige oder soziale Prozesse angewandt werden dürften, da diese den freien Willen der Menschen widerspiegeln. \citep{svetlikova2013nekrasov} Diese These stützte Nekrasov auf Beobachtungen, dass bei sozialen Statistiken wie der Rate der Hochzeiten in einer Gesellschaft in aufeinanderfolgenden Jahren oft ähnliche Hochzeitsraten auftreten, obwohl sich die gesellschaftlichen Bedingungen ändern. \citep{nekrasov1912} Durch Markovs empirischen Beweis seiner theoretischen Grundlagenpublikation \citep{markov1906extension} zeigte er, dass auch abhängige Variablen in oft wiederholten Zufallsexperimenten messbare Gesetzmäßigkeiten aufzeigen können. Diese Idee wurde weiterentwickelt, um durch passende Modelle effiziente Vorhersagen über zukünftige Ereignisse treffen zu können.
+Seine Arbeit hat bis heute großen Einfluss und begründete die Klasse der Markovprozesse.
 
 In seinem Einführungswerk beschreibt A. W. Drake Markovprozesse in diskreter Zeit und mit diskreter Zustandsmenge. Er definiert sie allgemein als Kette von Zuständen $S$, deren zukünftige Entwicklung nur vom aktuellen Zustand abhängt und deren Übergänge durch Übergangswahrscheinlichkeiten bestimmt werden. Eine Bedingung für das Vorliegen eines Markovprozesses wird so definiert als \begin{equation}
-P(X_{n+1} = x_{n+1} \mid X_n = x_n, X_{n-1} = \newline x_{n-1}, \dots, X_0 = x_0)
+P(X_{n+1} = x_{n+1} \mid X_n = x_n, X_{n-1} = x_{n-1}, \dots, X_0 = x_0)
 = P(X_{n+1} = x_{n+1} \mid X_n = x_n)
 \label{eq:markov_property}
 \end{equation}.
-Weitergehend ist die zweite Eigenschaft der Übergangswahrscheinlichkeiten ausgehend von einem aktuellen Prozess, dass die ausgehenden Wahrscheinlichkeiten des Prozesses sich zu eins addieren sollten damit es sich hierbei um eine vollständige Abbildung aller möglichen Zustände handelt.
+Weitergehend gilt als zweite Eigenschaft der Übergangswahrscheinlichkeiten, dass die ausgehenden Wahrscheinlichkeiten eines Zustands sich zu eins addieren, damit es sich um eine vollständige Abbildung aller möglichen Zustände handelt.
 \begin{equation}
   \sum_j P_{ij} = 1.
 \end{equation}
 Wobei $P_{ij}$ die Wahrscheinlichkeit beschreibt, dass das System, nachdem der aktuelle Zustands $S_i$ ist, in den nächsten Zustand $S_j$ übergehen wird.\cite{drake88}
 
-Generalisiert kann davon gesprochen werden, dass ein Markovprozess sich aus dem Zustandsraum $\Omega$ zusammensetzt, der alle möglichen Zustände des Systems umfasst. Die einzelnen Zustände $S_i$ oder $\omega$ sind Elemente dieses Zustandsraums $\omega~\Omega$. Genauso gilt für die Wahrscheinlichkeiten $P(X_{n})$ dass Sie Elemente des Wahrscheinlichkeitsraums $\mathcal{P}$ sind. Auch die Zeit $\{n\}$, in der sich die Zustände ändern, kann als Element eines Zeitraums $\mathcal{T}$ betrachtet werden. Somit lässt sich ein Markovprozess als Tripel $(\Omega, \mathcal{P}, \mathcal{T})$ beschreiben.
+Generalisiert kann davon gesprochen werden, dass ein Markovprozess sich aus dem Zustandsraum $\Omega$ zusammensetzt, der alle möglichen Zustände des Systems umfasst. Die einzelnen Zustände $S_i$ oder $\omega$ sind Elemente dieses Zustandsraums $\Omega$. Genauso gilt für die Wahrscheinlichkeiten $P(X_{n})$, dass sie Elemente des Wahrscheinlichkeitsraums $\mathcal{P}$ sind. Auch die Zeit $\{n\}$, in der sich die Zustände ändern, kann als Element eines Zeitraums $\mathcal{T}$ betrachtet werden. Somit lässt sich ein Markovprozess als Tripel $(\Omega, \mathcal{P}, \mathcal{T})$ beschreiben.
 
-\subsection{Arten von Systemen modellierbar durch Markovprozesse.}
+\subsection{Arten von Systemen, die durch Markovprozesse modellierbar sind}
 
-Ein Markovprozess kann generell 
-Generell können eine Vielzahl von Systemen durch Markovprozesse modelliert werden. Es gibt jedoch Unterschiede bei der Komplexität sowie bei der mathematischen Beweislage auf. Während Markovprozesse auf wwohldefiniert sind auf
+Markovprozesse eignen sich für Systeme, bei denen die zukünftige Entwicklung mit hinreichender Genauigkeit nur vom aktuellen Zustand abhängt. Beispiele sind Warteschlangensysteme, diskrete Entscheidungsprozesse, Zustandsfolgen in Texten oder Sequenzen in der Bildverarbeitung. Die Eignung hängt davon ab, wie der Zustandsraum gewählt wird und ob die Markoveigenschaft in der Anwendung näherungsweise erfüllt ist.
 
-\subsection{Invarianz von Maßen und stationäre Verteilungen in Markovprozessen - Messen der langfristigen Stabilität von Systemen}
+\subsection{Invarianz von Maßen und stationäre Verteilungen in Markovprozessen: Langfristige Stabilität von Systemen}
 
 Ein häufig auftretendes Problem bei der Modellierung von kontinuierlichen Systemen ist es, dass ein System, wenn es langfristig betrachtet wird oftmals eine stationäre Verteilung erreicht. Das beschriebene Phänomen kann gut am bekannten Problem des Ruin des Spielers, des Gamblers Ruin, erklärt werden. Dieses berühmte Problem trägt den Namen, da bei der Analyse von Glücksspielen entdeckt wurde, dass bekannte Glücksspiele wie Roulette oder Poker, die wiederholt mit einem jede Runde reinvestierten Startkapital gespielt werden, langfristig immer der finanzielle Ruin eines Spielers führen. Es kann dabei durch den Aufbau des Spiels, das Startkapital sowie Einsatz und Strategie die Länge des Spiels sowie das Endergebnis beeinflusst werden. Wie J.L. Coolidge zeigen konnte, ist der genaue Zeitpunkt des Ruins eines Spielers oder der Bank unbekannt, liegt jedoch stets innerhalb eines definierbaren Limits. Werden die Regeln des Spiels von der Bank vorgegeben, kann über geschicktes Anpassen der Variablen der Gewinn des Spielers bei Spiel bis zum Erschöpfen des Budgets sogar unmöglich gemacht werden. \citep{coolidge1909gamblers}
 
 Auch der Gamblers Ruin kann als Markovkette betrachtet werden. Diese kann verschiedene Zustände annehmen die die aktuelle Gewinnsituation abbilden. Am Startzustand liegt auf keiner Seite ein Verlust vor. Nach Start des Spiels können vier weitere Zustände eintreten: Einmal gewinnt die Bank bei fortlaufendem Spiel, einmal der Spieler. Diese Markovkette zeichnet sich zudem durch zwei absorbierende Ränder aus, die den Ruin der jeweiligen Seite darstellen. Aus jedem dieser Zustände kann das System nicht mehr entkommen, da das Kapital erschöpft ist. Der einzige Weg diese Situation zu umgehen wäre eine nachträgliche Steigerung des Kapitals einer Seite.
 
-Angenommen $\mu$ ist die Verteilung des Gewichts $\omega\epsilon\Omega$ eines Objekts zu einem Zeitpunkt $t$ wobei $\Omega$ die Menge aller möglichen Gewichte, der Zustandsraum ist. Es wird von einem Gewicht der Kante $i$ zu einem Gewicht der Kante $j$ übergegangen mit der Wahrscheinlichkeit $P_{ij}$.
-Wenn der Zustand $\omega$ zufällig und mit der Verteilung $\mu$ verteilt ist, und die angenommene Wahrscheinlichkeit für $\mu$ gleich wie die $P_\mu$ ist, dann wird eine P-invariante Verteilung $P_\mu = \mu$ genannt. Der Nachweis der theoretischen Existenz von Invarianz bei  \citep{Lester1966}
+Angenommen $\mu$ ist die Verteilung des Gewichts $\omega \in \Omega$ eines Objekts zu einem Zeitpunkt $t$, wobei $\Omega$ die Menge aller möglichen Gewichte und damit der Zustandsraum ist. Es wird von einem Gewicht der Kante $i$ zu einem Gewicht der Kante $j$ mit der Wahrscheinlichkeit $P_{ij}$ übergegangen. Wenn der Zustand $\omega$ zufällig und mit der Verteilung $\mu$ verteilt ist, und die angenommene Wahrscheinlichkeit für $\mu$ gleich $P_\mu$ ist, dann wird eine P invariante Verteilung $P_\mu = \mu$ genannt. Die theoretische Existenz solcher invarianten Maße wird unter geeigneten Bedingungen gezeigt. \citep{Lester1966}
 
-Aus dieser Definition der Verteilung und ihrer Konvergenz in Markovsystemen, in denen die Anzahl der Versuche gegen Unendlich geht entstand ein messbares Kriterium für die Bewertung von Markovketten. Um zu determinieren, wie sich das System langfristig verhalten wird, muss festgestellt werden ob es Ergozität aufweist. Die Prozesse gelten als ergozid, wenn es einen stabilen Zustand gibt, in den das System konvergiert, unabhängig vom Anfangszustand. \cite{MeynTweedie1993}
+Aus dieser Definition der Verteilung und ihrer Konvergenz in Markovsystemen, in denen die Anzahl der Versuche gegen unendlich geht, entsteht ein messbares Kriterium für die Bewertung von Markovketten. Um zu bestimmen, wie sich ein System langfristig verhält, muss festgestellt werden, ob es Ergodizität aufweist. Prozesse gelten als ergodisch, wenn es einen stabilen Zustand gibt, in den das System konvergiert, unabhängig vom Anfangszustand. \cite{MeynTweedie1993}
 
-Wenn die wahre Verteilung $\mu$ und die dazugehörige Übergangswahrscheinlichkeit $P_\mu$ in der Praxis nicht bekannt sind, wird eine geschätzte Verteilung $\pi$ und die dazugehörige Übergangswahrscheinlichkeit $P_\pi$ genutzt. Um ein stabil
+Wenn die wahre Verteilung $\mu$ und die dazugehörige Übergangswahrscheinlichkeit $P_\mu$ in der Praxis nicht bekannt sind, wird eine geschätzte Verteilung $\pi$ und die dazugehörige Übergangswahrscheinlichkeit $P_\pi$ genutzt. Ein stabiler Schätzer zielt darauf ab, dass $\pi$ unter wiederholter Anwendung der Übergänge möglichst konsistent bleibt.
 
 
-\subsection{Sequenzielle Datenmodellierung mit Markovprozessen.}
+\subsection{Sequenzielle Datenmodellierung mit Markovprozessen}
 
-Die Modellierung sequenzieller Daten ist ein wichtiger Aspekt in vielen Bereichen der Informatik und Statistik, insbesondere in der Verarbeitung natürlicher Sprache, Zeitreihenanalyse und Bioinformatik. Sequenzielle Daten bestehen aus einer geordneten Folge von Elementen, bei denen die Reihenfolge der Elemente eine entscheidende Rolle spielt. Beispiele für sequenzielle Daten sind Textdokumente, DNA-Sequenzen und Zeitreihen von Messwerten.
+Die Modellierung sequenzieller Daten ist ein wichtiger Aspekt in vielen Bereichen der Informatik und Statistik, insbesondere in der Verarbeitung natürlicher Sprache, Zeitreihenanalyse und Bioinformatik. Sequenzielle Daten bestehen aus einer geordneten Folge von Elementen, bei denen die Reihenfolge der Elemente eine entscheidende Rolle spielt. Beispiele für sequenzielle Daten sind Textdokumente, DNA Sequenzen und Zeitreihen von Messwerten.
 Basierend auf der Entdeckung von Markov, wurden hierfür vielfältige Erweiterungen mit weitreichenden Anwendungen konzipiert.
 Markovmodelle zielen darauf ab, die Abhängigkeiten zwischen aufeinanderfolgenden unabhängigen Zuständen in einer Sequenz zu erfassen.
+Dafür werden Übergangsmatrizen gebildet, deren Felder die Wahrscheinlichkeit für den Übergang des Systems zu einem anderen Zustand beschreiben.
 
-Für die 1-Schritt-Übergangsmatrix $P$ gilt per Definition:
+Wenn die Übergangswahrscheinlichkeiten in einer Matrix $P$ zusammengefasst werden spricht man von einer Übergangsmatrix. Hierbei geben die Einträge $P_{ij}$ die Wahrscheinlichkeit an, vom Zustand $i$ in den Zustand $j$ überzugehen. Die Matrix $P$ wird als Übergangsmatrix bezeichnet und hat die Eigenschaft, dass die Summe der Einträge in jeder Zeile gleich 1 ist, da die Gleichung der Zeile die gesamten Übergangswahrscheinlichkeiten von einem Zustand zu allen möglichen Zuständen repräsentiert.
+
+Für die Übergangsmatrix für einen Schritt $P$ gilt per Definition:
 \begin{equation}
 P_{ij} = P(X_{t+1} = j \mid X_t = i).
 \end{equation}
 
-Für eine 2-Schritt-Übergangswahrscheinlichkeit $P(X_{t+2} = j \mid X_t = i)$ müssen wir einen Zwischenzustand $k$ beachten:
+Für eine Übergangswahrscheinlichkeit bei zwei Schritten $P(X_{t+2} = j \mid X_t = i)$ müssen wir einen Zwischenzustand $k$ beachten:
 \begin{equation}
-P(X_{t+2} = j \mid X_t = i) = \newline \sum_k P(X_{t+1} = k \mid X_t = i) \cdot P(X_{t+2} = j \mid X_{t+1} = k).
+P(X_{t+2} = j \mid X_t = i) = \sum_k P(X_{t+1} = k \mid X_t = i) \cdot P(X_{t+2} = j \mid X_{t+1} = k).
 \end{equation}
 
-Die Übergangswahrscheinlichkeiten können in einer Matrix $P$ zusammengefasst werden, wobei die Einträge $P_{ij}$ die Wahrscheinlichkeit angeben, vom Zustand $i$ in den Zustand $j$ überzugehen. Die Matrix $P$ wird als Übergangsmatrix bezeichnet und hat die Eigenschaft, dass die Summe der Einträge in jeder Zeile gleich 1 ist, da sie die gesamten Übergangswahrscheinlichkeiten von einem Zustand zu allen möglichen Zuständen repräsentiert.
+In der Definition nimmt das Modell ein vollständig abgebildetes stochastisches Zufallsexperiment an. Es wird zudem davon ausgegangen, dass die Zustände des Systems vollständig beobachtbar sind. Einer einfachen Definition folgend, müsste so für jedes Label $y_i$ eines Frames $x_i$ die Wahrscheinlichkeit $P(y_i \mid x_i)$ für die Wahrscheinlichkeit das nächste Label $x_i$ zu erreichen modelliert werden. \cite{drake88}
 
-In der Definition nimmt das Modell ein vollständig abgebildetes stochastisches Zufallsexperiment an. Es wird zudem davon ausgegangen, dass die Zustände des Systems vollständig beobachtbar sind. Einer einfachen Definition folgend, müsste so für jedes Label $y_i$ eines Frames $x_i$ die Wahrscheinlichkeit $P(y_i \mid x_i)$ modelliert werden. \cite{drake88}
-
-\subsection{Markovketten in diskreter Zeit zur Modellierung von Systemen mit endlichem Zustandsraum.}
+\subsection{Markovketten in diskreter Zeit zur Modellierung von Systemen mit endlichem Zustandsraum}
 
 Eine Markovkette ist ein Spezialfall eines Markovprozesses mit diskreten Zeitpunkten und endlichem Zustandsraum. 
 Sei $S = \{s_1, s_2, \dots, s_N\}$ die Menge der möglichen Zustände.
@@ -177,8 +160,8 @@ Jede Zeile von $P$ ist normiert, d.\,h.
 \paragraph{Anfangsverteilung.}
 Die Wahrscheinlichkeiten, mit denen das System in einem Zustand startet, werden durch den Vektor $\pi = (\pi_1, \ldots, \pi_N)$ beschrieben, wobei $\pi_i = P(X_0 = s_i)$ gilt.
 
-\paragraph{n-Schritt-Übergänge.}
-Für $n > 1$ ergibt sich die Anzahl der Felder der $n$-Schritt-Übergangsmatrix durch Potenzieren:
+\paragraph{n Schritt Übergänge.}
+Für $n > 1$ ergibt sich die Anzahl der Felder der n Schritt Übergangsmatrix durch Potenzieren:
 \begin{equation}
 P^{(n)} = P^n.
 \end{equation}
@@ -199,44 +182,126 @@ Für ein zweizuständiges System mit Zuständen „Innen“ und „Außen“ im 
 \]
 Dann beschreibt $P_{12} = 0{,}1$ die Wahrscheinlichkeit, dass ein Frame vom Typ „Innen“ im nächsten Schritt zu „Außen“ wechselt.
 
-\subsection{Markov-Modelle}
+\subsection{Verdeckte Markovmodelle}
 
-Markov-Modelle sind eine Klasse von statistischen Modellen, die verwendet werden, um Systeme zu modellieren, die sich über die Zeit verändern. 
-Sie basieren auf der Annahme, dass der zukünftige Zustand eines Systems nur vom aktuellen Zustand abhängt und nicht von den vorherigen Zuständen. 
-Dies wird als Markov-Eigenschaft bezeichnet.
+Markovmodelle sind eine Klasse von statistischen Modellen, die verwendet werden, um Systeme zu modellieren, die sich über die Zeit verändern.
+Sie basieren trotzdem auf der Markovannahme, die besagt dass der zukünftige Zustand eines Systems nur vom aktuellen Zustand abhängt und nicht von den vorherigen Zuständen. 
 
-Die Modelle werden als \enquote{Hidden} bezeichnet, wenn die zugrunde liegenden Zustände nicht direkt beobachtet werden, sondern nur durch beobachtbare Ausgaben oder Emissionen inferiert werden.
+Die Modelle werden als \enquote{verdeckte} Markovmodelle bezeichnet, wenn die zugrunde liegenden Zustände nicht direkt beobachtet werden, sondern nur durch beobachtbare Ausgaben oder Emissionen inferiert werden.
 
 Generell handelt es sich bei HMMs um generative Modelle, d.\,h.\ sie modellieren die gemeinsame Verteilung
 \[
-  P(X, Y),
+  P(X, O),
 \]
-wobei $X$ die Folge der versteckten Zustände und $Y$ die Folge der Beobachtungen bezeichnet.
+wobei $X$ die Folge der versteckten Zustände und $O$ die Folge der Beobachtungen bezeichnet.
 
-\subsection{Conditional Random Fields als generalisiertes Markov-Modell}
+Da die tatsächliche Wahrscheinlichkeit des Zustandes sowie der Grund für den aktuellen Zustand dem Modell nicht bekannt ist, beschreibt das Modell die Wahrscheinlichkeit für die Beobachtungen, also den beobachtbaren Raum, dessen Ursprung der eigentliche Zustandsraum ist. Dieser clevere Trick erlaubt den Einsatz des HMM zur Schätzung wiederkehrender Muster in sonst schwer zu beschreibenden Daten. Die Sequenz des Hidden Markov Models kann über den Vorwärts- sowie den Rückwärtsalgorithmus beschrieben werden.
 
-Conditional Random Fields (CRF) beschreiben eine Klasse von Modellen, mit denen sich Übergangswahrscheinlichkeiten darstellen lassen. 
+\subsection{Vorwärtsalgorithmus}
+
+Die Vorwärtsvariable $\alpha_t(i)$ ist als die Wahrscheinlichkeit der partiellen Observationssequenz $O = \{o_1, o_2, \dots, o_t\}$ und des Zustands $s_i$ zur Zeit $t$, bei dem gegebenen Modell $\lambda$:
+$$\alpha_t(i) = P(o_1, o_2, \dots, o_t, s_t = s_i | \lambda)$$ definiert.
+
+\begin{enumerate}
+    \item \textbf{Initialisierung:}
+    $$\alpha_1(i) = \pi_i b_i(o_1), \quad 1 \leq i \leq N$$
+
+    \item \textbf{Rekursion:}
+    $$\alpha_{t+1}(j) = \left[ \sum_{i=1}^{N} \alpha_t(i) a_{ij} \right] b_j(o_{t+1}), \quad 1 \leq t \leq T-1, \,\, 1 \leq j \leq N$$
+
+    \item \textbf{Terminierung:}
+    $$P(O|\lambda) = \sum_{i=1}^{N} \alpha_T(i)$$
+\end{enumerate}
+
+\subsection{Rückwärtsalgorithmus}
+Die Rückwärtsvariable $β_t(i)$ ist die Wahrscheinlichkeit, die restliche Teilsequenz von t+1 bis zum Ende zu beobachten, gegeben, dass das System zum Zeitpunkt $t$ im Zustand $s_i$ ist.
+\begin{enumerate}
+    \item \textbf{Initialisierung:}
+    $$\beta_T(i) = 1, \quad 1 \leq i \leq N$$
+    \textit{(Die Wahrscheinlichkeit am Ende ist per Definition 1)}
+
+    \item \textbf{Rekursion:}
+    $$\beta_t(i) = \sum_{j=1}^{N} a_{ij} b_j(o_{t+1}) \beta_{t+1}(j), \quad t = T-1, T-2, \dots, 1, \,\, 1 \leq i \leq N$$
+
+    \item \textbf{Terminierung:}
+    $$P(O|\lambda) = \sum_{i=1}^{N} \pi_i b_i(o_1) \beta_1(i)$$
+\end{enumerate}
+
+Diese allgemeingültige Definition sowie die Kombination des Algorithmus mit kreativer Definiton der verwendeten Observationen ermöglicht eine effiziente Nutzung von Markovmodellen im Bereich des überwachten Lernens, zum Beispiel in der Bioinformatik. \cite{Ma2026HMM}
+
+
+\subsection{Conditional Random Fields als generalisiertes Markovmodell}
+
+Conditional Random Fields (CRF) beschreiben eine Klasse von Modellen, mit denen sich Übergangswahrscheinlichkeiten darstellen lassen.
 Generell handelt es sich bei CRF um diskriminative Modelle: Es wird direkt die bedingte Wahrscheinlichkeit
 \[
   P(Y \mid X)
 \]
 der Ausgabevariablen $Y$ gegeben die Eingabevariablen $X$ modelliert, anstatt der gemeinsamen Wahrscheinlichkeit $P(X, Y)$.
 
-Diese Modellklasse kann als Verallgemeinerung von Markov-Modellen aufgefasst werden. 
-Hidden Markov Models beinhalten, wie im vorigen Abschnitt erläutert, die Annahme, dass aufgrund des vorherigen versteckten Zustands das System vorhergesagt werden kann. 
+CRF lassen sich als diskriminatives Analogon zu generativen HMMs verstehen. Während HMMs $P(X, O)$ modellieren, fokussieren CRF auf $P(X \mid O)$ und sind dadurch robuster gegenüber komplexen Abhängigkeiten in den Eingangsdaten.
+Verdeckte Markovmodelle beinhalten, wie im vorigen Abschnitt erläutert, die Annahme, dass aufgrund des vorherigen versteckten Zustands das System vorhergesagt werden kann.
 Hierfür müsste das System durch die Menge der versteckten Zustände vollständig beobachtbar und adäquat abbildbar sein.
-Ein Conditional Random Field erlaubt es also, die Annahme der vollständigen Beobachtbarkeit sowie die iid Annahme zu beweisen.
+Ein Conditional Random Field erlaubt es, diese Annahmen zu lockern und Abhängigkeiten zwischen Beobachtungen explizit zu modellieren.
 
+\section*{Gradient der marginalen Log-Likelihood für CRFs}
 
-\subsection{Kontinuierliche Markov-Prozesse – Kalman-Filter für Approximation linearer dynamischer Systeme}
+Die Ableitung der marginalen Log-Likelihood $\ell(\theta)$ nach einem Parameter $\theta_{pk}$ lässt sich durch die Erwartungswerte der Merkmalsfunktionen ausdrücken. Unter Verwendung der Identität $\frac{\partial \ell}{\partial \theta} = \frac{1}{p(\mathbf{y}|\mathbf{x})} \frac{\partial p(\mathbf{y}|\mathbf{x})}{\partial \theta}$ ergibt sich:
 
-Für die Darstellung nichtdiskreter Zeit- sowie Zustandsräume wurden komplexere Versionen der Markov-Prozesse entwickelt. 
+\begin{equation}
+\frac{\partial \ell}{\partial \theta_{pk}} = \sum_{\mathbf{w}} p(\mathbf{w}|\mathbf{y}, \mathbf{x}) \frac{\partial}{\partial \theta_{pk}} \log p(\mathbf{y}, \mathbf{w}|\mathbf{x})
+\end{equation}
+
+Nach Einsetzen der Potentialfunktionen und Vereinfachung erhält man die Differenz zweier Erwartungswerte:
+
+\begin{equation}
+    \begin{split}
+        \frac{\partial \ell}{\partial \theta_{pk}} &= \underbrace{\sum_{c \in C_p} \sum_{\mathbf{w}'_c} p(\mathbf{w}'_c|\mathbf{y}, \mathbf{x}) f_k(\mathbf{y}_c, \mathbf{x}_c, \mathbf{w}'_c)}_{\text{Erwartungswert über latente Variablen (geklemmt)}} \\
+        &\quad - \underbrace{\sum_{c \in C_p} \sum_{\mathbf{w}'_c, \mathbf{y}'_c} p(\mathbf{w}'_c, \mathbf{y}'_c|\mathbf{x}_c) f_k(\mathbf{y}'_c, \mathbf{x}_c, \mathbf{w}'_c)}_{\text{Vollständiger Modell-Erwartungswert}}
+    \end{split}
+\end{equation}
+
+Dabei beschreibt:
+\begin{itemize}
+    \item Der erste Term den Erwartungswert des Merkmals $f_k$, wenn die Ausgabe $\mathbf{y}$ auf die Trainingsdaten fixiert ist.
+    \item Der zweite Term den Erwartungswert des Merkmals unter der aktuellen Modellverteilung über alle möglichen $\mathbf{y}$ und $\mathbf{w}$.
+\end{itemize}
+
+Da die Optimisierung des Terms durch die Multidimensionalität nicht mehr trivial ist, ist es essenziell vor dem Durchlauf der Optimisierung die Parameter korrekt zu initialisieren. \cite{SuttonMcCallum2012}
+
+\subsection{Stochastische Gradientenverfahren für Online-CRFs}
+
+Während klassische Optimierungsverfahren wie L-BFGS \cite{liu1989limited} im Batch-Modus operieren und den gesamten Datensatz scannen müssen, bevor eine Parameteraktualisierung erfolgt, nutzen Online-CRFs stochastische Gradientenverfahren. Dies ist besonders effizient, wenn die Trainingsdaten redundant sind oder die Datenmenge zu groß für den Arbeitsspeicher ist.
+
+Bei jedem Iterationsschritt $m$ wird ein einzelnes Trainingsbeispiel $(\mathbf{x}^{(i)}, \mathbf{y}^{(i)})$ zufällig ausgewählt. Die Parameter $\theta$ werden anschließend basierend auf dem Gradienten dieser einzelnen Instanz aktualisiert:
+
+\begin{equation}
+\theta^{(m)} = \theta^{(m-1)} - \alpha_m \nabla \ell_i(\theta^{(m-1)})
+\end{equation}
+
+Der Gradient für eine einzelne Instanz eines Linear Chain CRF ist dabei definiert als:
+
+\begin{equation}
+\frac{\partial\ell_i}{\partial\theta_k} = \sum_{t=1}^{T} f_k(y_t^{(i)}, y_{t-1}^{(i)}, x_t^{(i)}) - \sum_{t=1}^{T} \sum_{y, y'} f_k(y, y', x_t^{(i)}) p(y, y' | x^{(i)}) - \frac{\theta_k}{N\sigma^2}
+\end{equation}
+
+Ein entscheidender Faktor für die Konvergenz ist die Wahl der Lernrate $\alpha_m$. Da ein konstanter Wert dazu führen würde, dass die Parameter dauerhaft um das Optimum fluktuieren, wird häufig eine schrittweise Optimierung verwendet, die über die Zeit abnimmt:
+
+\begin{equation}
+\alpha_m = \frac{1}{\sigma^2(m_0 + m)}
+\end{equation}
+
+Hierbei ist $m_0$ ein Hyperparameter, der oft durch einen kurzen Testlauf auf einer Teilmenge der Daten bestimmt wird. Online-CRFs bieten einen signifikanten Geschwindigkeitsvorteil bei großen, unabhängig und identisch verteilten (i.i.d.) Datensätzen, erfordern jedoch im Vergleich zu Batch-Algorithmen eine sorgfältigere Feinabstimmung der Hyperparameter.
+
+\subsection{Kontinuierliche Markovprozesse: Kalmanfilter zur Approximation linearer dynamischer Systeme}
+
+Für die Darstellung nichtdiskreter Zeit und Zustandsräume wurden komplexere Versionen der Markovprozesse entwickelt.
 Insbesondere wenn es sich um eine Bewertung mehrdimensionaler Systeme handelt, reichen einfache diskrete Markovketten oftmals nicht aus.
 
-Speziell wenn eine Linearität der zugrunde liegenden Funktionen sowie eine gaußsche Verteilung der Messfehler angenommen werden kann, bietet sich der Einsatz von Kalman-Filtern an. 
+Speziell wenn eine Linearität der zugrunde liegenden Funktionen sowie eine gaußsche Verteilung der Messfehler angenommen werden kann, bietet sich der Einsatz von Kalmanfiltern an. 
 Diese wurden 1960 von R.\,E.~Kalman vorgestellt \cite{kalman1960new} und sind eine Methode zur Schätzung des Zustands eines dynamischen Systems aus einer Reihe von verrauschten Messungen.
 
-Kalman-Filter können aus einem vorherigen Zustand eine Vorhersage des nächsten Zustands treffen und diese Vorhersage dann mit einer neuen Messung aktualisieren, um eine verbesserte Schätzung zu erhalten. 
+Kalmanfilter können aus einem vorherigen Zustand eine Vorhersage des nächsten Zustands treffen und diese Vorhersage dann mit einer neuen Messung aktualisieren, um eine verbesserte Schätzung zu erhalten. 
 Dies geschieht durch die Anwendung von zwei Hauptschritten: dem Vorhersageschritt und dem Aktualisierungsschritt.
 
 Das zugrunde liegende System wird als lineares dynamisches System modelliert. 
@@ -252,34 +317,31 @@ Die Messung $z_k$ wird durch die Messmatrix $H$ und das Messrauschen $v_k$ besch
   \qquad v_k \sim \mathcal{N}(0, R).
 \end{equation}
 
-Durch Konstruktion eines Modells mit diesen Annahmen kann der Kalman-Filter effizient den Zustand des Systems schätzen, indem er die Unsicherheit in den Messungen und im Prozessrauschen berücksichtigt.
+Durch Konstruktion eines Modells mit diesen Annahmen kann der Kalmanfilter effizient den Zustand des Systems schätzen, indem er die Unsicherheit in den Messungen und im Prozessrauschen berücksichtigt.
 Die Qualität der Schätzung hängt dabei insbesondere davon ab, ob zu Beginn sinnvolle Kovarianzen $Q$ und $R$ für die jeweiligen Rauschanteile gewählt wurden und ob die Matrix $A$ die Dynamik des Systems gut beschreibt.
 
-Der Kalman-Filter kann auf mehrere Dimensionen erweitert werden, um komplexere Systeme zu modellieren. 
+Der Kalmanfilter kann auf mehrere Dimensionen erweitert werden, um komplexere Systeme zu modellieren. 
 In diesem Fall werden die Zustandsvektoren, Messvektoren und Rauschkovarianzmatrizen entsprechend angepasst.
 
-\subsection{Non-Markov-Modelle}
 
-% (Inhalt folgt)
+\subsection{Chapman Kolmogorov Gleichung}
 
-\subsection{Chapman-Kolmogorov-Gleichung}
-
-Die Chapman-Kolmogorov-Gleichung beschreibt, wie die Übergangswahrscheinlichkeit eines Markov-Prozesses über mehrere Zeitschritte hinweg berechnet werden kann. 
+Die Chapman Kolmogorov Gleichung beschreibt, wie die Übergangswahrscheinlichkeit eines Markovprozesses über mehrere Zeitschritte hinweg berechnet werden kann.
 Dabei wird ein möglicher Zwischenzustand $k$ zu einem Zeitpunkt $m$ berücksichtigt, sodass die Wahrscheinlichkeit für einen Übergang von Zustand $i$ zu Zustand $j$ nach $n+m$ Schritten über die Gesamtheit aller Zwischenzustände dargestellt werden kann.
 
-Für einen Markov-Prozess $\{X_t\}_{t \geq 0}$ mit Zustandsraum $S$ gilt für alle $i, j \in S$ und $n, m \geq 0$:
+Für einen Markovprozess $\{X_t\}_{t \geq 0}$ mit Zustandsraum $S$ gilt für alle $i, j \in S$ und $n, m \geq 0$:
 \begin{equation}
   P(X_{n+m} = j \mid X_0 = i)
   = \sum_{k \in S} P(X_{n+m} = j \mid X_m = k, X_0 = i) \cdot P(X_m = k \mid X_0 = i).
 \end{equation}
 
 
-Mit Hilfe der Markov-Eigenschaft vereinfacht sich der erste Term, da der zukünftige Zustand $X_{n+m}$ nur vom aktuellen Zustand $X_m$ abhängt, nicht aber vom gesamten Verlauf bis $X_0 = i$:
+Mit Hilfe der Markoveigenschaft vereinfacht sich der erste Term, da der zukünftige Zustand $X_{n+m}$ nur vom aktuellen Zustand $X_m$ abhängt, nicht aber vom gesamten Verlauf bis $X_0 = i$:
 \begin{equation}
 P(X_{n+m} = j \mid X_m = k, X_0 = i) = P(X_{n+m} = j \mid X_m = k).
 \end{equation}
 
-Damit ergibt sich die Chapman-Kolmogorov-Gleichung in der üblichen Form:
+Damit ergibt sich die Chapman Kolmogorov Gleichung in der üblichen Form:
 \begin{equation}
 P(X_{n+m} = j \mid X_0 = i) = \sum_{k \in S} P(X_{n+m} = j \mid X_m = k) \cdot P(X_m = k \mid X_0 = i).
 \end{equation}
@@ -288,27 +350,27 @@ Schreibt man die Übergangswahrscheinlichkeiten in Matrixform, so entspricht die
 \begin{equation}
 P^{(n+m)} = P^{(m)} \cdot P^{(n)},
 \end{equation}
-wobei $P^{(r)}$ die $r$-Schritt-Übergangsmatrix bezeichnet.
+wobei $P^{(r)}$ die r Schritt Übergangsmatrix bezeichnet.
 
-Über eine solche Übergangsmatrix können Vorhersagen über zukünftige Zustände eines Markov-Prozesses getroffen werden, indem die Matrix potenziert wird.
-Das bedeutet, dass die $n$-Schritt-Übergangsmatrix $P^{(n)}$ durch die $n$-fache Multiplikation der 1-Schritt-Übergangsmatrix $P$ mit sich selbst berechnet werden kann:
+Über eine solche Übergangsmatrix können Vorhersagen über zukünftige Zustände eines Markovprozesses getroffen werden, indem die Matrix potenziert wird.
+Das bedeutet, dass die n Schritt Übergangsmatrix $P^{(n)}$ durch die n fache Multiplikation der Einschrittübergangsmatrix $P$ mit sich selbst berechnet werden kann:
 \begin{equation}
 P^{(n)} = \underbrace{P \cdot P \cdot \cdots \cdot P}_{n \text{ Mal}} = P^n.
 \end{equation} 
 
 
-\subsection{Viterbi-Dekodierung}
+\subsection{Viterbidekodierung}
 
-Der Viterbi-Algorithmus ist ein dynamischer Programmieralgorithmus, der verwendet wird, um die wahrscheinlichste Sequenz von versteckten Zuständen in einem Hidden Markov Model (HMM) zu finden, basierend auf einer gegebenen Sequenz von beobachteten Ereignissen. Der Algorithmus wurde von Andrew Viterbi 1967 \cite{viterbierror} erstmals vorgeschlagen und ist besonders nützlich in Anwendungen, bei denen sequenzielle Daten auftreten, deren Zusammensetzung Schlüsse auf die zugrundeliegenden wahren Zustände zulassen. Die Fähigkeit, aus den beobachtbaren Zuständen auf versteckte Wahrheiten schließen zu können, macht den Viterbi-Algorithmus praxisrelevant in vielen Bereichen, etwa in der Elektrotechnik bei der Analyse von Kommunikationssystemen oder in der Bioinformatik bei der Genomsequenzierung.
+Der Viterbialgorithmus ist ein dynamischer Programmieralgorithmus, der verwendet wird, um die wahrscheinlichste Sequenz von versteckten Zuständen in einem verdeckten Markovmodell zu finden, basierend auf einer gegebenen Sequenz von beobachteten Ereignissen. Der Algorithmus wurde von Andrew Viterbi 1967 \cite{viterbierror} erstmals vorgeschlagen und ist besonders nützlich in Anwendungen, bei denen sequenzielle Daten auftreten, deren Zusammensetzung Schlüsse auf die zugrundeliegenden wahren Zustände zulassen. Die Fähigkeit, aus den beobachtbaren Zuständen auf versteckte Wahrheiten schließen zu können, macht den Viterbialgorithmus praxisrelevant in vielen Bereichen, etwa in der Elektrotechnik bei der Analyse von Kommunikationssystemen oder in der Bioinformatik bei der Genomsequenzierung.
 Hierbei werden Emissionswahrscheinlichkeiten sowie Übergangswahrscheinlichkeiten zwischen den Zuständen berücksichtigt, um die wahrscheinlichste Sequenz zu bestimmen.
 
 \medskip
 \textbf{Notation:} 
 Seien $i, j \in \{1, \ldots, N\}$ die Zustände und $o_1, \ldots, o_T$ die Beobachtungssequenz.
-Die Übergangswahrscheinlichkeiten sind $a_{ij} = P(q_t = j \mid q_{t-1} = i)$, 
-die Emissionswahrscheinlichkeiten $b_j(o_t) = P(o_t \mid q_t = j)$ und 
-die Anfangsverteilung $\pi_i = P(q_1 = i)$.
-Dabei bezeichnet $\delta_t(j)$ die maximale Pfadwahrscheinlichkeit bis zum Zeitpunkt $t$, die im Zustand $j$ endet, 
+Die Übergangswahrscheinlichkeiten sind $a_{ij} = P(s_t = j \mid s_{t-1} = i)$,
+die Emissionswahrscheinlichkeiten $b_j(o_t) = P(o_t \mid s_t = j)$ und
+die Anfangsverteilung $\pi_i = P(s_1 = i)$.
+Dabei bezeichnet $\delta_t(j)$ die maximale Pfadwahrscheinlichkeit bis zum Zeitpunkt $t$, die im Zustand $j$ endet,
 und $\psi_t(j)$ den optimalen Vorgängerzustand.
 
 \paragraph{Initialisierung}
@@ -327,13 +389,13 @@ Für $t = 2, \ldots, T$ und $j = 1, \ldots, N$:
 \paragraph{Terminierung}
 \begin{align}
   P^*   &= \max_{i \in \{1, \ldots, N\}} \delta_T(i), \\
-  q_T^* &= \arg\max_{i \in \{1, \ldots, N\}} \delta_T(i).
+  s_T^* &= \arg\max_{i \in \{1, \ldots, N\}} \delta_T(i).
 \end{align}
 
 \paragraph{Rückverfolgung}
 Für $t = T-1, T-2, \ldots, 1$:
 \begin{equation}
-  q_t^* = \psi_{t+1}(q_{t+1}^*).
+  s_t^* = \psi_{t+1}(s_{t+1}^*).
 \end{equation}
 
 \paragraph{Logarithmiert (numerisch stabil)}
@@ -345,7 +407,7 @@ Definiere $\ell_t(j) = \log \delta_t(j)$. Dann gilt:
   \ell_1(i) = \log \pi_i + \log b_i(o_1), \quad \text{für } i = 1, \ldots, N.
 \end{equation}
 
-\textbf{Rekursion (Log-Domain):}
+\textbf{Rekursion (Logbereich):} 
 Für $t = 2, \ldots, T$ und Zustand $j$:
 \begin{equation}
 \begin{aligned}
@@ -359,44 +421,42 @@ Hierbei ist $a_{ij}$ die Übergangswahrscheinlichkeit und $b_j(o_t)$ die Emissio
 \begin{equation}
 \begin{aligned}
   P^*   &= \max_{i \in \{1, \ldots, N\}} \ell_T(i), \\
-  q_T^* &= \arg\max_{i \in \{1, \ldots, N\}} \ell_T(i).
+  s_T^* &= \arg\max_{i \in \{1, \ldots, N\}} \ell_T(i).
 \end{aligned}
 \end{equation}
 
 \textbf{Rückverfolgung:}
 \begin{equation}
-  q_t^* = \psi_{t+1}(q_{t+1}^*), \quad \text{für } t = T-1, T-2, \ldots, 1.
+  s_t^* = \psi_{t+1}(s_{t+1}^*), \quad \text{für } t = T-1, T-2, \ldots, 1.
 \end{equation}
 
 Durch den Einsatz des Viterbialgorithmus im logarithmischen Bereich kann also effizient die wahrscheinlichste Abfoge von Zuständen eines Systems ermittelt werden.
 
-\subsection{Betrachtung stationärer Verteilungen von Markovsystemen anhand von Potenzgesetzen}
+\subsection{Notiz zur Betrachtung stationärer Verteilungen von Markovsystemen anhand von Potenzgesetzen}
 
-Bei der Betrachtung von statistischen Verteilungen gibt es insbesondere bei divergenten Systemen ein häufig aufkommendes Phänomen. Potenzgesetze beschreiben Systeme, denen sich selbst verstärkende Verteilungen zugrundeliegen. Deshalb kommt es oft dazu, dass
-Die Modellierung von Systemen mithilfe von Markovketten obliegt in bestimmten Fällen eines Potenzgesetzes. \cite{10.1098/rsos.220531} In diesem Fall ist es wahrscheinlich, dass die Systeme keinen kontinuierlichen Zustand erreichen. Das kann Probleme verursachen, zum Beispiel wenn die Kombination der Wahrscheinlichkeiten zu einer stationären Verteilung führen sollte. Beispielsweise wenn durch die Simulation das wahrscheinlichste System verhergesagt werden soll, das
+Bei der Betrachtung statistischer Verteilungen gibt es insbesondere bei divergenten Systemen ein häufig auftretendes Phänomen. Potenzgesetze beschreiben Systeme, denen sich selbst verstärkende Verteilungen zugrunde liegen. Die Modellierung solcher Systeme mithilfe von Markovketten kann dazu führen, dass keine stationäre Verteilung erreicht wird. \cite{10.1098/rsos.220531} Dies erschwert die Vorhersage langfristiger Zustände, etwa wenn die Kombination der Übergangswahrscheinlichkeiten eine stabile Verteilung liefern soll. Aus diesem Grund gibt es Ansätze
 
 
-\subsection{World Models}
+\subsection{Weltmodelle}
 
 Um zu zeigen, dass ein in der realen Welt existierendes System durch ein prädiktives Modell hinreichend abgedeckt wird, kann es sinnvoll sein, ein simulierendes Modell des Systems zu erstellen. Innerhalb dieses Systems sollten die mit Sensoren messbaren Eigenschaften in interne Zustände und daraus ableitbar in Aktionen oder Vorhersagen überführt werden können.
 
-Jürgen Schmidhuber schlug bereits 1990 vor, die Welt, innerhalb derer ein neuronales Netzwerk operiert, durch zwei interagierende Netzwerke zu modellieren: Ein Modell-Netzwerk, das die Dynamik der Umgebung simuliert und vorhersagt, und ein Controller-Netzwerk, das Aktionen ausführt. Die zentrale Idee war es, die Umgebung durch das Modellnetzwerk \enquote{differenzierbar} zu machen, sodass der Fehler der Vorhersage genutzt werden kann, um das System mittels Gradientenabstieg zu optimieren \cite{schmidhuber1990diff}.
+Jürgen Schmidhuber schlug bereits 1990 vor, die Welt, innerhalb derer ein neuronales Netzwerk operiert, durch zwei interagierende Netzwerke zu modellieren: ein Modellnetzwerk, das die Dynamik der Umgebung simuliert und vorhersagt, und ein Controllernetzwerk, das Aktionen ausführt. Die zentrale Idee war, die Umgebung durch das Modellnetzwerk differenzierbar zu machen, sodass der Fehler der Vorhersage genutzt werden kann, um das System mittels Gradientenabstieg zu optimieren. \cite{schmidhuber1990making}
 
-Das Problem der temporalen Analyse von Endoskopievideos kann als ein solches System betrachtet werden. Hierbei sind die Frames des Videos die messbaren, hochdimensionalen Eigenschaften des Systems (Observationen). Diese müssen in kompakte Zustände überführt werden, die den aktuellen Status des Endoskops im Darm abbilden. Daraus können Wahrscheinlichkeiten abgeleitet werden, wie sich das Endoskop im nächsten Zeitschritt verhalten wird oder welcher anatomische Abschnitt als nächstes sichtbar wird.
+Das Problem der temporalen Analyse von Endoskopievideos kann als ein solches System betrachtet werden. Hierbei sind die Bilder des Videos die messbaren, hochdimensionalen Eigenschaften des Systems. Diese müssen in kompakte Zustände überführt werden, die den aktuellen Status des Endoskops im Darm abbilden. Daraus können Wahrscheinlichkeiten abgeleitet werden, wie sich das Endoskop im nächsten Zeitschritt verhalten wird oder welcher anatomische Abschnitt als nächstes sichtbar wird.
+Die Aktion $a_t$ lässt sich im endoskopischen Kontext als implizite Kamerabewegung interpretieren, etwa als Rückzug oder Vorschub des Endoskops, die den Übergang zwischen anatomischen Zuständen steuert.
 
-Modernere Ansätze, wie die von \cite{ha2018worldmodels} vorgestellten \enquote{World Models}, adressieren die Schwierigkeit, hochdimensionale visuellen Daten (wie Videoframes) modellieren. Sie unterteilen das Problem in drei Komponenten, die analog zur kognitiven Verarbeitung des Menschen gesehen werden können:
+Modernere Ansätze, wie die von \cite{ha2018worldmodels} vorgestellten Weltmodelle, adressieren die Schwierigkeit, hochdimensionale visuelle Daten wie Videobilder zu modellieren. Sie unterteilen das Problem in drei Komponenten, die analog zur kognitiven Verarbeitung des Menschen gesehen werden können:
 
 \begin{enumerate}
-    \item \textbf{Vision Model:} Ein variationaler Autoencoder (VAE), der die hochdimensionalen Eingabebilder $x_t$ in einen niedrigdimensionalen, latenten Vektor $z_t$ komprimiert. Dies abstrahiert die visuellen Details und extrahiert die wesentlichen Merkmale des aktuellen Frames.
-    \item \textbf{Memory Model (M):} Ein rekkurrentes neuronales Netzwerk (RNN), oft implementiert als LSTM oder MDN-RNN (Mixture Density Network), das auf der Basis der vergangenen latenten Zustände und Aktionen den zukünftigen latenten Zustand $z_{t+1}$ vorhersagt. Dies entspricht dem eigentlichen Weltmodell, das die Dynamik und Zeitabhängigkeit lernt.
-    \item \textbf{Controller (C):} Ein einfaches Netzwerk, das basierend auf der aktuellen Sicht ($z_t$) und der Erinnerung ($h_t$ aus dem RNN) Entscheidungen trifft.
+    \item \textbf{Visionsmodell:} Ein variationaler Autoencoder (VAE), der die hochdimensionalen Eingabebilder $x_t$ in einen niedrigdimensionalen, latenten Vektor $z_t$ komprimiert. Dies abstrahiert die visuellen Details und extrahiert die wesentlichen Merkmale des aktuellen Bildes.
+    \item \textbf{Gedächtnismodell (M):} Ein rekurrentes neuronales Netzwerk (RNN), oft implementiert als LSTM oder MDN RNN (Mixture Density Network), das auf der Basis der vergangenen latenten Zustände und Aktionen den zukünftigen latenten Zustand $z_{t+1}$ vorhersagt. Dies entspricht dem eigentlichen Weltmodell, das die Dynamik und Zeitabhängigkeit lernt.
+    \item \textbf{Steuerungsmodell (C):} Ein einfaches Netzwerk, das basierend auf der aktuellen Sicht ($z_t$) und der Erinnerung ($h_t$ aus dem RNN) Entscheidungen trifft.
 \end{enumerate}
 
-Für die Segmentierung von Endoskopievideos ist insbesondere das Zusammenspiel von V und M relevant. Während das V-Modell die räumlichen Merkmale eines einzelnen Bildes (z.\,B. Textur eines Polypen) lernt, lernt das M-Modell die zeitliche Kohärenz (z.\,B. dass ein Polyp über mehrere Frames hinweg sichtbar bleibt oder dass nach dem Zökum das Colon ascendens folgt).
+Für die Segmentierung von Endoskopievideos ist insbesondere das Zusammenspiel von V Modell und M Modell relevant. Während das V Modell die räumlichen Merkmale eines einzelnen Bildes (z.\,B. Textur eines Polypen) lernt, lernt das M Modell die zeitliche Kohärenz, etwa dass ein Polyp über mehrere Bilder hinweg sichtbar bleibt oder dass nach dem Zökum das Colon ascendens folgt.
 
-Eine Weiterentwicklung des Worldmodel Konzepts stellt die Dreamerarchitektur von Hafner et al. \citet{hafner2019dreamer} dar. Anstatt zukünftige Pixel aus den beobachteten Pixeln vorherzusagen (was rechenintensiv und fehleranfällig ist), lernen diese Modelle die Dynamik ausschließlich im latenten Raum. Statt wie bei Schmidhuber Pixelzustände direkt zu propagieren, lernen Dreamer-Modelle eine stochastische Übergangsdynamik $p_\theta(s_t \mid s_{t-1}, a_{t-1})$ im latenten Raum, sodass die zeitliche Entwicklung durch kompakte Zustände und deren rekursive Aktualisierung beschrieben wird. Während die Modellanpassung weiterhin über die Erklärung der Beobachtungen erfolgt (z.\,B. Rekonstruktion/Prädiktion), wird die eigentliche Sequenzplanung und Politikenoptimierung in Dreamer überwiegend im latenten Raum durchgeführt, was Rechenaufwand reduziert und die Optimierung stabilisiert.
-
-
-Eine ähnliche Zielsetzung kann auf das Markov Switch State Modell angewandt werden. Ein Modell, das gelernt hat, wie sich die Anatomie im latenten Raum verändert, ist robuster gegenüber Rauschen (z.\,B. Unschärfe, Spiegelungen oder Verschmutzungen der Linse), da es nicht versucht, jedes Pixel exakt zu rekonstruieren, sondern den semantischen Inhalt der Szene über die Zeit zu verfolgen. Das Endoskopieszenario lässt sich somit als partiell observierbarer Markovprozess beschreiben. Der Arzt (oder der Algorithmus) sieht nie den gesamten Darm (Zustand $S_t$), sondern nur einen Ausschnitt (Beobachtung $O_t$). Ein World Model ermöglicht es, aus der Historie der Beobachtungen eine interne Repräsentation des globalen Zustands aufzubauen und somit die Segmentierung einzelner Frames durch den zeitlichen Kontext zu stabilisieren. Als Merkmal stabiler World Models kann verstanden werden, dass auch das Generieren realistischer Daten möglich wird.
+Eine Weiterentwicklung des Weltmodellkonzepts stellt die Dreamerarchitektur von Hafner et al. \citet{hafner2019dreamer} dar. Anstatt zukünftige Pixel aus den beobachteten Pixeln vorherzusagen, was rechenintensiv und fehleranfällig ist, lernen diese Modelle die Dynamik ausschließlich im latenten Raum. Statt wie bei Schmidhuber Pixelzustände direkt zu propagieren, lernen Dreamermodelle eine stochastische Übergangsdynamik $p_\theta(s_t \mid s_{t-1}, a_{t-1})$ im latenten Raum, sodass die zeitliche Entwicklung durch kompakte Zustände und deren rekursive Aktualisierung beschrieben wird. Während die Modellanpassung weiterhin über die Erklärung der Beobachtungen erfolgt, wird die eigentliche Sequenzplanung und Politikenoptimierung in Dreamer überwiegend im latenten Raum durchgeführt, was Rechenaufwand reduziert und die Optimierung stabilisiert.
 
 
+Eine ähnliche Zielsetzung kann auf die Modelle aus der Arbeit angewandt werden. Ein Modell, das gelernt hat, wie sich die Anatomie im latenten Raum verändert, ist robuster gegenüber Rauschen (z.\,B. Unschärfe, Spiegelungen oder Verschmutzungen der Linse), da es nicht versucht, jedes Pixel exakt zu rekonstruieren, sondern den semantischen Inhalt der Szene über die Zeit zu verfolgen. Das Endoskopieszenario lässt sich somit als partiell beobachtbarer Markovprozess beschreiben. Der Arzt oder der Algorithmus sieht nie den gesamten Darm (Zustand $S_t$), sondern nur einen Ausschnitt (Beobachtung $O_t$). Ein vollständiges Weltmodell würde es ermöglichen, aus der Historie der Beobachtungen eine interne Repräsentation des globalen Zustands aufzubauen und somit die Segmentierung einzelner Bilder durch den zeitlichen Kontext zu stabilisieren. Als Merkmal stabiler Weltmodelle kann verstanden werden, dass damit auch das Generieren realistischer Daten möglich wird.

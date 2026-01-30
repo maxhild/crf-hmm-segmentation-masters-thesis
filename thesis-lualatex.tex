@@ -55,6 +55,8 @@
 \cleardoublepage\include{FrontBackmatter/Summary}
 \cleardoublepage\include{FrontBackmatter/Acknowledgments}
 \cleardoublepage\include{FrontBackmatter/Contents}
+\clearpage
+
 %********************************************************************
 % Mainmatter
 %*******************************************************
@@ -67,12 +69,19 @@
 
 % Deutsche Kapitelüberschriften (anpassen nach Bedarf):
 \include{Chapters/1Introduction}       % Einleitung
+\clearpage
 \include{Chapters/2Preliminaries}      % Grundlagen
+\clearpage
 \include{Chapters/3RelatedWork}        % Verwandte Arbeiten / Stand der Technik
+\clearpage
 \include{Chapters/4Approach}           % Ansatz / Methodik
+\clearpage
 \include{Chapters/5Solution}           % Lösung / Implementierung
+\clearpage
 \include{Chapters/6Results}            % Ergebnisse / Evaluation
+\clearpage
 \include{Chapters/7Discussion}         % Diskussion / Fazit
+\clearpage
 
 % Optionale Anhänge:
 %\cleardoublepage\include{Chapters/LaTeXTips}
@@ -85,7 +94,7 @@
 %\renewcommand{\thechapter}{\alph{chapter}}
 \cleardoublepage
 \part{Anhang}
-% Weitere Anhänge hier einfügen...
+\include{Chapters/AppendixBoxplots}
 
 %********************************************************************
 % Other Stuff in the Back

@@ -1,0 +1,577 @@
+[
+  {
+    "active": true,
+    "allowed_next": null,
+    "eps": 1e-09,
+    "name": "anal_channel",
+    "prior_logit": 0.0,
+    "rules": [
+      {
+        "feature": "hue",
+        "op": "lt",
+        "value": 9.137791,
+        "weight": 1.0
+      }
+    ],
+    "temperature": 1.0,
+    "weights": {
+      "cnn": 0.0,
+      "deterministic": 1.0,
+      "svm": 0.0
+    }
+  },
+  {
+    "active": true,
+    "allowed_next": null,
+    "eps": 1e-09,
+    "name": "appendix",
+    "prior_logit": 0.0,
+    "rules": [],
+    "temperature": 1.0,
+    "weights": {
+      "cnn": 0.0,
+      "deterministic": 1.0,
+      "svm": 0.0
+    }
+  },
+  {
+    "active": true,
+    "allowed_next": null,
+    "eps": 1e-09,
+    "name": "blood",
+    "prior_logit": 0.0,
+    "rules": [
+      {
+        "feature": "hue",
+        "op": "gt",
+        "value": 14.109995,
+        "weight": 1.5
+      }
+    ],
+    "temperature": 1.0,
+    "weights": {
+      "cnn": 0.0,
+      "deterministic": 1.0,
+      "svm": 0.0
+    }
+  },
+  {
+    "active": true,
+    "allowed_next": null,
+    "eps": 1e-09,
+    "name": "bubbles",
+    "prior_logit": 0.0,
+    "rules": [],
+    "temperature": 1.0,
+    "weights": {
+      "cnn": 0.0,
+      "deterministic": 1.0,
+      "svm": 0.0
+    }
+  },
+  {
+    "active": true,
+    "allowed_next": null,
+    "eps": 1e-09,
+    "name": "cleaning",
+    "prior_logit": 0.0,
+    "rules": [
+      {
+        "feature": "hue",
+        "op": "lt",
+        "value": 15.409779,
+        "weight": 1.0
+      },
+      {
+        "feature": "texture",
+        "op": "gt",
+        "value": -117.445999,
+        "weight": 1.5
+      }
+    ],
+    "temperature": 1.0,
+    "weights": {
+      "cnn": 0.0,
+      "deterministic": 1.0,
+      "svm": 0.0
+    }
+  },
+  {
+    "active": true,
+    "allowed_next": null,
+    "eps": 1e-09,
+    "name": "clip",
+    "prior_logit": 0.0,
+    "rules": [
+      {
+        "feature": "hue",
+        "op": "gt",
+        "value": 23.181736,
+        "weight": 1.5
+      },
+      {
+        "feature": "texture",
+        "op": "gt",
+        "value": 37.642751,
+        "weight": 1.5
+      }
+    ],
+    "temperature": 1.0,
+    "weights": {
+      "cnn": 0.0,
+      "deterministic": 1.0,
+      "svm": 0.0
+    }
+  },
+  {
+    "active": true,
+    "allowed_next": null,
+    "eps": 1e-09,
+    "name": "diverticule",
+    "prior_logit": 0.0,
+    "rules": [
+      {
+        "feature": "hue",
+        "op": "lt",
+        "value": 15.484846,
+        "weight": 1.0
+      },
+      {
+        "feature": "texture",
+        "op": "lt",
+        "value": 113.839655,
+        "weight": 1.0
+      }
+    ],
+    "temperature": 1.0,
+    "weights": {
+      "cnn": 0.0,
+      "deterministic": 1.0,
+      "svm": 0.0
+    }
+  },
+  {
+    "active": true,
+    "allowed_next": null,
+    "eps": 1e-09,
+    "name": "endocuff",
+    "prior_logit": 0.0,
+    "rules": [
+      {
+        "feature": "hue",
+        "op": "lt",
+        "value": 10.320755,
+        "weight": 1.0
+      },
+      {
+        "feature": "texture",
+        "op": "gt",
+        "value": 135.88074,
+        "weight": 1.5
+      }
+    ],
+    "temperature": 1.0,
+    "weights": {
+      "cnn": 0.0,
+      "deterministic": 1.0,
+      "svm": 0.0
+    }
+  },
+  {
+    "active": true,
+    "allowed_next": null,
+    "eps": 1e-09,
+    "name": "endoscope_reflection",
+    "prior_logit": 0.0,
+    "rules": [
+      {
+        "feature": "texture",
+        "op": "lt",
+        "value": 110.107379,
+        "weight": 1.0
+      }
+    ],
+    "temperature": 1.0,
+    "weights": {
+      "cnn": 0.0,
+      "deterministic": 1.0,
+      "svm": 0.0
+    }
+  },
+  {
+    "active": true,
+    "allowed_next": null,
+    "eps": 1e-09,
+    "name": "endoscope_retroflection",
+    "prior_logit": 0.0,
+    "rules": [
+      {
+        "feature": "texture",
+        "op": "lt",
+        "value": 73.52522,
+        "weight": 1.0
+      }
+    ],
+    "temperature": 1.0,
+    "weights": {
+      "cnn": 0.0,
+      "deterministic": 1.0,
+      "svm": 0.0
+    }
+  },
+  {
+    "active": true,
+    "allowed_next": null,
+    "eps": 1e-09,
+    "name": "grasper",
+    "prior_logit": 0.0,
+    "rules": [],
+    "temperature": 1.0,
+    "weights": {
+      "cnn": 0.0,
+      "deterministic": 1.0,
+      "svm": 0.0
+    }
+  },
+  {
+    "active": true,
+    "allowed_next": null,
+    "eps": 1e-09,
+    "name": "ileocaecalvalve",
+    "prior_logit": 0.0,
+    "rules": [],
+    "temperature": 1.0,
+    "weights": {
+      "cnn": 0.0,
+      "deterministic": 1.0,
+      "svm": 0.0
+    }
+  },
+  {
+    "active": true,
+    "allowed_next": null,
+    "eps": 1e-09,
+    "name": "ileum",
+    "prior_logit": 0.0,
+    "rules": [
+      {
+        "feature": "hue",
+        "op": "lt",
+        "value": 18.616441,
+        "weight": 1.0
+      },
+      {
+        "feature": "texture",
+        "op": "lt",
+        "value": 147.201271,
+        "weight": 1.0
+      }
+    ],
+    "temperature": 1.0,
+    "weights": {
+      "cnn": 0.0,
+      "deterministic": 1.0,
+      "svm": 0.0
+    }
+  },
+  {
+    "active": true,
+    "allowed_next": null,
+    "eps": 1e-09,
+    "name": "inflammation",
+    "prior_logit": 0.0,
+    "rules": [
+      {
+        "feature": "hue",
+        "op": "gt",
+        "value": 11.365297,
+        "weight": 1.5
+      },
+      {
+        "feature": "texture",
+        "op": "lt",
+        "value": 98.377995,
+        "weight": 1.0
+      }
+    ],
+    "temperature": 1.0,
+    "weights": {
+      "cnn": 0.0,
+      "deterministic": 1.0,
+      "svm": 0.0
+    }
+  },
+  {
+    "active": true,
+    "allowed_next": null,
+    "eps": 1e-09,
+    "name": "low_quality",
+    "prior_logit": 0.0,
+    "rules": [
+      {
+        "feature": "blue_ratio",
+        "op": "lt",
+        "value": 0.219466,
+        "weight": 1.0
+      },
+      {
+        "feature": "hue",
+        "op": "lt",
+        "value": 22.429216,
+        "weight": 1.0
+      },
+      {
+        "feature": "saturation",
+        "op": "gt",
+        "value": 90.696778,
+        "weight": 1.5
+      },
+      {
+        "feature": "texture_lbp_complexity",
+        "op": "gt",
+        "value": 0.59,
+        "weight": 1.5
+      }
+    ],
+    "temperature": 1.0,
+    "weights": {
+      "cnn": 0.0,
+      "deterministic": 1.0,
+      "svm": 0.0
+    }
+  },
+  {
+    "active": true,
+    "allowed_next": null,
+    "eps": 1e-09,
+    "name": "nbi",
+    "prior_logit": 0.0,
+    "rules": [
+      {
+        "feature": "red_mean",
+        "op": "lt",
+        "value": 88.203045,
+        "weight": 1.0
+      },
+      {
+        "feature": "saturation",
+        "op": "lt",
+        "value": 69.198365,
+        "weight": 1.0
+      },
+      {
+        "feature": "texture",
+        "op": "gt",
+        "value": 89.728036,
+        "weight": 1.5
+      },
+      {
+        "feature": "value",
+        "op": "lt",
+        "value": 89.939664,
+        "weight": 1.0
+      }
+    ],
+    "temperature": 1.0,
+    "weights": {
+      "cnn": 0.0,
+      "deterministic": 1.0,
+      "svm": 0.0
+    }
+  },
+  {
+    "active": true,
+    "allowed_next": null,
+    "eps": 1e-09,
+    "name": "needle",
+    "prior_logit": 0.0,
+    "rules": [
+      {
+        "feature": "texture",
+        "op": "lt",
+        "value": 110.006928,
+        "weight": 1.0
+      }
+    ],
+    "temperature": 1.0,
+    "weights": {
+      "cnn": 0.0,
+      "deterministic": 1.0,
+      "svm": 0.0
+    }
+  },
+  {
+    "active": true,
+    "allowed_next": null,
+    "eps": 1e-09,
+    "name": "outside",
+    "prior_logit": 0.0,
+    "rules": [
+      {
+        "feature": "blue_ratio",
+        "op": "gt",
+        "value": 0.3086,
+        "weight": 1.5
+      },
+      {
+        "feature": "hue",
+        "op": "gt",
+        "value": 27.976771,
+        "weight": 1.5
+      },
+      {
+        "feature": "red_mean",
+        "op": "lt",
+        "value": 72.614209,
+        "weight": 1.0
+      },
+      {
+        "feature": "red_ratio",
+        "op": "lt",
+        "value": 0.355921,
+        "weight": 1.0
+      },
+      {
+        "feature": "saturation",
+        "op": "lt",
+        "value": 51.417291,
+        "weight": 1.0
+      },
+      {
+        "feature": "texture",
+        "op": "lt",
+        "value": 290.363903,
+        "weight": 1.0
+      },
+      {
+        "feature": "value",
+        "op": "lt",
+        "value": 84.106657,
+        "weight": 1.0
+      },
+      {
+        "feature": "texture_lbp_complexity",
+        "op": "gt",
+        "value": 0.62,
+        "weight": 3.0
+      },
+      {
+        "feature": "texture_lbp_bin_8",
+        "op": "gt",
+        "value": 0.42,
+        "weight": 2.0
+      }
+    ],
+    "temperature": 1.0,
+    "weights": {
+      "cnn": 0.0,
+      "deterministic": 1.0,
+      "svm": 0.0
+    }
+  },
+  {
+    "active": true,
+    "allowed_next": null,
+    "eps": 1e-09,
+    "name": "petechia",
+    "prior_logit": 0.0,
+    "rules": [],
+    "temperature": 1.0,
+    "weights": {
+      "cnn": 0.0,
+      "deterministic": 1.0,
+      "svm": 0.0
+    }
+  },
+  {
+    "active": true,
+    "allowed_next": null,
+    "eps": 1e-09,
+    "name": "polyp",
+    "prior_logit": 0.0,
+    "rules": [
+      {
+        "feature": "hue",
+        "op": "gt",
+        "value": 10.625388,
+        "weight": 1.5
+      }
+    ],
+    "temperature": 1.0,
+    "weights": {
+      "cnn": 0.0,
+      "deterministic": 1.0,
+      "svm": 0.0
+    }
+  },
+  {
+    "active": true,
+    "allowed_next": null,
+    "eps": 1e-09,
+    "name": "snare",
+    "prior_logit": 0.0,
+    "rules": [],
+    "temperature": 1.0,
+    "weights": {
+      "cnn": 0.0,
+      "deterministic": 1.0,
+      "svm": 0.0
+    }
+  },
+  {
+    "active": true,
+    "allowed_next": null,
+    "eps": 1e-09,
+    "name": "stool",
+    "prior_logit": 0.0,
+    "rules": [],
+    "temperature": 1.0,
+    "weights": {
+      "cnn": 0.0,
+      "deterministic": 1.0,
+      "svm": 0.0
+    }
+  },
+  {
+    "active": true,
+    "allowed_next": null,
+    "eps": 1e-09,
+    "name": "water_jet",
+    "prior_logit": 0.0,
+    "rules": [
+      {
+        "feature": "hue",
+        "op": "lt",
+        "value": 10.117743,
+        "weight": 1.0
+      }
+    ],
+    "temperature": 1.0,
+    "weights": {
+      "cnn": 0.0,
+      "deterministic": 1.0,
+      "svm": 0.0
+    }
+  },
+  {
+    "active": true,
+    "allowed_next": null,
+    "eps": 1e-09,
+    "name": "wound",
+    "prior_logit": 0.0,
+    "rules": [
+      {
+        "feature": "hue",
+        "op": "gt",
+        "value": 16.397864,
+        "weight": 1.5
+      }
+    ],
+    "temperature": 1.0,
+    "weights": {
+      "cnn": 0.0,
+      "deterministic": 1.0,
+      "svm": 0.0
+    }
+  }
+]
