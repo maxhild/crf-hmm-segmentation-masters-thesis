@@ -8,7 +8,7 @@ Diese Arbeit untersucht, inwieweit die Nachbearbeitung framebasierter Segmentier
 
 Methodisch werden ein Hidden Markov Model und ein Conditional Random Field auf denselben regelbasierten Feature-Satz angewandt. Die Merkmale umfassen Farbstatistiken, Bewegungsinformationen und Texturgrößen, die vorab statistisch kalibriert und zu deterministischen Emissionsregeln verdichtet werden. Zur Erhöhung der Robustheit wird der ursprüngliche Labelraum auf eine reduzierte Menge semantischer Klassen abgebildet.
 
-Die Ergebnisse zeigen, dass das CRF insgesamt konsistenter als das HMM arbeitet und in der Gesamtleistung höhere Werte erreicht. Beide Modelle sind besonders stark in der Erkennung von \enquote{outside} und \enquote{low\_quality}, während die Erkennung pathologischer Befunde wie Polypen nicht möglich ist. Die Laufzeitanalyse bestätigt zudem eine Echtzeitfähigkeit im Millisekundenbereich pro Frame.
+Die Ergebnisse zeigen, dass das Conditional Random Field insgesamt konsistenter als das Hidden Markov Model arbeitet und in der Gesamtleistung höhere Werte erreicht. Beide Modelle sind besonders stark in der Erkennung von \enquote{outside} und \enquote{low\_quality}, während die Erkennung pathologischer Befunde wie Polypen mit keiner der beiden Methodiken möglich ist. Die Laufzeitanalyse bestätigt zudem eine Echtzeitfähigkeit im Millisekundenbereich pro Frame.
 
 Damit liefert die Arbeit einen praktikablen Filter für die Endoskopiesegmentierung, der Datenströme zuverlässig bereinigen kann und die Grundlage für eine nachgelagerte, präzisere Befunddetektion schafft.
 

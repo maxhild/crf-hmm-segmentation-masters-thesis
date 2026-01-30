@@ -49,7 +49,10 @@ Die Europäische Gesellschaft für Gastroenterologie (ESGE) hat zur Verbesserung
 \end{enumerate}
 \citep{kaminski-performance-2017}
 
-Eine Motivation für ein zuverlässiges Segmentationsmodell für Endoskopievideos ist, dass die Zökumrückzugszeit automatisch berechnet werden könnte. Wenn anhand der Vorhersage des letzten Bildes, das innerhalb des Körpers gefunden wird, festgestellt ist, ist die untere Schranke für den der Berechnung zugrundeliegenden Abschnitt des Videos bereits gegeben. Für die Berechnung der Zökumrückzugszeit eignet sich die so ermittelte obere Schranke in dem Moment, in dem auch das Zökum vertrauenswürdig erkannt wird. Die zuverlässige Erkennung von Organteilen des Darms im Video ist Teil der endoskopischen Forschung mit künstlicher Intelligenz. Insbesondere ist die Erkennung von Polypen von besonderem Interesse.
+Im Rahmen der Qualitätssicherung sollen Merkmale der Kolonoskopie videodokumentiert werden: \enquote{Eine Bilddokumentation 
+der Bauhin‘schen Klappe (Übergang des Dünndarms in 
+den Dickdarm) sowie des Coecumbodens (Abgang des Appendix) ist im Rahmen der Qualitätssicherung notwendig. Auch Polypen werden vor und nach der Abtragungen videodokumentiert.} \cite{Beyer2022}. 
+Die zuverlässige Erkennung von Organteilen des Darms im Video ist Teil der medizinischen Forschung mit künstlicher Intelligenz. Insbesondere ist die Erkennung von Polypen von besonderem Interesse.
 Diese wachsen als Vorstufe von potenziell bösartigen Tumoren an der Darminnenwand. Sie können aus verschiedenen Gründen und in verschiedenen Darmteilen auftreten, 
 sind jedoch besonders als Frühmerkmal einer möglichen Diagnose von Darmkrebs interessant und deshalb wenn möglich vollständig zu erkennen. \citep{doi:10.7326/0003-4819-157-4-201208210-00002}
 Weiter kompliziert wird die Erkennung und Einschätzung von Polypen dadurch, dass es verschiedene Stufen ihrer Ausprägung sowie verschiedene genetische Ursachen für sie gibt. \cite{PickhardtColonPolyps}
@@ -59,8 +62,7 @@ Unterschieden wird hierbei zwischen hochgradigen und niedergradigen Dysplasien. 
 Besonders bei höhergradigen Dysplasien besteht das Risiko, dass ein maligner Polyp vorliegt.
 Definitiv kann dies durch den Nachweis karzinogener Zellen innerhalb eines Polypen festgestellt werden. Hierbei handelt es sich um eine Aufgabe für die Pathologie,
 die nach vollständiger Entfernung des betroffenen Gewebes erfolgen kann. \citep{Colucci261}
-Auch bei der Zökumrückzugszeit ist die Motivation für den Einsatz bei der Qualitätssicherung, dass möglichst wenige Polypen übersehen werden sollen.
-Da durch den Einsatz automatischer Erkennung dieser Vorkommnisse innerhalb des Darms eine erhebliche Beschleunigung dieses Prozesses möglich wäre, wird in diesem Bereich bereits seit Jahren geforscht. \citep{talukder-2022}
+Da durch den Einsatz einer zuverlässigen automatischen Erkennung dieser Vorkommnisse innerhalb des Darms eine erhebliche Beschleunigung dieses Prozesses möglich wäre, wird in diesem Bereich bereits seit Jahren geforscht. \citep{talukder-2022}
 \\
 Um die Anwendung von automatisierter Dokumentation erfolgreich in den Arbeitsalltag zu integrieren, soll im folgenden erläutert werden welche technischen und mathematischen Prinzipien in die Lösung der Optimierung der Vorverarbeitung von Endoskopievideos verwendet wurden. Aufgrund der sequenziellen Natur der Frames von Endoskopievideos ist die Wahl der Methodik auf zwei auf Markovketten basierenden Modellklassen gefallen. Diese sind das CRF und HMM.
 \section{Technische und mathematische Grundlagen}
@@ -102,7 +104,7 @@ Wobei $P_{ij}$ die Wahrscheinlichkeit beschreibt, dass das System, nachdem der a
 
 Generalisiert kann davon gesprochen werden, dass ein Markovprozess sich aus dem Zustandsraum $\Omega$ zusammensetzt, der alle möglichen Zustände des Systems umfasst. Die einzelnen Zustände $S_i$ oder $\omega$ sind Elemente dieses Zustandsraums $\Omega$. Genauso gilt für die Wahrscheinlichkeiten $P(X_{n})$, dass sie Elemente des Wahrscheinlichkeitsraums $\mathcal{P}$ sind. Auch die Zeit $\{n\}$, in der sich die Zustände ändern, kann als Element eines Zeitraums $\mathcal{T}$ betrachtet werden. Somit lässt sich ein Markovprozess als Tripel $(\Omega, \mathcal{P}, \mathcal{T})$ beschreiben.
 
-\subsection{Arten von Systemen, die durch Markovprozesse modellierbar sind}
+\subsection{Durch Markovprozesse modellierbare Systeme}
 
 Markovprozesse eignen sich für Systeme, bei denen die zukünftige Entwicklung mit hinreichender Genauigkeit nur vom aktuellen Zustand abhängt. Beispiele sind Warteschlangensysteme, diskrete Entscheidungsprozesse, Zustandsfolgen in Texten oder Sequenzen in der Bildverarbeitung. Die Eignung hängt davon ab, wie der Zustandsraum gewählt wird und ob die Markoveigenschaft in der Anwendung näherungsweise erfüllt ist.
 
@@ -291,7 +293,7 @@ Ein entscheidender Faktor für die Konvergenz ist die Wahl der Lernrate $\alpha_
 \alpha_m = \frac{1}{\sigma^2(m_0 + m)}
 \end{equation}
 
-Hierbei ist $m_0$ ein Hyperparameter, der oft durch einen kurzen Testlauf auf einer Teilmenge der Daten bestimmt wird. Online-CRFs bieten einen signifikanten Geschwindigkeitsvorteil bei großen, unabhängig und identisch verteilten (i.i.d.) Datensätzen, erfordern jedoch im Vergleich zu Batch-Algorithmen eine sorgfältigere Feinabstimmung der Hyperparameter.
+Hierbei ist $m_0$ ein Hyperparameter, der oft durch einen kurzen Testlauf auf einer Teilmenge der Daten bestimmt wird. Online-CRFs bieten einen signifikanten Geschwindigkeitsvorteil bei großen, unabhängig und identisch verteilten (i.i.d.) Datensätzen, erfordern jedoch im Vergleich zu Batch-Algorithmen eine sorgfältigere Feinabstimmung der Hyperparameter. \cite{SuttonMcCallum2012}
 
 \subsection{Kontinuierliche Markovprozesse: Kalmanfilter zur Approximation linearer dynamischer Systeme}
 
@@ -432,31 +434,12 @@ Hierbei ist $a_{ij}$ die Übergangswahrscheinlichkeit und $b_j(o_t)$ die Emissio
 
 Durch den Einsatz des Viterbialgorithmus im logarithmischen Bereich kann also effizient die wahrscheinlichste Abfoge von Zuständen eines Systems ermittelt werden.
 
-\subsection{Notiz zur Betrachtung stationärer Verteilungen von Markovsystemen anhand von Potenzgesetzen}
 
-Bei der Betrachtung statistischer Verteilungen gibt es insbesondere bei divergenten Systemen ein häufig auftretendes Phänomen. Potenzgesetze beschreiben Systeme, denen sich selbst verstärkende Verteilungen zugrunde liegen. Die Modellierung solcher Systeme mithilfe von Markovketten kann dazu führen, dass keine stationäre Verteilung erreicht wird. \cite{10.1098/rsos.220531} Dies erschwert die Vorhersage langfristiger Zustände, etwa wenn die Kombination der Übergangswahrscheinlichkeiten eine stabile Verteilung liefern soll. Aus diesem Grund gibt es Ansätze
+\subsection{Dynamik von Zustandsfolgen: Potenzgesetze und Kaskaden in Markov-Systemen} 
 
+Bei der Modellierung klinischer Sequenzen tritt ein Phänomen auf, das über die einfache Betrachtung stationärer Verteilungen hinausgeht. Während klassische Markov-Ketten oft auf ein langfristiges Gleichgewicht (stationäre Verteilung) zusteuern, zeigen reale Prozesse häufig divergente Eigenschaften oder extrem ungleich verteilte Verweildauern in einzelnen Zuständen.
 
-\subsection{Weltmodelle}
+Ein theoretischer Erklärungsansatz hierfür sind Potenzgesetze. Wie in der Literatur dargelegt, lassen sich diese direkt aus speziellen Markov-Ketten herleiten, indem man eine Mastergleichung für sogenannte Kaskaden aufstellt \cite{10.1098/rsos.220531}. Unter einer Kaskade versteht man hierbei eine Folge aufeinanderfolgender identischer Übergänge, die erst enden, wenn ein Zustandswechsel eintritt.
 
-Um zu zeigen, dass ein in der realen Welt existierendes System durch ein prädiktives Modell hinreichend abgedeckt wird, kann es sinnvoll sein, ein simulierendes Modell des Systems zu erstellen. Innerhalb dieses Systems sollten die mit Sensoren messbaren Eigenschaften in interne Zustände und daraus ableitbar in Aktionen oder Vorhersagen überführt werden können.
+Diese mathematische Betrachtung ist für die Endoskopie aus zwei Gründen von zentraler Bedeutung: Varianz Innerhalb eines Endoskopievideos gibt es keine statischen Gleichgewichte. Ein System kann minutenlang im Zustand „Innen“ verweilen (eine lange Kaskade), bevor ein abrupter Wechsel zu „Außen“ erfolgt. Die Verteilung dieser Kaskadenlängen folgt oft einem Potenzgesetz mit einem natürlichen Cut-off, der durch die endliche Dauer des klinischen Eingriffs limitiert wird. Ein rein auf Übergangswahrscheinlichkeiten basierendes Modell läuft Gefahr, in stabilen Zuständen zu „verharren“, wenn die statistische Wahrscheinlichkeit für einen Wechsel (z. B. nach einer langen Sequenz von Innen-Frames) mathematisch unterschätzt wird. In realen Systemen werden stationäre Verteilungen oft durch externe Einflüsse oder die Kopplung an andere Zustandsgrößen gestört. Dies erschwert die Vorhersage langfristiger Zustände allein aus der Historie der Übergänge. Für die vorliegende Arbeit bedeutet dies: Um eine robuste Segmentierung zu gewährleisten, darf der Algorithmus nicht allein auf der zeitlichen Stabilität der Markov-Kette beruhen. Es ist essenziell, die Zustandsänderungen an externe Faktoren, in diesem Fall die visuellen Merkmale wie Farbwerte und Texturen der Videoframes – zu koppeln. Nur so kann sichergestellt werden, dass das Modell auch nach einer langen Kaskade (etwa wenn das Endoskop während einer Unterbrechung unbewegt bleibt) sofort auf neue visuelle Informationen reagiert und den Zustand korrekt anpasst.
 
-Jürgen Schmidhuber schlug bereits 1990 vor, die Welt, innerhalb derer ein neuronales Netzwerk operiert, durch zwei interagierende Netzwerke zu modellieren: ein Modellnetzwerk, das die Dynamik der Umgebung simuliert und vorhersagt, und ein Controllernetzwerk, das Aktionen ausführt. Die zentrale Idee war, die Umgebung durch das Modellnetzwerk differenzierbar zu machen, sodass der Fehler der Vorhersage genutzt werden kann, um das System mittels Gradientenabstieg zu optimieren. \cite{schmidhuber1990making}
-
-Das Problem der temporalen Analyse von Endoskopievideos kann als ein solches System betrachtet werden. Hierbei sind die Bilder des Videos die messbaren, hochdimensionalen Eigenschaften des Systems. Diese müssen in kompakte Zustände überführt werden, die den aktuellen Status des Endoskops im Darm abbilden. Daraus können Wahrscheinlichkeiten abgeleitet werden, wie sich das Endoskop im nächsten Zeitschritt verhalten wird oder welcher anatomische Abschnitt als nächstes sichtbar wird.
-Die Aktion $a_t$ lässt sich im endoskopischen Kontext als implizite Kamerabewegung interpretieren, etwa als Rückzug oder Vorschub des Endoskops, die den Übergang zwischen anatomischen Zuständen steuert.
-
-Modernere Ansätze, wie die von \cite{ha2018worldmodels} vorgestellten Weltmodelle, adressieren die Schwierigkeit, hochdimensionale visuelle Daten wie Videobilder zu modellieren. Sie unterteilen das Problem in drei Komponenten, die analog zur kognitiven Verarbeitung des Menschen gesehen werden können:
-
-\begin{enumerate}
-    \item \textbf{Visionsmodell:} Ein variationaler Autoencoder (VAE), der die hochdimensionalen Eingabebilder $x_t$ in einen niedrigdimensionalen, latenten Vektor $z_t$ komprimiert. Dies abstrahiert die visuellen Details und extrahiert die wesentlichen Merkmale des aktuellen Bildes.
-    \item \textbf{Gedächtnismodell (M):} Ein rekurrentes neuronales Netzwerk (RNN), oft implementiert als LSTM oder MDN RNN (Mixture Density Network), das auf der Basis der vergangenen latenten Zustände und Aktionen den zukünftigen latenten Zustand $z_{t+1}$ vorhersagt. Dies entspricht dem eigentlichen Weltmodell, das die Dynamik und Zeitabhängigkeit lernt.
-    \item \textbf{Steuerungsmodell (C):} Ein einfaches Netzwerk, das basierend auf der aktuellen Sicht ($z_t$) und der Erinnerung ($h_t$ aus dem RNN) Entscheidungen trifft.
-\end{enumerate}
-
-Für die Segmentierung von Endoskopievideos ist insbesondere das Zusammenspiel von V Modell und M Modell relevant. Während das V Modell die räumlichen Merkmale eines einzelnen Bildes (z.\,B. Textur eines Polypen) lernt, lernt das M Modell die zeitliche Kohärenz, etwa dass ein Polyp über mehrere Bilder hinweg sichtbar bleibt oder dass nach dem Zökum das Colon ascendens folgt.
-
-Eine Weiterentwicklung des Weltmodellkonzepts stellt die Dreamerarchitektur von Hafner et al. \citet{hafner2019dreamer} dar. Anstatt zukünftige Pixel aus den beobachteten Pixeln vorherzusagen, was rechenintensiv und fehleranfällig ist, lernen diese Modelle die Dynamik ausschließlich im latenten Raum. Statt wie bei Schmidhuber Pixelzustände direkt zu propagieren, lernen Dreamermodelle eine stochastische Übergangsdynamik $p_\theta(s_t \mid s_{t-1}, a_{t-1})$ im latenten Raum, sodass die zeitliche Entwicklung durch kompakte Zustände und deren rekursive Aktualisierung beschrieben wird. Während die Modellanpassung weiterhin über die Erklärung der Beobachtungen erfolgt, wird die eigentliche Sequenzplanung und Politikenoptimierung in Dreamer überwiegend im latenten Raum durchgeführt, was Rechenaufwand reduziert und die Optimierung stabilisiert.
-
-
-Eine ähnliche Zielsetzung kann auf die Modelle aus der Arbeit angewandt werden. Ein Modell, das gelernt hat, wie sich die Anatomie im latenten Raum verändert, ist robuster gegenüber Rauschen (z.\,B. Unschärfe, Spiegelungen oder Verschmutzungen der Linse), da es nicht versucht, jedes Pixel exakt zu rekonstruieren, sondern den semantischen Inhalt der Szene über die Zeit zu verfolgen. Das Endoskopieszenario lässt sich somit als partiell beobachtbarer Markovprozess beschreiben. Der Arzt oder der Algorithmus sieht nie den gesamten Darm (Zustand $S_t$), sondern nur einen Ausschnitt (Beobachtung $O_t$). Ein vollständiges Weltmodell würde es ermöglichen, aus der Historie der Beobachtungen eine interne Repräsentation des globalen Zustands aufzubauen und somit die Segmentierung einzelner Bilder durch den zeitlichen Kontext zu stabilisieren. Als Merkmal stabiler Weltmodelle kann verstanden werden, dass damit auch das Generieren realistischer Daten möglich wird.
