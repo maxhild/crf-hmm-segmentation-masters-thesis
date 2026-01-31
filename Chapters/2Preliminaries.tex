@@ -66,7 +66,7 @@ Um die Anwendung von automatisierter Dokumentation erfolgreich in den Arbeitsall
 \section{Technische und mathematische Grundlagen}
 
 Dieses Kapitel wird die Herangehensweise an die mathematische Modellierung der Segmentierung von Endoskopievideos erläutern.
-In diesem Kontext soll später im Kapitel Methodik herausgearbeitet werden, welche Modelle sich für eine statistisch haltbare Bewertung von Frameregionen eignen. Da es sich bei einer Endoskopie, wie in Lux et al. demonstriert, um eine Intervention handelt, die sich in Phasen beziehungsweise Zustände einteilen lässt, wurde der Fokus auf zustandsbasierte Modelle wie Markovmodelle gelegt.
+In diesem Kontext soll später im Kapitel Methodik herausgearbeitet werden, welche Modelle sich für eine statistisch haltbare Bewertung von Frameregionen eignen. Da es sich bei einer Endoskopie, wie in Lux et al.\cite{lux-2023} demonstriert, um eine Untersuchung handelt, die sich in Phasen beziehungsweise Zustände einteilen lässt, wurde der Fokus auf zustandsbasierte Modelle wie Markovmodelle gelegt.
 
 \subsubsection{Markovprozesse: Eine Methode, um abhängige Variablen probabilistisch zu quantisieren}
 
@@ -76,7 +76,7 @@ Sie dürfen dabei nur von dem aktuellen Zustand abhängen und nicht von den vorh
 Die Definition bezieht sich auf ein Stochastisches System und sieht deshalb eine Normierung der Werte im Bereich 0 bis 1 vor.
 Die Zustände des Systems werden durch die Zufallsvariablen $X_n$ beschrieben.
 \newline
-Der Name der Markovprozesse stammt aus der Arbeit von A. A. Markov. Insbesondere interessant ist hier die Publikation \enquote{Beispiel von statistischer Forschung auf einem Text von \enquote{Eugene Onegin}, der die Interkonnektivität abhängiger Versuche in einer Kette klassifiziert.} \citep{markov1913onegin}.
+Das Konzept der Markovprozesse stammt aus der Arbeit von A. A. Markov. Insbesondere interessant ist hier die Publikation \enquote{Beispiel von statistischer Forschung auf einem Text von \enquote{Eugene Onegin}, der die Interkonnektivität abhängiger Versuche in einer Kette klassifiziert.} \cite{markov1913onegin}.
 Anhand eines Gedichts und der Verteilung der Konsonanten und Vokale untersuchte Markov hier, ob durch vielfache Wiederholung eines Zufallsexperiments, bei dem die Versuche voneinander abhängig sind, eine statistische Vorhersage getroffen werden kann. Dieser empirische Beweis greift eine frühere Publikation seinerseits auf, die theoretisch darlegt, dass das Gesetz der großen Zahlen auch auf abhängige
 Zufallsvariablen anwendbar ist. Durch empirisches Messen der Häufigkeiten der Variablen erfasste Markov eine Übergangswahrscheinlichkeit. 
 \begin{equation}
@@ -84,9 +84,7 @@ p_{ij} = P(X_{n+1} = j \mid X_n = i),
 \quad \text{mit} \quad \sum_j p_{ij} = 1.
 \label{eq:transition_prob}
 \end{equation}
-Diese konnte er im Nachgang einsetzen, um über diese Wahrscheinlichkeiten wiederum eine Buchstabenfolge zu generieren, bei der die Anzahl der Konsonanten und Vokale wieder auf einem Niveau einpendelte, das mit dem russischen Originaltext vergleichbar war.
-Ausgang für diese Untersuchung war die These von Pawel Nekrasov. Dieser hatte in seiner „Theorie der Wahrscheinlichkeit“ angezweifelt, dass probabilistische Modelle in Untersuchungen von abhängigen Variablen wie sozialen Zusammenhängen angewandt werden könnten, weil abhängige Größen nur durch den freien Willen und nicht durch Naturgesetze beeinflusst sind. Ilona Svetlikova beschreibt in der Sekundäranalyse von Nekrasov die philosophischtheologische Haltung hinter Nekrasovs Argumentation.
-Laut Svetlikova argumentiert Nekrasov, dass Wahrscheinlichkeitsgesetze Ausdruck des göttlichen Willens seien und daher nicht auf abhängige oder soziale Prozesse angewandt werden dürften, da diese den freien Willen der Menschen widerspiegeln. \citep{svetlikova2013nekrasov} Diese These stützte Nekrasov auf Beobachtungen, dass bei sozialen Statistiken wie der Rate der Hochzeiten in einer Gesellschaft in aufeinanderfolgenden Jahren oft ähnliche Hochzeitsraten auftreten, obwohl sich die gesellschaftlichen Bedingungen ändern. \citep{nekrasov1912} Durch Markovs empirischen Beweis seiner theoretischen Grundlagenpublikation \citep{markov1906extension} zeigte er, dass auch abhängige Variablen in oft wiederholten Zufallsexperimenten messbare Gesetzmäßigkeiten aufzeigen können. Diese Idee wurde weiterentwickelt, um durch passende Modelle effiziente Vorhersagen über zukünftige Ereignisse treffen zu können.
+Diese konnte er im Nachgang einsetzen, um über diese Wahrscheinlichkeiten wiederum eine Buchstabenfolge zu generieren, bei der die Anzahl der Konsonanten und Vokale wieder auf einem Niveau einpendelte, das mit dem russischen Originaltext vergleichbar war. Durch Markovs späteren empirischen Beweis seiner theoretischen Grundlagenpublikation \citep{markov1906extension} zeigte er, dass auch abhängige Variablen in oft wiederholten Zufallsexperimenten messbare Gesetzmäßigkeiten aufzeigen können. Diese Idee wurde weiterentwickelt, um durch passende Modelle effiziente Vorhersagen über zukünftige Ereignisse treffen zu können.
 Seine Arbeit hat bis heute großen Einfluss und begründete die Klasse der Markovprozesse.
 
 In seinem Einführungswerk beschreibt A. W. Drake Markovprozesse in diskreter Zeit und mit diskreter Zustandsmenge. Er definiert sie allgemein als Kette von Zuständen $S$, deren zukünftige Entwicklung nur vom aktuellen Zustand abhängt und deren Übergänge durch Übergangswahrscheinlichkeiten bestimmt werden. Eine Bedingung für das Vorliegen eines Markovprozesses wird so definiert als \begin{equation}

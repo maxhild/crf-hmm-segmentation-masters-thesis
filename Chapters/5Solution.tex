@@ -5,15 +5,17 @@ Dieses Kapitel überführt die theoretischen Modelle in eine konkrete Systemarch
 
 Das primäre Ziel ist es, die bei reinen Frame-zu-Frame CNN-Ansätzen häufig auftretende Instabilität zu eliminieren. Dies wird erreicht, indem physikalische Kontinuität via optischem Fluss und zeitliche Kohärenz via HMM/CRF als starke Priors in den Entscheidungsprozess integriert werden.
 
-\begin{figure}[h]
-\centering
-\includegraphics[scale=.15]{Images/HMM_CRF.jpg}
-\caption{Systemarchitektur der Featurekalibrierung und des Trainings des HMM und CRF}
-\label{fig:System}
-\end{figure}
+\begin{sidewaysfigure}
+  \centering
+  \includegraphics[width=\textheight]{Images/HMM_CRF.jpg}
+  \caption{Systemarchitektur der Featurekalibrierung und des Trainings des HMM und CRF}
+  \label{fig:System}
+\end{sidewaysfigure}
+
 
 \subsection{Von heuristischen Regeln und Expertensystemen zur probabilistischen Inferenz}
-Historisch basieren viele Ansätze in der Endoskopie-Analyse auf regelbasierten Expertensystemen mit harten Schwellenwerten. In der klinischen Realität erweisen sich starre Grenzen jedoch oft als unzureichend, da die Variabilität von Gewebetextur, Beleuchtung und Pathologie zu groß ist. Außerdem ist es Menschen möglich, fokussiert einzelne Bereiche und Muster des Videos zu erkennen, ein Umstand der schwierig über Differenzen von Unterschieden und Bewegungsvektoren generalisierbar ist.
+Historisch basieren viele Ansätze in der Endoskopie-Analyse auf regelbasierten Expertensystemen mit harten Schwellenwerten. In der klinischen Realität erweisen sich starre Grenzen jedoch oft als unzureichend, da die Variabilität von Gewebetextur, Beleuchtung, Gerätetypen und Pathologie zu groß ist. Außerdem ist es Menschen möglich, fokussiert einzelne Bereiche und Muster des Videos zu erkennen, ein Umstand der schwierig über Differenzen von Unterschieden und Bewegungsvektoren generalisierbar ist.
+
 Die Lösung kombiniert regelbasierte Beobachtungsmodelle mit probabilistischer Sequenzmodellierung indem die Merkmale vorher statistisch erhoben werden. Durch diese Initialisierung der Features aufgrund tatsächlicher Messungen vor der Durchführung initialisiert das System die Parameter bei realistischen Werten. Die Übergangsmatrizen werden aus annotierten Sequenzen per MLE mit Glättung geschätzt, vorher definierten Feature-Statistiken fixiert in die Inferenz eingebracht werden.
 
 \section{Definition des Hidden Markov Models}
@@ -34,6 +36,7 @@ Der Messvektor $y_t$ ist definiert als:
 \begin{equation}
     y_t = \begin{bmatrix} v_{x,t} & v_{y,t} & \mu_{H,t} & \mu_{S,t} & \mu_{V,t} & E_{\text{text},t} \end{bmatrix}^\top
 \end{equation}
+
 
 Im Folgenden wird die Herleitung der Farb- und Bewegungskomponenten detailliert beschrieben. Dieser Vektor dient in der Implementierung primär der Änderungserkennung innerhalb der auf Kalmanfilter basierten Änderungserkennung sowie dem optionalen Online-Prototyping; die Emissionswahrscheinlichkeiten des HMM/CRF werden separat aus regelbasierten Skalarfeatures berechnet.
 

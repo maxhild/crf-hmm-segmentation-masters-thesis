@@ -23,13 +23,16 @@ Aus diesem Grund wird ein hybrides probabilistisches Modell vorgeschlagen, das d
 \noindent
 \textbf{Grundidee.}  
 Das System basiert auf einer hierarchischen Struktur. Eine Markov-Kette fungiert als übergeordneter Prozess, der die semantischen Phasen des Videos beschreibt ($S_t$), während lokale Beobachtungsmodelle (basierend auf Feature-Statistiken oder Kalman-Filtern) die Wahrscheinlichkeiten aus den visuellen Messgrößen ($y_t$) schätzen.
+Die rekursive Berechnung der Zustandswahrscheinlichkeit folgt der Forward-Rekursion des Hidden-Markov-Modells nach Rabiner \cite{18626}, bei der die a-priori Verteilung des vorherigen Zustands über die Übergangsmatrix propagiert und mit der Emissionswahrscheinlichkeit des aktuellen Beobachtungsvektors kombiniert wird.
 Es sei $S_t$ die diskrete Zufallsvariable zum Zeitpunkt $t$, die den aktuellen Zustand $s_i$ aus einem Zustandsraum $\{1, \dots, K\}$ annimmt:
 \begin{equation}
 S_t = s_i
 \end{equation}
 Die Wahrscheinlichkeit für das Vorliegen eines Zustands ergibt sich unter Anwendung des Satzes der totalen Wahrscheinlichkeit und der Markov-Annahme erster Ordnung:
 \begin{equation}
-P(S_t) = \sum_{j=1}^{K} P(S_t = s_i \mid S_{t-1} = s_j) \cdot P(y_t \mid S_t = s_i)
+P(S_t = s_i \mid y_t)
+\propto
+P(y_t \mid S_t = s_i)\sum_{j=1}^{K} P(S_t = s_i \mid S_{t-1} = s_j) P(S_{t-1} = s_j)
 \end{equation}
 
 Innerhalb einer diskreten Phase $s_i$ werden die Messwerte $y_t \in \mathbb{R}^m$ (z.\,B. Farbe, Textur, einfache Bewegungsmaße) als skalare Featuregrößen erfasst. In der vorliegenden Implementierung werden die Beobachtungswahrscheinlichkeiten nicht durch eine parametrisierte Dichte gelernt, sondern deterministisch aus statistischen Featureregeln berechnet, die aus Trainingsdaten abgeleitet wurden. Ein diskriminatives Modell (CRF) kann diese Emissionswahrscheinlichkeiten als Eingabe nutzen und die Zustandsdynamik direkt über $P(S_t \mid y_t, S_{t-1})$ modellieren.
@@ -38,11 +41,11 @@ Innerhalb einer diskreten Phase $s_i$ werden die Messwerte $y_t \in \mathbb{R}^m
     \centering
     % width=0.9\textwidth passt das Bild an die Seitenbreite an (sicherer als scale)
     \includegraphics[width=0.9\textwidth]{Images/feature_regeln_final.pdf}
-\caption{Visualisierung der statistischen Entscheidungsregeln, die die Likelihood-Funktion des HMM definieren.}
+\caption{Visualisierung der statistischen Entscheidungsregeln, die in der Generation der Featureregeln genutzt werden definieren.}
 \label{fig:Featureentscheidung}
 \end{figure}
 
-Die in Abbildung~\ref{fig:Featureentscheidung} gezeigten statistischen Regeln bilden die direkte Berechnungsgrundlage für die Beobachtungswahrscheinlichkeiten (Likelihoods) des HMMs.
+Die in Abbildung~\ref{fig:Featureentscheidung} gezeigten statistischen Regeln bilden die direkte Berechnungsgrundlage für die Beobachtungswahrscheinlichkeiten.
 
 Das System implementiert hierbei eine klare Trennung zwischen Entscheidung (Inferenz) und Adaption (Lernen):
 
@@ -58,7 +61,7 @@ Somit basiert die Klassifikationsentscheidung in dieser Arbeit vollständig auf 
 \vspace{0.5em}
 \noindent
 \textbf{Beziehung zu bestehenden Arbeiten.}  
-Das Grundprinzip weist eine formale Dualität zu dem Ansatz von Odhner et.al. \cite{odhner2010kalman} auf. Während Odhner et al. eine Markov-Kette als zugrunde liegendes System betrachteten und einen Kalman-Filter zur Schätzung der Populationsverteilung nutzten, kehrt die vorliegende Arbeit diese Struktur um: Hier dienen statistische Filter (wie Kalman-Change-Detectors oder Running-Stats) als lokale Schätzer für die Feature-Dynamik, während die Markov-Kette (oder das CRF) die diskrete Steuerungsebene bildet, welche die Phasenwechsel des endoskopischen Prozesses modelliert. Dies erlaubt die Kombination von lokaler Rauschunterdrückung und globaler Prozesslogik.
+Das Grundprinzip weist eine formale Dualität zu dem Ansatz von Odhner et.al. \cite{odhner2010kalman} auf. Während Odhner et al. eine Markov-Kette als zugrundeliegendes System betrachteten und einen Kalman-Filter zur Schätzung der Populationsverteilung nutzten, kehrt die vorliegende Arbeit diese Struktur um: Hier dienen statistische Filter als lokale Schätzer für die Featuredynamik, während die Markov-Kette (oder das CRF) die diskrete Steuerungsebene bildet, welche die Phasenwechsel des endoskopischen Prozesses modelliert. Dies erlaubt die Kombination von lokaler Rauschunterdrückung und globaler Prozesslogik.
 
 \vspace{0.5em}
 \noindent
@@ -71,12 +74,7 @@ Das System „lernt“ somit datengetrieben, wann das aktuell aktive Modell (z.\
 \vspace{0.5em}
 \noindent
 \textbf{Globaler Kontext und Regularisierung.}  
-Über die gesamte Videolänge hinweg entsteht so eine Markov-Kette, bei der die einzelnen Zustände durch verschiedene Modelle über Featurevektoren aktualisiert werden. Hierbei wurden verschiedene Features erprobt, die auf im Voraus bekannte Merkmale oder gelernte Features angepasst werden können. Nach der Markovannahme lassen sich die Annahmen aus den vorherigen Durchläufen, also die Priors, im Prior des aktuellen Zustands zusammenfassen.
-
-\begin{equation}
-P(s_t \mid y_{1:t-1}) = \sum_{i=1}^{K} P(s_t \mid s_{t-1}=i) P(s_{t-1}=i \mid y_{1:t-1})
-\end{equation}
-
+Über die gesamte Videolänge hinweg entsteht so eine Markov-Kette, bei der die einzelnen Zustände durch verschiedene Modelle über Featurevektoren aktualisiert werden. Hierbei wurden verschiedene Features erprobt, die auf im Voraus bekannte oder gelernte Merkmale angepasst werden können. Nach der Markovannahme lassen sich die Annahmen aus den vorherigen Durchläufen, also die Priors, im Prior des aktuellen Zustands zusammenfassen. Die Prior-Aktualisierung erfolgt analog zur zuvor beschriebenen Forward-Rekursion.
 Da bei Endoskopievideos stellenweise vorhersehbarer, zeitlicher Zusammenhang zwischen den Zuständen vorliegen kann, wird die Sequenzmodellierung in der vorliegenden Implementierung über eine lineare Kette realisiert. Für das HMM entspricht dies der Markov-Faktorisierung:
 \[
 P(s_{1:T}) = \prod_{t=1}^{T} P(s_t \mid s_{t-1}).
@@ -107,6 +105,8 @@ P(X \mid O) = \frac{1}{Z(O)} \exp\left( \sum_{t=1}^T \sum_{k} \lambda_k f_k(s_{t
 \end{equation}
 
 Hierbei ist $Z(X)$ die Partitionierungsfunktion zur Normalisierung. Vor dem Training wurde unter Benutzung des Welford Algorithmus aus den Farbrauminformationen sowie den Texturinformationen sequenzunabhängig Schwellenwerte als Features extrahiert. In der  Implementierung werden die Beobachtungsinformationen nicht als frei trainierbare Feature-Funktionen gelernt, sondern als Emissionswahrscheinlichkeiten aus den regelbasierten Likelihoods berechnet und dem CRF als Eingabe übergeben. Optional werden die Übergangsgewichte während des Trainings mit sequenziellen gelabelten Frames aktualisiert.
+\\
+Die Datei \texttt{color\_feature\_states.json} wird automatisiert durch das Skript \texttt{color\_feature\_baseline.py} erzeugt. Dabei werden Features aus Bildern oder aus einem \texttt{features.jsonl} extrahiert (inklusive optionaler CIELAB- und LBP-Merkmale). Für jedes Label sowie global werden Mittelwert, Standardabweichung und Quantile über \texttt{RunningStats} mit dem Welford-Algorithmus berechnet. Die Signifikanz eines Features wird als Abweichung vom globalen Mittelwert definiert: Bei sehr kleinem globalen Mittel wird eine absolute Abweichung (\texttt{abs\_delta}), ansonsten eine relative Abweichung (\texttt{rel\_delta}) verwendet; nur Features mit ausreichender Häufigkeit (\texttt{min\_count}) werden berücksichtigt. Daraus werden Regeln erzeugt: \texttt{gt} bei deutlich höheren, \texttt{lt} bei deutlich niedrigeren Mittelwerten sowie optional \texttt{between} bei Zwischenlagen. Die Schwellen liegen bei \texttt{gt}: $\mu_s - 0{,}5\sigma_s$, \texttt{lt}: $\mu_s + 0{,}5\sigma_s$ und \texttt{between}: $[\mu_s - 2\sigma_s, \mu_s + 2\sigma_s]$. Die Gewichte sind fest codiert (1{,}5 für \texttt{gt}, 1{,}0 für \texttt{lt}, 0{,}5 für \texttt{between}).
 
 \subsection{Statistische Herleitung der Featureregeln}
 Um robuste Entscheidungsgrenzen für die Regeln zu finden, wird ein datengetriebener Ansatz gewählt, der auf der Analyse der Feature-Verteilungen (Mittelwert $\mu_c$, Standardabweichung $\sigma_c$) pro Klasse $c$ basiert. Die Berechnung dieser Momente erfolgt offline über den numerisch stabilen Online-Algorithmus nach Welford \cite{welford1962note}, um auch bei großen Videodatenmengen Präzision zu gewährleisten und um Auslöschungseffekte zu vermeiden, wie sie bei der naiven Berechnung der Varianz auftreten kann. \cite{chan1983algorithms}.
@@ -136,5 +136,4 @@ Die Gewichtung $w_r$ ist in den Zustandsdefinitionen fixiert. Das CRF-Training a
 
 \section{Begründung der Entscheidungen innerhalb des Methodikteils}
 
-Bei der Auswahl der Modelle spielte vor allem die rechnerische Effizienz eine Rolle. 
-
+Bei der Auswahl der Modelle spielte vor allem die rechnerische Effizienz eine Rolle. Aus diesem Grund wurden die benötigten Features auf einen kleinen, festen Vektor reduziert und Zustände bevorzugt, die über Farbraum‑ und Texturinformationen unterscheidbar sind. Da organische Strukturen im Video unterschiedliche Farb‑ und Texturmuster sowie einen unterschiedlichen zeitlichen Kontext besitzen, wird die Klassifikation durch einen sequenziellen Kontext ergänzt. Dazu werden aus einem Trainingsdatensatz statische Featureregeln abgeleitet, die für bestimmte Zustände signifikant häufig auftreten, und als feste Emissionsregeln verwendet. Die Übergangsmatrix wird aus annotierten Sequenzen per MLE mit Glättung geschätzt; die Regeln selbst bleiben während der Inferenz fixiert. Im CRF erfolgt optional eine Online‑Aktualisierung der Übergangsgewichte, nicht der Regeln. Der Zustandsraum wird reduziert, indem schwer differenzierbare Klassen zusammengefasst werden. Innerhalb des HMM wird der Kalman‑Change‑Detector auf dem 6‑D‑Merkmalsvektor eingesetzt, um eine Änderungswahrscheinlichkeit zu berechnen; diese steuert eine Diffusion der Prior, sodass schnelle Wechsel stärker Zustandswechsel begünstigen.
