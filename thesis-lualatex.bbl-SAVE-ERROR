@@ -43,8 +43,8 @@
       \strng{authornamehash}{b10e11c9c0efed258e668d7a001504d7}
       \strng{authorfullhash}{b10e11c9c0efed258e668d7a001504d7}
       \strng{authorfullhashraw}{b10e11c9c0efed258e668d7a001504d7}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Surgical Endoscopy}
@@ -97,8 +97,8 @@
       \strng{authornamehash}{8bca4008500a106b1d1039fdb322acb3}
       \strng{authorfullhash}{91367018a41c565346a6cdb52dbd636e}
       \strng{authorfullhashraw}{91367018a41c565346a6cdb52dbd636e}
-      \field{sortinit}{2}
-      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Digestive Diseases and Sciences}
@@ -143,8 +143,8 @@
       \strng{authornamehash}{6069a306fdb2f098bf5cf3e2b7c1eb51}
       \strng{authorfullhash}{b7756d5039cc9c83861c95dc43a7b911}
       \strng{authorfullhashraw}{b7756d5039cc9c83861c95dc43a7b911}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Digestive Diseases and Sciences}
@@ -209,8 +209,8 @@
       \strng{authornamehash}{ce0b106926e073a6417c609badd0e2df}
       \strng{authorfullhash}{6cb4217febe41fb84d91fd427a6fd177}
       \strng{authorfullhashraw}{6cb4217febe41fb84d91fd427a6fd177}
-      \field{sortinit}{4}
-      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Scientific Reports}
@@ -340,8 +340,8 @@
       \strng{authornamehash}{4c8708c2581c7e35ffa61583fee74b3a}
       \strng{authorfullhash}{6357e8907e7cb04fe7b3b875a849cd8b}
       \strng{authorfullhashraw}{6357e8907e7cb04fe7b3b875a849cd8b}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{New England Journal of Medicine}
@@ -453,8 +453,8 @@
       \strng{authornamehash}{eddeecda71f85010280a46dbba169281}
       \strng{authorfullhash}{6b3bfa73c68f0a0a2ef4abb1aaa4e4f2}
       \strng{authorfullhashraw}{6b3bfa73c68f0a0a2ef4abb1aaa4e4f2}
-      \field{sortinit}{6}
-      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{issn}{0017-5749}
@@ -519,8 +519,8 @@
       \strng{authornamehash}{4791fcacf6b386f15a669b425c321d8e}
       \strng{authorfullhash}{df26a26a9db8840e9f18917d5236e5c3}
       \strng{authorfullhashraw}{df26a26a9db8840e9f18917d5236e5c3}
-      \field{sortinit}{7}
-      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{day}{3}
@@ -571,8 +571,8 @@
       \strng{authornamehash}{cc88fc5122f18827b9e8f5a5ff01dcee}
       \strng{authorfullhash}{cc88fc5122f18827b9e8f5a5ff01dcee}
       \strng{authorfullhashraw}{cc88fc5122f18827b9e8f5a5ff01dcee}
-      \field{sortinit}{8}
-      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \field{sortinit}{9}
+      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{edition}{4.2}
@@ -626,8 +626,8 @@
       \strng{authornamehash}{83d929de2b0c43159b217820d1eaa0fb}
       \strng{authorfullhash}{f42c5e428d6114120d52748b996d3da8}
       \strng{authorfullhashraw}{f42c5e428d6114120d52748b996d3da8}
-      \field{sortinit}{9}
-      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{isbn}{978-3-9824068-6-2}
@@ -1572,8 +1572,8 @@
       \strng{authorfullhash}{5ae7dcb56748c34ca57e34cdd0c05275}
       \strng{authorfullhashraw}{5ae7dcb56748c34ca57e34cdd0c05275}
       \field{extraname}{1}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{arXiv preprint arXiv:2108.06932}
@@ -1997,8 +1997,8 @@
       \strng{authornamehash}{97bef6fb1b0872fb0e137aade6bcdacb}
       \strng{authorfullhash}{abdb2ab82dae66218b1769e136311767}
       \strng{authorfullhashraw}{abdb2ab82dae66218b1769e136311767}
-      \field{sortinit}{2}
-      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Annals of Internal Medicine}
@@ -2340,8 +2340,8 @@
       \strng{authornamehash}{b81fcda9aacb09727e9575c0da9d53dc}
       \strng{authorfullhash}{b81fcda9aacb09727e9575c0da9d53dc}
       \strng{authorfullhashraw}{b81fcda9aacb09727e9575c0da9d53dc}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{issn}{00034851}
@@ -3854,8 +3854,8 @@
       \strng{authornamehash}{1416eea6f3087bf3e6e413d226f75dff}
       \strng{authorfullhash}{eeb9a7d34a2205a10358b8b516548409}
       \strng{authorfullhashraw}{eeb9a7d34a2205a10358b8b516548409}
-      \field{sortinit}{6}
-      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{arXiv preprint arXiv:2102.04306}
@@ -4127,8 +4127,8 @@
       \strng{authornamehash}{9f97f62e293b0564b707eb82812e5697}
       \strng{authorfullhash}{96cb9ee777a5a1b32330b17292f2a834}
       \strng{authorfullhashraw}{96cb9ee777a5a1b32330b17292f2a834}
-      \field{sortinit}{7}
-      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{We present a new noise model for color channels for statistical change detection. Based on this noise modeling, we estimate the distribution of Euclidean distances between the pixel colors of the background image and those of the foreground image. The optimal threshold for change detection is automatically determined using the estimated distribution. We show that our noise modeling is appropriate for various color spaces. Because the detection results differ according to the color space, we utilize the expected number of error pixels to select the appropriate color space for our method. Even if we detect changes based on the optimal threshold in a properly selected color space, there will inevitably be some false classifications. To reject these erroneous cases, we adopt graph cuts that efficiently minimize the global energy while taking into account the effect of neighboring pixels. To validate the proposed method, we show experimental results for a large number of images including indoor and outdoor scenes with complex clutter.}
