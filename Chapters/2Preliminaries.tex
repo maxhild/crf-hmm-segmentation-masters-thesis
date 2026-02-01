@@ -191,7 +191,7 @@ Generell handelt es sich bei HMMs um generative Modelle, d.\,h.\ sie modellieren
 \]
 wobei $X$ die Folge der versteckten Zustände und $O$ die Folge der Beobachtungen bezeichnet.
 
-Da die tatsächliche Wahrscheinlichkeit des Zustandes sowie der Grund für den aktuellen Zustand dem Modell nicht bekannt ist, beschreibt das Modell die Wahrscheinlichkeit für die Beobachtungen, also den beobachtbaren Raum, dessen Ursprung der eigentliche Zustandsraum ist. Dieser clevere Trick erlaubt den Einsatz des HMM zur Schätzung wiederkehrender Muster in sonst schwer zu beschreibenden Daten. Die Sequenz des Hidden Markov Models kann über den Vorwärts- sowie den Rückwärtsalgorithmus beschrieben werden.
+Da die tatsächliche Wahrscheinlichkeit des Zustandes sowie der Grund für den aktuellen Zustand dem Modell nicht bekannt ist, beschreibt das Modell die Wahrscheinlichkeit für die Beobachtungen, also den beobachtbaren Raum, dessen Ursprung der eigentliche Zustandsraum ist. Dieser clevere Trick erlaubt den Einsatz des HMM zur Schätzung wiederkehrender Muster in sonst schwer zu beschreibenden Daten. Die Sequenz des HMMs kann über den Vorwärts- sowie den Rückwärtsalgorithmus beschrieben werden.
 
 \subsection{Vorwärtsalgorithmus}
 
@@ -226,19 +226,19 @@ Die Rückwärtsvariable $β_t(i)$ ist die Wahrscheinlichkeit, die restliche Teil
 Diese allgemeingültige Definition sowie die Kombination des Algorithmus mit kreativer Definiton der verwendeten Observationen ermöglicht eine effiziente Nutzung von Markovmodellen im Bereich des überwachten Lernens, zum Beispiel in der Bioinformatik. \cite{Ma2026HMM}
 
 
-\subsection{Conditional Random Fields als generalisiertes Markovmodell}
+\subsection{CRF als generalisiertes Markovmodell}
 
-Conditional Random Fields (CRF) beschreiben eine Klasse von Modellen, mit denen sich Übergangswahrscheinlichkeiten darstellen lassen.
+Conditional Random Fields  beschreiben eine Klasse von Modellen, mit denen sich Übergangswahrscheinlichkeiten darstellen lassen.
 Generell handelt es sich bei CRF um diskriminative Modelle: Es wird direkt die bedingte Wahrscheinlichkeit
 \[
   P(Y \mid X)
 \]
 der Ausgabevariablen $Y$ gegeben die Eingabevariablen $X$ modelliert, anstatt der gemeinsamen Wahrscheinlichkeit $P(X, Y)$.
-
-CRF lassen sich als diskriminatives Analogon zu generativen HMMs verstehen. Während HMMs $P(X, O)$ modellieren, fokussieren CRF auf $P(X \mid O)$ und sind dadurch robuster gegenüber komplexen Abhängigkeiten in den Eingangsdaten.
+\\
+CRF lassen sich als diskriminatives Analogon zu generativen HMMs verstehen. Während HMMs $P(X, O)$ modellieren, werden CRF auf $P(X \mid O)$ und sind dadurch robuster gegenüber komplexen Abhängigkeiten in den Eingangsdaten.
 Verdeckte Markovmodelle beinhalten, wie im vorigen Abschnitt erläutert, die Annahme, dass aufgrund des vorherigen versteckten Zustands das System vorhergesagt werden kann.
 Hierfür müsste das System durch die Menge der versteckten Zustände vollständig beobachtbar und adäquat abbildbar sein.
-Ein Conditional Random Field erlaubt es, diese Annahmen zu lockern und Abhängigkeiten zwischen Beobachtungen explizit zu modellieren.
+Ein Conditional Random Field erlaubt es, diese Annahmen zu lockern und Abhängigkeiten zwischen Beobachtungen explizit zu modellieren. Vgl.:\ \cite{10.5555/645530.655813}
 
 \section*{Gradient der marginalen Log-Likelihood für CRFs}
 
@@ -267,7 +267,7 @@ Da die Optimisierung des Terms durch die Multidimensionalität nicht mehr trivia
 
 \subsection{Stochastische Gradientenverfahren für Online-CRFs}
 
-Während klassische Optimierungsverfahren wie L-BFGS \cite{liu1989limited} im Batch-Modus operieren und den gesamten Datensatz scannen müssen, bevor eine Parameteraktualisierung erfolgt, nutzen Online-CRFs stochastische Gradientenverfahren. Dies ist besonders effizient, wenn die Trainingsdaten redundant sind oder die Datenmenge zu groß für den Arbeitsspeicher ist.
+Während klassische Optimierungsverfahren wie L-BFGS \cite{liu1989limited} im Batch-Modus operieren und den gesamten Datensatz scannen müssen, bevor eine Parameteraktualisierung erfolgt, nutzen viele CRFs stochastische Gradientenverfahren. Dies ist besonders effizient, wenn die Trainingsdaten redundant sind oder die Datenmenge zu groß für den Arbeitsspeicher ist.
 
 Bei jedem Iterationsschritt $m$ wird ein einzelnes Trainingsbeispiel $(\mathbf{x}^{(i)}, \mathbf{y}^{(i)})$ zufällig ausgewählt. Die Parameter $\theta$ werden anschließend basierend auf dem Gradienten dieser einzelnen Instanz aktualisiert:
 
@@ -287,7 +287,7 @@ Ein entscheidender Faktor für die Konvergenz ist die Wahl der Lernrate $\alpha_
 \alpha_m = \frac{1}{\sigma^2(m_0 + m)}
 \end{equation}
 
-Hierbei ist $m_0$ ein Hyperparameter, der oft durch einen kurzen Testlauf auf einer Teilmenge der Daten bestimmt wird. Online-CRFs bieten einen signifikanten Geschwindigkeitsvorteil bei großen, unabhängig und identisch verteilten (i.i.d.) Datensätzen, erfordern jedoch im Vergleich zu Batch-Algorithmen eine sorgfältigere Feinabstimmung der Hyperparameter. \cite{SuttonMcCallum2012}
+Hierbei ist $m_0$ ein Hyperparameter, der oft durch einen kurzen Testlauf auf einer Teilmenge der Daten bestimmt wird. Online-CRFs bieten einen Geschwindigkeitsvorteil bei großen, unabhängig und identisch verteilten (i.i.d.) Datensätzen, erfordern jedoch im Vergleich zu Batch-Algorithmen eine sorgfältigere Feinabstimmung der Hyperparameter. \cite{SuttonMcCallum2012}
 
 \subsection{Kontinuierliche Markovprozesse: Kalmanfilter zur Approximation linearer dynamischer Systeme}
 

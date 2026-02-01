@@ -1,29 +1,33 @@
+
+\chapter{Methodik}\label{ch:approach}
 \section{Systemarchitektur und Überblick}
 \label{sec:system_architecture_overview}
 
 Dieses Kapitel überführt die theoretischen Modelle in eine konkrete Systemarchitektur. Es wird hier auf einen hybriden Entwurf gesetzt: Klassische Computer Vision trifft auf probabilistische Zeitreihenanalyse und Deep Learning.
 
 Das primäre Ziel ist es, die bei reinen Frame-zu-Frame CNN-Ansätzen häufig auftretende Instabilität zu eliminieren. Dies wird erreicht, indem physikalische Kontinuität via optischem Fluss und zeitliche Kohärenz via HMM/CRF als starke Priors in den Entscheidungsprozess integriert werden.
+\\
+Der Code der für die Modelle sowie das Training und die Evaluation genutzt wurde ist öffentlich auf:
+\href{https://github.com/maxhild/devisions/}\cite{maxhildDevisions}
 
 \begin{sidewaysfigure}
   \centering
   \includegraphics[width=\textheight]{Images/HMM_CRF.jpg}
-  \caption{Systemarchitektur der Featurekalibrierung und des Trainings des HMM und CRF}
+  \caption{Systemarchitektur der Featurekalibrierung und des Trainings und CRF sowie der Anlegung von Messvektorprototypen innerhalb des HMM (Der Messvektor wird nicht aktiv in der Inferenz genutzt, diese Komponente exisitert für eine spätere Weiterentwicklung.)}
   \label{fig:System}
 \end{sidewaysfigure}
-
 
 \subsection{Von heuristischen Regeln und Expertensystemen zur probabilistischen Inferenz}
 Historisch basieren viele Ansätze in der Endoskopie-Analyse auf regelbasierten Expertensystemen mit harten Schwellenwerten. In der klinischen Realität erweisen sich starre Grenzen jedoch oft als unzureichend, da die Variabilität von Gewebetextur, Beleuchtung, Gerätetypen und Pathologie zu groß ist. Außerdem ist es Menschen möglich, fokussiert einzelne Bereiche und Muster des Videos zu erkennen, ein Umstand der schwierig über Differenzen von Unterschieden und Bewegungsvektoren generalisierbar ist.
 
 Die Lösung kombiniert regelbasierte Beobachtungsmodelle mit probabilistischer Sequenzmodellierung indem die Merkmale vorher statistisch erhoben werden. Durch diese Initialisierung der Features aufgrund tatsächlicher Messungen vor der Durchführung initialisiert das System die Parameter bei realistischen Werten. Die Übergangsmatrizen werden aus annotierten Sequenzen per MLE mit Glättung geschätzt, vorher definierten Feature-Statistiken fixiert in die Inferenz eingebracht werden.
 
-\section{Definition des Hidden Markov Models}
+\section{Definition des HMMs}
 
 \begin{figure}[p]
 \centering
 \includegraphics[width=\textwidth]{Images/MarkovmodelEndoscopy-2.jpg}
-\caption{Zugrundeliegendes wahres Markovmodell für die Endoskopie}
+\caption{Zugrundeliegendes wahres Markovmodell für die Endoskopie bei normaler Anatomie}
 \label{fig:Endoskopiephasen}
 \end{figure}
 
@@ -38,13 +42,10 @@ Der Messvektor $y_t$ ist definiert als:
 \end{equation}
 
 
-Im Folgenden wird die Herleitung der Farb- und Bewegungskomponenten detailliert beschrieben. Dieser Vektor dient in der Implementierung primär der Änderungserkennung innerhalb der auf Kalmanfilter basierten Änderungserkennung sowie dem optionalen Online-Prototyping; die Emissionswahrscheinlichkeiten des HMM/CRF werden separat aus regelbasierten Skalarfeatures berechnet.
-
-\subsection{Von Rohdaten zu Regeln}
-\label{sec:robust_feature_modeling}
+Im Folgenden wird die Herleitung der Farb- und Bewegungskomponenten detailliert beschrieben. Der Messvektor $y_t$ wird nicht direkt zur Berechnung der Emissionswahrscheinlichkeiten verwendet, sondern ausschließlich für Änderungserkennung durch die gelernten Featureregeln und optionale Prototypisierung eingesetzt.
 
 \subsubsection{Statistische Modellierung}
-Ein zentrales Problem bei der automatisierten Analyse endoskopischer Videos ist das signifikante Sensorrauschen, das durch die geringe Baugröße der Bildsensoren und die schwierigen Lichtverhältnisse im Körperinneren entsteht. Theoretische Arbeiten, wie die von Hwang et al. \cite{hwang2008generalized}, weisen darauf hin, dass dieses Rauschen oft nicht einer idealen Normalverteilung folgt, sondern breite Ränder aufweist. Während Ansätze zur reinen Bewegungserkennung dieses Rauschen explizit durch komplexe Verteilungsmodelle (z.\,B. Generalized Exponential Models) abbilden müssen, um Fehlalarme bei der Differenzbildung ($\Delta$) zu vermeiden, verfolgt die vorliegende Arbeit einen diskriminativen, zustandsbasierten Ansatz.
+Ein zentrales Problem bei der automatisierten Analyse endoskopischer Videos ist das signifikante Sensorrauschen, das durch die geringe Baugröße der Bildsensoren und die schwierigen Lichtverhältnisse im Körperinneren entsteht. Theoretische Arbeiten, wie die von Hwang et al., weisen darauf hin, dass dieses Rauschen oft nicht einer idealen Normalverteilung folgt, sondern breite Ränder aufweist. Während Ansätze zur reinen Bewegungserkennung dieses Rauschen explizit durch komplexe Verteilungsmodelle (z.\,B. Generalized Exponential Models) abbilden müssen, um Fehlalarme bei der Differenzbildung ($\Delta$) zu vermeiden, verfolgt die vorliegende Arbeit einen diskriminativen, zustandsbasierten Ansatz. \cite{hwang2008generalized}
 
 Anstatt die Wahrscheinlichkeit des Rauschens in der zeitlichen Ableitung zu modellieren, wird der Zustand $s_t$ über absolute Featureregeln in einem mehrdimensionalen Merkmalsraum $\mathbb{R}^n$ definiert. Die Robustheit gegenüber nicht-gaußschem Rauschen entsteht durch die Kombination orthogonaler Merkmale (Farbe, Helligkeit, Textur), die als deterministische Regeln in die Emissionsberechnung eingehen.
 
@@ -79,17 +80,17 @@ P(S_t) \propto A^\top P(S_{t-1}) \odot P(y_t \mid S_t)
 Damit bildet der Likelihood-Vektor die Brücke zwischen den heuristischen Regeln und der probabilistischen Zustandsaktualisierung.
 Optional wird ein Unsicherheitsfaktor aus dem Kalmanfilter verwendet, um eine Diffusionskomponente (zusätzliche Unsicherheit) in die zeitliche Aktualisierung einzubringen. Die finale Zustandsentscheidung erfolgt über das Maximum der posterioren Verteilung.
 
-\section{Definition des Conditional Random Fields} \label{sec:crf_definition}
+\section{Definition des CRF} \label{sec:crf_definition}
 
-Während das HMM einen generativen Ansatz verfolgt ($P(X, O)$), wird in dieser Arbeit ergänzend ein diskriminativer Ansatz untersucht. Ein Conditional Random Field (CRF) modelliert direkt die bedingte Wahrscheinlichkeit $P(X \mid O)$ der Zustandssequenz. Dies ist besonders vorteilhaft für die Unterscheidung von Zuständen mit ähnlichen physikalischen Eigenschaften, die sich jedoch im Kontext unterscheiden (z.\,B. fließendes Blut vs. bewegtes Instrument).
+Während das HMM einen generativen Ansatz verfolgt ($P(X, O)$), wird in dieser Arbeit ergänzend ein diskriminativer Ansatz untersucht. Ein Conditional Random Field  modelliert direkt die bedingte Wahrscheinlichkeit $P(X \mid O)$ der Zustandssequenz. Dies ist besonders vorteilhaft für die Unterscheidung von Zuständen mit ähnlichen physikalischen Eigenschaften, die sich jedoch im Kontext unterscheiden (z.\,B. fließendes Blut vs. bewegtes Instrument).
 
-Ein lineares Chain-CRF definiert die Wahrscheinlichkeit als:
+Ein Linear Chain CRF definiert die Wahrscheinlichkeit als:
 \begin{equation}
     P(X \mid O) = \frac{1}{Z(O)} \exp \left( \sum_{t=1}^{T} \sum_{k} \lambda_k f_k(s_{t-1}, s_t, O, t) \right),
 \end{equation}
-wobei die Feature-Funktionen $f_k$ konzeptionell die Abhängigkeiten zwischen Zuständen und Beobachtungen beschreiben. In der implementierten Pipeline werden die Beobachtungen als Emissionswahrscheinlichkeiten aus den in Abschnitt \ref{sec:robust_feature_modeling} hergeleiteten Regeln berechnet und dem CRF als Eingabe übergeben. Optional wird bei verfügbaren Labels eine Online-Aktualisierung der Übergangsgewichte durchgeführt; die Regeln selbst bleiben fixiert.
+wobei die Feature-Funktionen $f_k$ konzeptionell die Abhängigkeiten zwischen Zuständen und Beobachtungen beschreiben. In der implementierten Pipeline werden die Beobachtungen als Emissionswahrscheinlichkeiten aus den hergeleiteten Regeln berechnet und dem CRF als Eingabe übergeben. Optional wird bei verfügbaren Labels eine Online-Aktualisierung der Übergangsgewichte durchgeführt; die Regeln selbst bleiben fixiert. Vgl.:\ \cite{10.5555/645530.655813}
 
-\section{Texturanalyse mit LBP}
+\section{Texturanalyse mit Local Binary Patterns}
 
 Zur Analyse der lokalen Bildtextur wird in dieser Arbeit das Verfahren der \textit{Local Binary Patterns} (LBP) verwendet. Konkret kommt die rotationsinvariante, uniforme Variante ($LBP_{P,R}^{riu2}$) zum Einsatz, wie sie von Ojala et al. \cite{Ojala2002} definiert wurde. Die Implementierung erfolgt unter Verwendung der \textit{scikit-image} Bibliothek.
 
@@ -121,15 +122,17 @@ Zusätzlich zu den einzelnen Bins wird ein Komplexitätsmaß abgeleitet. Dieses 
 \end{equation}
 Dies aggregiert Bereiche mit hoher lokaler Helligkeit und nicht-uniformen Strukturen (Rauschen), was als Indikator für visuelle Unruhe im Frame dienen kann.
 
+Das Training des CRF sowie die Evaluation gegen das HMM ist einsehbar auf:
+\href{https://github.com/maxhild/devisions/blob/main/training_runner/crf_training.py}
 
 
 \section{Zusammensetzung und Limitationen des Datensets}
 
-Die Setzung der Grenzwerte für die Featureregeln wurde auf dem Datenset von Lux et al. \cite{lux-2023} durchgeführt. Dieses ist vollständig annotiert, setzt mehrere Labels pro Frame und enthält die folgenden Daten:
+Die Setzung der Grenzwerte für die Featureregeln wurde auf einem durch einen Arzt frameweise annotiertem Datenset durchgeführt. Dieses ist vollständig annotiert, setzt mehrere Labels pro Frame und enthält die folgenden Daten:
 
 \begin{table}[]
 \centering
-\caption{Kalibrierung der Features: Datenset ColoReg Multilabel Classification \cite{lux-2023}}
+\caption{Kalibrierung der Features: Datenset Multilabel Classification}
 \label{tab:my-table}
 \resizebox{\textwidth}{!}{
 \begin{tabular}{ll}
@@ -174,7 +177,7 @@ water\_jet          & 877
 \\
 wound          & 426
 \\
-Insgesamt   & 14502
+Insgesamt (Nicht alle Frames wurden annotiert, manche doppelt.)   & 14502
 \\
 \hline
 \end{tabular}
@@ -187,7 +190,7 @@ Die Boxplots der wichtigsten Merkmale zur Kalibrierung sind in Abbildung~\ref{fi
     \includegraphics[width=\textwidth]{Images/boxplot_hue.png}
     \includegraphics[width=\textwidth]{Images/boxplot_saturation.png}
     \includegraphics[width=\textwidth]{Images/boxplot_texture_lbp_complexity.png}
-    \caption{Boxplots der zentralen Kalibrierungsmerkmale (Hue, Sättigung und LBP-Komplexität) aus dem ColoReg-Datenset.}
+    \caption{Boxplots der zentralen Kalibrierungsmerkmale (Hue, Sättigung und LBP-Komplexität) aus dem Datenset.}
     \label{fig:feature_boxplots_core}
 \end{figure}
 
@@ -233,7 +236,9 @@ Die Anzahl der annotierten Frames pro reduzierter Klasse ist in Tabelle~\ref{tab
     \end{tabular}
 \end{table}
 
-Im Rahmen der Inferenz wurde auf drei weitere Endoskopievideos zurückgegriffen, die im Rahmen der ColoReg Studie aufgenommen wurden. Zur Annotation wurde innerhalb der Bearbeitungszeit für diese Masterarbeit eine App fertiggestellt, welche die Reduktion persönlicher Daten sowie die segmentweise Frameannotation auf den Endoskopievideos ermöglicht. Das bedeutet, dass die für die Evaluation der Modelle verwendeten Frameannotationen aus Segmenten stammen. Segmente sind hier mit Zeitstempeln versehene Abschnitte des Videos. Basierend auf den FPS wurden die zugehörigen Framenummern bestimmt. Diese konnten dann mit den zugehörigen Labels bei der Analyse verwendet werden. Aufgrund der verwendeten FPS von 50$\frac{Frames}{Sekunde}$ entsteht die Problematik, dass bei der Berechnung der Start und Endzeit:
+Im Rahmen der Inferenz wurde auf drei weitere Endoskopievideos zurückgegriffen, die im Rahmen einer klinischen Registerstudie aufgenommen wurden. Zur Annotation wurde innerhalb der Bearbeitungszeit für diese Masterarbeit für die Forschugsgruppe eine App fertiggestellt, welche die Reduktion persönlicher Daten sowie die segmentweise Frameannotation auf den Endoskopievideos ermöglicht. Sie ist einsehbar auf \href{https://github.com/wg-lux/lx-annotate}\cite{lxAnnotate} Für die Anonymisierung wurden Algorithmen der Forschungsgruppe basieren. Vgl: \cite{Lux2025EndoRegDB}\cite{Lux2025LocalLLMAnonymization}
+\skip
+Das bedeutet, dass die für die Evaluation der Modelle verwendeten Frameannotationen aus Segmenten stammen. Segmente sind hier mit Zeitstempeln versehene Abschnitte des Videos. Basierend auf den FPS wurden die zugehörigen Framenummern bestimmt. Diese konnten dann mit den zugehörigen Labels bei der Analyse verwendet werden. Aufgrund der verwendeten FPS von 50$\frac{Frames}{Sekunde}$ entsteht die Problematik, dass bei der Berechnung der Start und Endzeit:
 \\
 \begin{equation}
     \text{Framenummer } F = \text{Zeit in Sekunden} \cdot \text{FPS}
@@ -242,6 +247,6 @@ Im Rahmen der Inferenz wurde auf drei weitere Endoskopievideos zurückgegriffen,
 Eine Rundung auf 50 Frames notwendig ist.
 Dadurch sowie durch zu spätes oder zu frühes Setzen der Start- und Endzeiten entstehen bei dieser Methode unvermeidbare Ungenauigkeiten.
 
-Das Datenset zur Evaluation und Inferenz enthielt 
+Das Datenset zur Evaluation und Inferenz enthielt nicht alle Frames, da das Label Mucosa nicht annotiert wurde.
 
 Das Online-Training des CRF, das Prototyping des HMM sowie die Inferenz wurden auf diesem Datensatz durchgeführt. Durch die Analyse der labelbasierten Streuung der Werte der Features in Boxplot und mittels LLM wurden einige der Labels zusammengefasst. Im ersten Durchlauf wurde jedes Video einzeln durchlaufen. Hierbei wurde das Onlinetraining für das CRF während einer Durchführung aktiviert um die Labels für den Datensatz anzupassen.

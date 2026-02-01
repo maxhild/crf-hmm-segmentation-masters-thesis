@@ -2,7 +2,7 @@
 \chapter{Lösungsansatz}\label{ch:approach}
 %*****************************************
 
-Wie in den vorangegangenen Kapiteln dargelegt, besteht ein valides Interesse daran, die Durchführung und Dokumentation von Endoskopien durch den Einsatz von künstlicher Intelligenz und Informationssystemen effizienter zu gestalten. Dabei ist es jedoch, wie Hann et al. \cite{hann_entscheidungsunterstutzung_2025} betonen, essenziell zu evaluieren, an welchen Stellen sich erweiterte Methoden tatsächlich positiv auf den Arbeitsaufwand auswirken. Die Akzeptanz im klinischen Alltag hängt, wie Ali et. al. betonen, neben der diagnostischen Genauigkeit maßgeblich von der rechnerischen Effizienz sowie der Verlässlichkeit der Vorhersagen ab. \cite{Ali2020} Außerdem sollte laut Rafner et. al. evaluiert werden, ob es zu deskilling durch das vollständige Ersetzen der Tätigkeiten der handelnden Personen kommen kann. \cite{rafner_2025_deskilling}
+Wie in den vorangegangenen Kapiteln dargelegt, besteht ein valides Interesse daran, die Durchführung und Dokumentation von Endoskopien durch den Einsatz von künstlicher Intelligenz und Informationssystemen effizienter zu gestalten. Dabei ist es jedoch, wie Hann et al. \cite{hann_entscheidungsunterstutzung_2025} betonen, essenziell zu evaluieren, an welchen Stellen sich erweiterte Methoden tatsächlich positiv auf den Arbeitsaufwand auswirken. Die Akzeptanz im klinischen Alltag hängt, neben der diagnostischen Genauigkeit maßgeblich von der rechnerischen Effizienz sowie der Verlässlichkeit der Vorhersagen ab. \cite{Ali2020} Außerdem sollte laut Rafner et. al. evaluiert werden, ob es zu deskilling durch das vollständige Ersetzen der Tätigkeiten der handelnden Personen kommen kann. \cite{rafner_2025_deskilling}
 
 Um eine automatisiert assistierte Dokumentation zu integrieren, muss die Verarbeitung der Videodaten unter geringer Latenz und mit moderatem Ressourcenverbrauch erfolgen. Das Ziel ist daher die Entwicklung effizienter Algorithmen, die eine schnelle Segmentierung von Videoframes in semantische Kategorien ermöglichen. Eine valide Segmentierung bildet die Grundlage für nachgelagerte Prozesse, wie die automatisierte Erstellung von Befundberichten, statistische Auswertungen der Untersuchungsqualität sowie die gezielte Anonymisierung patientenbezogener Daten.
 
@@ -11,7 +11,7 @@ Aus diesem Grund implementiert das System den Ansatz der temporalen Partitionier
 
 Hierfür wird die folgende Hypothese aufgestellt: 
 \begin{quote}
-\textit{Durch den Einsatz eines Hidden Markov Models (HMM) oder Conditional Random Fields (CRF) zur Vorverarbeitung des Videostroms kann die Anzahl der Frames, auf denen der Einsatz rechenintensiver Deep-Learning-Modelle (wie CNN oder ViT) notwendig ist, signifikant reduziert werden. Es soll erprobt werden, ob irrelevante Zustände sowie Regionen von erhöhtem Interesse unter Zuhilfenahme diskriminativer (CRF) oder generativer Modelle (HMM) schneller und zuverlässiger identifiziert werden können als durch die alleinige Anwendung eines CNNs.}
+\textit{Durch den Einsatz eines HMMs  oder CRF  zur Vorverarbeitung des Videostroms kann die Anzahl der Frames, auf denen der Einsatz rechenintensiver Deep-Learning-Modelle (wie CNN oder ViT) notwendig ist, signifikant reduziert werden. Es soll erprobt werden, ob irrelevante Zustände sowie Regionen von erhöhtem Interesse unter Zuhilfenahme diskriminativer (CRF) oder generativer Modelle  schneller und zuverlässiger identifiziert werden können als durch die alleinige Anwendung eines CNNs.}
 \end{quote}
 \section{Konzeptionelles Modell zur Zustandsabschätzung}
 
@@ -50,9 +50,7 @@ Die in Abbildung~\ref{fig:Featureentscheidung} gezeigten statistischen Regeln bi
 Das System implementiert hierbei eine klare Trennung zwischen Entscheidung (Inferenz) und Adaption (Lernen):
 
 \begin{enumerate}
-    \item \textbf{Regelbasierte Likelihood (Aktive Inferenz):} Die statischen Regeln (aus \texttt{color\_feature\_states.json}) fungieren als festes Expertenwissen. Für jeden Frame $t$ wird geprüft, ob die extrahierten skalaren Merkmale (z.\,B. Farbsättigung) die konfigurierten Schwellenwerte (typischerweise One-Sided \textit{greater-than}/\textit{less-than}, optional Between-Range) erfüllen. Diese Auswertung wird deterministisch in den Likelihood-Vektor $P(y_t \mid S_t)$ übersetzt, welcher den HMM-Filter treibt.
-    
-    \item \textbf{Adaptives Prototyping (Passives Lernen):} Parallel zur Inferenz existiert ein Speichermodul (\texttt{MarkovFeatureMatrix}), das Zustands-Prototypen zur Laufzeit aufbaut. Diese Prototypen werden initial bei null gestartet und nur in Momenten sehr hoher Modellkonfidenz ($> 95\%$) mit den aktuellen Feature-Vektoren aktualisiert. In der aktuellen Konfiguration dient dieser Prozess der Kalibrierung und der Erfassung patientenspezifischer Merkmalsausprägungen, fließt jedoch nicht aktiv in die Zustandsentscheidung des aktuellen HMM-Runners ein.
+    \item \textbf{Regelbasierte Likelihood:} Die statischen Regeln (aus \texttt{color\_feature\_states.json}) fungieren als festes Expertenwissen. Für jeden Frame $t$ wird geprüft, ob die extrahierten skalaren Merkmale (z.\,B. Farbsättigung) die konfigurierten Schwellenwerte (typischerweise One-Sided \textit{greater-than}/\textit{less-than}, optional Between-Range) erfüllen. Diese Auswertung wird deterministisch in den Likelihood-Vektor $P(y_t \mid S_t)$ übersetzt, welcher in den Klassifikationsmodellen als Entscheidungsgrundlage genutzt werden.
 \end{enumerate}
 
 Somit basiert die Klassifikationsentscheidung in dieser Arbeit vollständig auf den robusten, statistisch hergeleiteten Featureregeln, während individuell während der Erstellung eines Prototypen eine latente Erweiterung zur Laufzeitanalyse existiert.
@@ -88,28 +86,11 @@ wobei die Beobachtungen \(O\) in der Implementierung über regelbasierte Emissio
 
 \noindent
 \textbf{Anwendung auf endoskopische Videos.}  
-Für die konkrete Anwendung werden die Zustände der Markov-Kette semantisch interpretiert, etwa als \emph{Außerhalb des Körpers},  \emph{NBI-Modus}, \emph{Nahaufnahme der Mukosa}, \emph{Polyp}, \emph{Instrument}, \emph{Blut} oder \emph{Niedrige Bildqualität}. Jeder dieser Zustände müsste eine spezifische Dynamik visueller Merkmale besitzen, um durch ein Kalman-Modell mit angepassten Rauschparametern \(Q_{s_t}, R_{s_t}\) beschrieben werden zu können. Diese Parameter können weiterhin durch Domänenwissen vorinitialisiert werden – etwa durch die erwartete Kamerabewegung oder typische Helligkeitsschwankungen in einem bestimmten Abschnitt – und anschließend datengetrieben verfeinert werden. 
-
-\noindent
-\textbf{Zusammenfassung.}  
-Das resultierende Modell kann als hybrides Markov–Kalman-System verstanden werden, in dem kontinuierliche Zustände die lokalen visuellen Eigenschaften schätzen und diskrete Zustände den prozeduralen Kontext erfassen. Diese duale Architektur erlaubt eine interpretierbare, probabilistisch fundierte Beschreibung endoskopischer Prozesse, die sowohl abrupten Zustandswechseln als auch stochastischen Messrauschen gerecht werden soll.
-
-
-\section{Definition des Conditional Random Fields}
-\label{sec:crf_definition}
-
-Wie eingangs erwähnt, bietet das Conditional Random Field (CRF) als diskriminatives Modell den Vorteil, dass es keine strengen Unabhängigkeitsannahmen an die beobachteten Features stellt. Das CRF modelliert direkt die bedingte Wahrscheinlichkeit der Zustandssequenz $X = (s_1, \dots, s_T)$ gegeben die Beobachtungssequenz $O = (y_1, \dots, y_T)$:
-
-\begin{equation}
-P(X \mid O) = \frac{1}{Z(O)} \exp\left( \sum_{t=1}^T \sum_{k} \lambda_k f_k(s_{t-1}, s_t, O, t) \right)
-\end{equation}
-
-Hierbei ist $Z(X)$ die Partitionierungsfunktion zur Normalisierung. Vor dem Training wurde unter Benutzung des Welford Algorithmus aus den Farbrauminformationen sowie den Texturinformationen sequenzunabhängig Schwellenwerte als Features extrahiert. In der  Implementierung werden die Beobachtungsinformationen nicht als frei trainierbare Feature-Funktionen gelernt, sondern als Emissionswahrscheinlichkeiten aus den regelbasierten Likelihoods berechnet und dem CRF als Eingabe übergeben. Optional werden die Übergangsgewichte während des Trainings mit sequenziellen gelabelten Frames aktualisiert.
-\\
-Die Datei \texttt{color\_feature\_states.json} wird automatisiert durch das Skript \texttt{color\_feature\_baseline.py} erzeugt. Dabei werden Features aus Bildern oder aus einem \texttt{features.jsonl} extrahiert (inklusive optionaler CIELAB- und LBP-Merkmale). Für jedes Label sowie global werden Mittelwert, Standardabweichung und Quantile über \texttt{RunningStats} mit dem Welford-Algorithmus berechnet. Die Signifikanz eines Features wird als Abweichung vom globalen Mittelwert definiert: Bei sehr kleinem globalen Mittel wird eine absolute Abweichung (\texttt{abs\_delta}), ansonsten eine relative Abweichung (\texttt{rel\_delta}) verwendet; nur Features mit ausreichender Häufigkeit (\texttt{min\_count}) werden berücksichtigt. Daraus werden Regeln erzeugt: \texttt{gt} bei deutlich höheren, \texttt{lt} bei deutlich niedrigeren Mittelwerten sowie optional \texttt{between} bei Zwischenlagen. Die Schwellen liegen bei \texttt{gt}: $\mu_s - 0{,}5\sigma_s$, \texttt{lt}: $\mu_s + 0{,}5\sigma_s$ und \texttt{between}: $[\mu_s - 2\sigma_s, \mu_s + 2\sigma_s]$. Die Gewichte sind fest codiert (1{,}5 für \texttt{gt}, 1{,}0 für \texttt{lt}, 0{,}5 für \texttt{between}).
+Für die konkrete Anwendung werden die Zustände der Markov-Kette semantisch interpretiert, etwa als \emph{Außerhalb des Körpers},  \emph{NBI-Modus}, \emph{Nahaufnahme der Mukosa}, \emph{Polyp}, \emph{Instrument}, \emph{Blut} oder \emph{Niedrige Bildqualität}. Jeder dieser Zustände müsste eine spezifische Dynamik visueller Merkmale besitzen, um durch ein geeignetes Modell beschrieben werden zu können. Diese Parameter können durch Domänenwissen vorinitialisiert werden – etwa durch die erwartete Kamerabewegung oder typische Helligkeitsschwankungen in einem bestimmten Abschnitt – oder datengetrieben verfeinert werden. In der  Implementierung werden die Beobachtungsinformationen nicht als frei trainierbare Feature-Funktionen gelernt, sondern als Emissionswahrscheinlichkeiten aus den regelbasierten Likelihoods berechnet und den Modellen als Eingabe übergeben. Optional werden die Übergangsgewichte während des Trainings mit sequenziellen gelabelten Frames aktualisiert.
+\
 
 \subsection{Statistische Herleitung der Featureregeln}
-Um robuste Entscheidungsgrenzen für die Regeln zu finden, wird ein datengetriebener Ansatz gewählt, der auf der Analyse der Feature-Verteilungen (Mittelwert $\mu_c$, Standardabweichung $\sigma_c$) pro Klasse $c$ basiert. Die Berechnung dieser Momente erfolgt offline über den numerisch stabilen Online-Algorithmus nach Welford \cite{welford1962note}, um auch bei großen Videodatenmengen Präzision zu gewährleisten und um Auslöschungseffekte zu vermeiden, wie sie bei der naiven Berechnung der Varianz auftreten kann. \cite{chan1983algorithms}.
+Um robuste Entscheidungsgrenzen für die Regeln zu finden, wird ein datengetriebener Ansatz gewählt, der auf der Analyse der Feature-Verteilungen (Mittelwert $\mu_c$, Standardabweichung $\sigma_c$) pro Klasse $c$ basiert. Die Berechnung dieser Momente erfolgt aus den Messungen der Werte für die Labels.
 
 Basierend auf diesen Statistiken werden Featureregeln $\mathcal{R}$ definiert, die als deterministische Prüffunktionen in die Emissionsberechnung eingehen. Eine Regel $r \in \mathcal{R}$ für ein Feature $x$ (z.\,B. Farbsättigung oder LBP-Komplexität) und einen Zustand $s$ ist definiert als:
 
@@ -133,6 +114,15 @@ Die Erfüllungsfunktion $\text{sat}_r(y_t)$ prüft, ob der Messwert innerhalb ei
 \end{enumerate}
 
 Die Gewichtung $w_r$ ist in den Zustandsdefinitionen fixiert. Das CRF-Training aktualisiert ausschließlich die Übergangsgewichte, nicht jedoch die Regeln selbst, da diese bereits während der Kalibrierung entschieden wurden.
+
+Diese Regeln werden in einer .json datei gespeichert. Dabei werden Features aus Bildern extrahiert (HSV, CIELAB- und LBP-Merkmale). Für jedes Label sowie global werden Mittelwert, Standardabweichung und Quantile fortlaufend mit den numerisch stabilen Algorithmus nach Welford \cite{welford1962note} berechnet. Die Signifikanz eines Features wird als Abweichung vom globalen Mittelwert definiert: Bei sehr kleinem globalen Mittel wird eine absolute Abweichung (\texttt{abs\_delta}), ansonsten eine relative Abweichung (\texttt{rel\_delta}) verwendet; nur Features mit ausreichender Häufigkeit werden berücksichtigt. Daraus werden Regeln erzeugt: \texttt{gt} bei deutlich höheren, \texttt{lt} bei deutlich niedrigeren Mittelwerten sowie optional \texttt{between} bei Zwischenlagen. Die Schwellen liegen bei \texttt{gt}: $\mu_s - 0{,}5\sigma_s$, \texttt{lt}: $\mu_s + 0{,}5\sigma_s$ und \texttt{between}: $[\mu_s - 2\sigma_s, \mu_s + 2\sigma_s]$. Die Gewichte sind fest codiert (1{,}5 für \texttt{gt}, 1{,}0 für \texttt{lt}, 0{,}5 für \texttt{zwischen}). Ich wähle diese Werte als lineare Staffelung. Eine Verifikation oder weitere Erprobung optimaler Gewichte kann hier noch Optimierungspotenzial bieten.
+
+\subsection{Vergleich von HMM und CRF im Update-Schritt}
+Beide Modelle erhalten denselben Likelihood-Vektor aus den Regeln. Im HMM stammen die Übergänge aus der Übergangsmatrix $A$, die per MLE mit Glättung geschätzt wird. Das Update erfolgt als
+\[
+    b_t \propto (b_{t-1} A) \odot \text{likelihood},
+\]
+optional mit Diffusion über den Wert der Änderung aus einem Kalmanfilter. Das CRF nutzt dieselben Emissionswahrscheinlichkeiten, führt jedoch ein diskriminatives Sequenz-Update aus. Optional wird nur die Übergangsmatrix online nachtrainiert, während die Regeln fix bleiben.
 
 \section{Begründung der Entscheidungen innerhalb des Methodikteils}
 

@@ -23,29 +23,44 @@ Modell                                                       & blood & low\_qual
 }
 \end{table}
 
-% Please add the following required packages to your document preamble:
-% \usepackage{booktabs}
-\begin{table}[]
+\begin{table}[htbp]
 \centering
-\caption{Laufzeitanalyse der Inferenz auf 500 Frames.}
+\caption{Laufzeitanalyse (inkl.\ Feature-Extraktion und Diffusion) auf 500 Frames.}
 \label{tab:timing-summary}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}llll@{}}
 \toprule
 Bereich & Kennzahl & HMM & CRF \\ \midrule
+
 \multicolumn{4}{@{}l@{}}{\textbf{Gesamt}} \\
 Frames verarbeitet & Anzahl & 500 & 500 \\
-Laufzeit & Wall-clock & 12{,}65\,s & -- \\
-Durchsatz & FPS & 39{,}5 & -- \\ \midrule
+Laufzeit & Wall-clock & 23{,}18\,s & 23{,}18\,s \\
+Durchsatz & FPS & 21{,}6 & 21{,}6 \\ \midrule
+
+\multicolumn{4}{@{}l@{}}{\textbf{Feature-Extraktion (ms)}} \\
+Mittelwert & mean   & 34{,}50 & 34{,}50 \\
+Median    & median & 31{,}09 & 31{,}09 \\
+Perzentil & p90    & 44{,}08 & 44{,}08 \\
+Minimum   & min    & 29{,}47 & 29{,}47 \\
+Maximum   & max    & 180{,}99 & 180{,}99 \\ \midrule
+
 \multicolumn{4}{@{}l@{}}{\textbf{Inferenzzeiten (ms)}} \\
-Mittelwert & mean & 0{,}02 & 0{,}08 \\
-Median & median & 0{,}02 & 0{,}08 \\
-Perzentil & p90 & 0{,}02 & 0{,}09 \\
-Minimum & min & 0{,}02 & 0{,}07 \\
-Maximum & max & 0{,}04 & 0{,}36 \\ \bottomrule
+Mittelwert & mean   & 0{,}03 & 0{,}16 \\
+Median    & median & 0{,}03 & 0{,}14 \\
+Perzentil & p90    & 0{,}04 & 0{,}22 \\
+Minimum   & min    & 0{,}03 & 0{,}12 \\
+Maximum   & max    & 0{,}11 & 1{,}03 \\ \midrule
+
+\multicolumn{4}{@{}l@{}}{\textbf{Gesamt pro Frame (ms)}} \\
+Mittelwert & mean   & 34{,}53 & 34{,}69 \\
+Median    & median & 31{,}13 & 31{,}28 \\
+Perzentil & p90    & 44{,}11 & 44{,}25 \\
+Minimum   & min    & 29{,}50 & 29{,}64 \\
+Maximum   & max    & 181{,}03 & 181{,}20 \\ \bottomrule
 \end{tabular}%
 }
 \end{table}
+
 
 
 % Please add the following required packages to your document preamble:
@@ -83,9 +98,9 @@ Die Eingangs beschriebenen Modelle unterscheiden sich vor allem in einem Punkt: 
 
 \section{Diskussion der Ergebnisse und Implikationen für die Systemarchitektur}
 
-Die quantitative Auswertung der HMM- und CRF-Modelle offenbart eine signifikante Dichotomie in der Klassifikationsleistung, die für das Design einer effizienten Analyse-Pipeline von entscheidender Bedeutung ist. Während die Modelle bei der Differenzierung pathologischer Befunde (insbesondere \textit{polyp} vs. \textit{blood}) deutliche Schwächen zeigen – was sich in einer Polyp-Erkennungsrate von unter 25\,\% selbst im besten CRF-Szenario widerspiegelt, demonstrieren sie eine exzellente Robustheit bei der Identifikation irrelevanter Videosequenzen.
+Die quantitative Auswertung der HMM- und CRF-Modelle offenbart eine signifikante Dichotomie in der Klassifikationsleistung, die für das Design einer effizienten Analyse-Pipeline von entscheidender Bedeutung ist. Während die Modelle bei der Differenzierung pathologischer Befunde (insbesondere \textit{polyp} vs. \textit{blood}) deutliche Schwächen zeigen – was sich in einer Polyp-Erkennungsrate von unter 25\,\% selbst im besten CRF-Szenario widerspiegelt, demonstrieren sie Robustheit bei der Identifikation irrelevanter Videosequenzen.
 
-Insbesondere die Klassen \textit{outside} - Frames außerhalb des Videos wurden mit einer Genauigkeit von bis zu 98\,\% (CRF) korrekt klassifiziert. Frames mit dem label \textit{low\_quality} - Frames mit schlechter Bildqualität - wurden  Die Analyse der Konfusionsmatrizen legt nahe, dass die verwendeten farbbasierten Merkmale ausreichen, um technische Artefakte und extrakorporale Aufnahmen zuverlässig von organischem Gewebe zu trennen.
+Insbesondere die Klassen \textit{outside} - Frames außerhalb des Videos wurden mit einer Genauigkeit von bis zu 98\,\%  korrekt klassifiziert. Frames mit dem label \textit{low\_quality} - Frames mit schlechter Bildqualität - wurden  Die Analyse der Konfusionsmatrizen legt nahe, dass die verwendeten farbbasierten Merkmale ausreichen, um technische Artefakte und extrakorporale Aufnahmen zuverlässig von organischem Gewebe zu trennen.
 
 \begin{figure}[htbp]
     \centering
@@ -94,4 +109,13 @@ Insbesondere die Klassen \textit{outside} - Frames außerhalb des Videos wurden 
     \label{fig:vergleich_alle_videos}
 \end{figure}
 
-Bei der Betrachtung der Recall sowie des F1 Score Diese Beobachtung motiviert den Einsatz eines kaskadierten Systemansatzes, welches das Filtern der Frames mit dem CRF mit dem Einsatz anderer Modelle zu kombinieren. Die stochastischen Modelle qualifizieren sich aufgrund ihrer geringen Inferenzzeit (ca. 30\,ms pro Frame) ideal als Vorfilterstufe. In einer kombinierten Pipeline übernimmt das CRF-Modell die Rolle eines \textit{Gatekeepers}, der den Datenstrom effizient um nicht-diagnostische Frames bereinigt. Der verbleibende, signifikant reduzierte Datenbestand – der nun primär relevante Gewebedarstellungen enthält – kann anschließend an ein leistungsstärkeres, aber rechenintensiveres Convolutional Neural Network (CNN) oder an ein Vison Transformer Modell übergeben werden. Durch diese Arbeitsteilung lässt sich die Effizienz des Systems steigern, indem die Ressourcen des CNNs gezielt auf die schwierigen pathologischen Unterscheidungen fokussiert werden, während das CRF die Echtzeitfähigkeit des Systems durch schnelle Vorselektion gewährleistet.
+\paragraph{Interpretation der F1-Scores.}
+Da das vorliegende Datenset eine starke Klassenimbalance aufweist, ist die alleinige Betrachtung der Genauigkeit nur eingeschränkt aussagekräftig. Der F1-Score, als harmonisches Mittel aus Precision und Recall, erlaubt eine robustere Bewertung der Klassifikationsleistung, da er sowohl Fehlklassifikationen als auch verpasste Erkennungen berücksichtigt.
+
+Für das HMM zeigt sich, dass mehrere Klassen – insbesondere \textit{blood} und \textit{polyp} – praktisch nicht erkannt werden (F1 nahe $0$), obwohl die Gesamtgenauigkeit durch dominante Klassen wie \textit{outside} relativ hoch ausfällt. Dies spiegelt die Limitierung eines rein regelbasierten, generativen Modells wider, dessen Übergangsdynamik seltene Zustände unterdrücken kann.
+
+Das CRF erreicht durch das Training der Übergangsgewichte signifikant höhere F1-Werte in nahezu allen Klassen. Besonders für \textit{outside} (F1 $=73{,}84\%$) und \textit{low\_quality} (F1 $=68{,}31\%$) wird eine robuste Balance zwischen Precision und Recall erzielt. Für pathologische Klassen wie \textit{polyp} und \textit{blood} verbessert sich der F1-Score deutlich gegenüber dem HMM, verbleibt jedoch unterhalb eines für eine alleinige diagnostische Nutzung ausreichenden Niveaus.
+
+Der Vergleich von Macro- und Micro-F1 verdeutlicht diese Beobachtung: Während der Micro-F1 des CRF ($0{,}511$) einen substantiellen Gesamtgewinn belegt, bleibt der Macro-F1 ($0{,}227$) begrenzt. Dies zeigt, dass das Modell insbesondere für häufige und klar separierbare Klassen zuverlässig arbeitet, während seltene oder visuell komplexe Zustände weiterhin eine Herausforderung darstellen.
+
+Diese Beobachtung motiviert den Einsatz eines kaskadierten Systemansatzes, welches das Filtern der Frames mit dem CRF mit dem Einsatz anderer Modelle zu kombinieren. Die stochastischen Modelle qualifizieren sich aufgrund ihrer geringen Inferenzzeit (ca. 30\,ms pro Frame) ideal als Vorfilterstufe. In einer kombinierten Pipeline übernimmt das CRF-Modell die Rolle eines \textit{Gatekeepers}, der den Datenstrom effizient um nicht-diagnostische Frames bereinigt. Der verbleibende, signifikant reduzierte Datenbestand kann anschließend an ein leistungsstärkeres, aber rechenintensiveres Convolutional Neural Network (CNN) oder an ein Vison Transformer Modell übergeben werden. Durch diese Arbeitsteilung lässt sich die Effizienz des Systems steigern, indem die Ressourcen des CNNs gezielt auf die schwierigen pathologischen Unterscheidungen fokussiert werden, während das CRF die Echtzeitfähigkeit des Systems durch schnelle Vorselektion gewährleistet.

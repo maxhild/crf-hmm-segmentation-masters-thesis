@@ -3,7 +3,7 @@
 %************************************************
 Die Endoskopie ist ein wesentlicher Bestandteil der modernen medizinischen Diagnostik und hat sich durch Glasfasertechnik und digitale Kameras zu einem sicheren und bewährten Verfahren in der Gastroenterologie entwickelt. \cite{berci2000history} Mit dem Aufkommen von Künstlicher Intelligenz und maschinellem Lernen eröffnen sich in den letzten Jahrzehnten neue Möglichkeiten zur Automatisierung und Verbesserung der Analyse von Endoskopievideos. Insbesondere die bildbasierte Segmentierung profitiert von annotierten Datensätzen und leistungsfähigeren Modellen. Aufgrund der großen Zahl der durchgeführten Darmspiegelung ist die Detektion kolorektaler Adenome ein viel beforschtes Feld. Am weitesten fortgeschritten ist die Detektion kolorektaler Polypen. Dabei wird zwischen computergestützter Detektion (Auffinden) und computergestützter Diagnose (Klassifikation) unterschieden. \cite{okagawa2022artificial}
 
-Während bei Polypen vielversprechende Fortschritte erzielt worden sind, bleiben Endoskopievideos aufgrund von Rauschen, Reflexionen und der Vielfalt an Ereignissen eine Herausforderung. \cite{giordano2025integration} Für den klinischen Alltag sind robuste Vorhersagen und stabile Segmentgrenzen entscheidend, jedoch auch eine gute Recheneffizienz \cite{Ali2020}. Aus diesem Grund soll die Möglichkeit eines hybriden Ansatzes erarbeitet werden. Diese Arbeit fokussiert sich daher auf die Optimierung der Vorhersagen durch Vorselektion und Glättung in kolorektalen Endoskopievideos. Dazu werden Hidden Markov Modelle (HMM) und Conditional Random Fields als Filter für rechenintensive neuronale Netze eingesetzt. Ziel ist eine Reduktion des Suchraums, um die Polypendetektion effizienter und zuverlässiger zu gestalten.
+Während bei Polypen vielversprechende Fortschritte erzielt worden sind, bleiben Endoskopievideos aufgrund von Rauschen, Reflexionen und der Vielfalt an Ereignissen eine Herausforderung. \cite{giordano2025integration} Für den klinischen Alltag sind robuste Vorhersagen und stabile Segmentgrenzen entscheidend, jedoch auch eine gute Recheneffizienz \cite{Ali2020}. Aus diesem Grund soll die Möglichkeit eines hybriden Ansatzes erarbeitet werden. Diese Arbeit fokussiert sich daher auf die Optimierung der Vorhersagen durch Vorselektion und Glättung in kolorektalen Endoskopievideos. Dazu werden Hidden Markov Modelle  und Conditional Random Fields (CRF) als Filter für rechenintensive neuronale Netze eingesetzt. Ziel ist eine Reduktion des Suchraums, um die Polypendetektion effizienter und zuverlässiger zu gestalten.
 
 \section{Gegenstand der Forschung}
 
@@ -21,7 +21,7 @@ Viele Publikationen argumentieren, dass mit KI-basierter Segmentierung eine Verb
 \subsection{Herausforderungen bei der KI basierten Segmentierung von Endoskopievideos}
 
 Die derzeitige Segmentierungspipeline verwendet eine Glättungsfunktion zur Nachbearbeitung der bildbasierten Vorhersagen. Der Hauptgrund ist, dass Segmente falsch unterbrochen werden können. Dies kann beispielsweise passieren, wenn Lichtreflexionen im Video sichtbar sind oder wenn der Wasserstrahl des Endoskops im Bild Reflexionen verursacht. Auch Artefakte durch mangelnde Spülung der Patienten können als Störfaktoren auftreten. 
-Probleme treten insbesondere bei Ein- und Austritt des Endoskops in den Körper oder bei der Spülung des Kolons nicht korrekt abgeführet Patienten auf, da sich hier die Lichtverhältnisse rapide ändern. In ihrer Analyse der eingereichten Methoden zur Lösung der Detektion von Artefakten, nannten Ali et. al. die \enquote{(i) Konsistenz, (ii) Genauigkeit der Vorhersage, und die (iii)
+Probleme treten insbesondere bei Ein- und Austritt des Endoskops in den Körper oder bei der Spülung des Kolons nicht korrekt abgeführet Patienten auf, da sich hier die Lichtverhältnisse rapide ändern. Beider Detektion von Artefakten in medizinischen Bilddaten, nannten Ali et. al. die \enquote{(i) Konsistenz, (ii) Genauigkeit der Vorhersage, und die (iii)
 komputationale Effizienz} als Voraussetzungen für den klinischen Einsatz. \cite{Ali2020}
 
 \section{Problemstellung}
@@ -74,7 +74,7 @@ Im folgenden werden detailliert die Ziele der Arbeit ausgeführt
 
 \textbf{Ziele zur Lösung von Problem P1 (Unzuverlässige Segmentgrenzbestimmung):}
 \begin{itemize}
-\item \textbf{Ziel Z1.1:} Implementierung eines Hidden Markov Model (HMM) und eines Conditional Random Field (CRF) zur Klassifikation von wenig aussagekräftigen Regionen des Videos. 
+\item \textbf{Ziel Z1.1:} Implementierung eines HMM und eines CRF zur Klassifikation von wenig aussagekräftigen Regionen des Videos. 
 \end{itemize}
 
 \textbf{Ziel zur Lösung von Problem P2 (Fehlende Berücksichtigung visueller Merkmale):}
