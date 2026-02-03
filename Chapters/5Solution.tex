@@ -122,8 +122,6 @@ Zusätzlich zu den einzelnen Bins wird ein Komplexitätsmaß abgeleitet. Dieses 
 \end{equation}
 Dies aggregiert Bereiche mit hoher lokaler Helligkeit und nicht-uniformen Strukturen (Rauschen), was als Indikator für visuelle Unruhe im Frame dienen kann.
 
-Das Training des CRF sowie die Evaluation gegen das HMM ist einsehbar auf:
-\href{https://github.com/maxhild/devisions/blob/main/training_runner/crf_training.py}
 
 
 \section{Zusammensetzung und Limitationen des Datensets}
@@ -237,14 +235,13 @@ Die Anzahl der annotierten Frames pro reduzierter Klasse ist in Tabelle~\ref{tab
 \end{table}
 
 Im Rahmen der Inferenz wurde auf drei weitere Endoskopievideos zurückgegriffen, die im Rahmen einer klinischen Registerstudie aufgenommen wurden. Zur Annotation wurde innerhalb der Bearbeitungszeit für diese Masterarbeit für die Forschugsgruppe eine App fertiggestellt, welche die Reduktion persönlicher Daten sowie die segmentweise Frameannotation auf den Endoskopievideos ermöglicht. Sie ist einsehbar auf \href{https://github.com/wg-lux/lx-annotate}\cite{lxAnnotate} Für die Anonymisierung wurden Algorithmen der Forschungsgruppe basieren. Vgl: \cite{Lux2025EndoRegDB}\cite{Lux2025LocalLLMAnonymization}
-\skip
-Das bedeutet, dass die für die Evaluation der Modelle verwendeten Frameannotationen aus Segmenten stammen. Segmente sind hier mit Zeitstempeln versehene Abschnitte des Videos. Basierend auf den FPS wurden die zugehörigen Framenummern bestimmt. Diese konnten dann mit den zugehörigen Labels bei der Analyse verwendet werden. Aufgrund der verwendeten FPS von 50$\frac{Frames}{Sekunde}$ entsteht die Problematik, dass bei der Berechnung der Start und Endzeit:
+Das bedeutet, dass die für die Evaluation der Modelle verwendeten Frameannotationen aus Segmenten stammen. Segmente sind hier mit Zeitstempeln versehene Abschnitte des Videos. Basierend auf den FPS wurden die zugehörigen Framenummern bestimmt. Diese konnten dann mit den zugehörigen Labels bei der Analyse verwendet werden. Aufgrund der verwendeten FPS von $50\frac{Frames}{Sekunde}$ entsteht die Problematik, dass bei der Berechnung der Start und Endzeit:
 \\
 \begin{equation}
     \text{Framenummer } F = \text{Zeit in Sekunden} \cdot \text{FPS}
 \end{equation}
 \\
-Eine Rundung auf 50 Frames notwendig ist.
+Eine Rundung auf $50$ Frames notwendig ist.
 Dadurch sowie durch zu spätes oder zu frühes Setzen der Start- und Endzeiten entstehen bei dieser Methode unvermeidbare Ungenauigkeiten.
 
 Das Datenset zur Evaluation und Inferenz enthielt nicht alle Frames, da das Label Mucosa nicht annotiert wurde.
